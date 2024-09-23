@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=46.4.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "energy_toolbox"
+description = "A set of tools to manipulate and transform power, energy, and related timeseries data."
+authors = [
+  { name="R&D team, Eco CO2 company", email="research@ecoco2.com" },
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["profile"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pandas>=2.2.2",
+    "numpy>=2.0.0",
+    "scipy>=1.13.0",
+    "pyarrow>=13",
+    "statsmodels>=0.13.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://gitlab.ecoco2.com/recherche/energy_toolbox"
+"Bug Tracker" = "https://gitlab.ecoco2.com/recherche/energy_toolbox-/issues"
+
+[project.optional-dependencies]
+doc = [
+    "energy_toolbox[examples]",
+    "sphinx",
+    "pydata-sphinx-theme",
+    "sphinx-gallery",
+    "sphinx_design",
+    "nbsphinx",
+    "pillow",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+examples = [
+    "matplotlib",
+    "pyarrow",
+]
+all = [
+    "energy_toolbox[test,doc,examples]",
+]
+
+[tool.setuptools]
+zip-safe = false
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["energy_toolbox*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "energy_toolbox.__version__"}
+
+[tool.ruff]
+line-length = 80
+[tool.ruff.lint]
+select = ["NPY201"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 5
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["F401"]
+"*.ipynb" = ["E402",  # module-import-not-at-top-of-file
+             "F401",  # unused-import
+            ]
+
+[tool.pytest.ini_options]
+addopts = "--cov=energy_toolbox --cov-report term --cov-report xml:cov.xml"  # --lf --last-failed-no-failures none"
+testpaths = ["energy_toolbox/tests"]

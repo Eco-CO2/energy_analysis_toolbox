@@ -1,0 +1,107 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+image: python:3.10
+
+# Ensure MR pipelines are not duplicated
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+stages:
+  - code_quality
+  - test
+  - build
+  - pages
+
+before_script:
+  - python --version
+  - ls -ls /usr/bin/python*
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+  - python --version
+
+# Static code analysis
+pylint:
+  stage: code_quality
+  allow_failure: true
+  before_script:
+    - pip install pylint anybadge pylint-exit
+  script:
+    - mkdir -p public/badges
+    - pip install .[all]  # install the package
+    - pylint --disable=R,C energy_toolbox | tee public/badges/pylint.txt || pylint-exit $?
+    - sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' public/badges/pylint.txt > public/badges/$CI_JOB_NAME.score
+  after_script:
+    - anybadge --overwrite --label $CI_JOB_NAME --value=$(cat public/badges/$CI_JOB_NAME.score) --file=public/badges/$CI_JOB_NAME.svg 4=red 6=orange 8=yellow 10=green
+  artifacts:
+    paths:
+      - public/badges
+  tags:
+    - kubernetes
+
+# Run the tests
+test:
+  stage: test
+  script:
+    - pip install .[test]
+    - mkdir run_test_dir
+    - cd run_test_dir
+    - cp ../.coveragerc .
+    - python ../energy_toolbox/tests/main.py
+  tags:
+    - kubernetes
+  artifacts:
+    when: always
+    paths:
+      - run_test_dir/*.xml
+    reports:
+      junit: run_test_dir/pytest_report.xml
+      coverage_report:
+        coverage_format : cobertura
+        path: run_test_dir/coverage.xml
+  coverage: '/TOTAL.*\s+(\d+\%)/'
+  needs: []
+
+# Documentation build test (no publication) outside develop
+pages-build:
+  stage: build
+  allow_failure: true
+  script:
+    - apt update && apt install --yes pandoc
+    - pip install .[all]  # install the package and optional deps.
+    - cd doc
+    - make html
+    - mv _build/html ../doc
+  artifacts:
+    paths:
+    - doc
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "develop" || $CI_COMMIT_BRANCH != "main"'
+  tags:
+    - kubernetes
+
+# Documentation build and online publication on develop
+pages:
+  stage: pages
+  script:
+    - apt update && apt install --yes pandoc
+    - pip install .[all] # install package and optional deps
+    - cd doc
+    - make html
+    - mv _build/html ../public
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main"' 
+  tags:
+    - kubernetes
