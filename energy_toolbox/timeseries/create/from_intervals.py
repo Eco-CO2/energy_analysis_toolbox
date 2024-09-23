@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from ... import keywords as CTK
+from ... import keywords as ETK
 
-def flatten_and_fill(data, fill_values=None, start_f=CTK.start_f, end_f=CTK.end_f,
-                     time_f=CTK.time_f):
+def flatten_and_fill(data, fill_values=None, start_f=ETK.start_f, end_f=ETK.end_f,
+                     time_f=ETK.time_f):
     """Return data as a table of timeseries.
 
     Parameters
@@ -16,11 +16,11 @@ def flatten_and_fill(data, fill_values=None, start_f=CTK.start_f, end_f=CTK.end_
         used to fill the duration between the overconsumption for each of the column
         in the dict. Missing column receive ``np.nan``.
         Default is |None| which is treated as an empty dict.
-    start_f : str, default |CTK.start_f|
+    start_f : str, default |ETK.start_f|
         The name of the column defining interval starts.
-    end_f : str, default |CTK.end_f|
+    end_f : str, default |ETK.end_f|
         The name of the column defining interval ends.
-    time_f : str, default |CTK.end_f|
+    time_f : str, default |ETK.end_f|
         The name of the index of the returned Dataframe.
 
     Returns

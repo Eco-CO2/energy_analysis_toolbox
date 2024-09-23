@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from ... import keywords as CTK
+from ... import keywords as ETK
 from ...errors import (
     CTEmptySourceError,
     CTEmptyDataError,
@@ -29,12 +29,12 @@ def intervals_over(series, low_tshd, return_positions=False):
     Returns
     -------
     overconsumption : pd.DataFrame
-        The dataframe of overconsumption, with two columns: |CTK.start_f| and |CTK.end_f|.
+        The dataframe of overconsumption, with two columns: |ETK.start_f| and |ETK.end_f|.
         Each row contains :
 
-        - in |CTK.start_f| the label of the first instant of an interval when
+        - in |ETK.start_f| the label of the first instant of an interval when
           the values in the series are > `low_tshd`.
-        - in |CTK.end_f| the label of the first instant after this interval
+        - in |ETK.end_f| the label of the first instant after this interval
 
         such that the row describes interval as ``[start, end[``.
     iloc_bounds : pd.Dataframe, optional
@@ -88,7 +88,7 @@ def intervals_over(series, low_tshd, return_positions=False):
 
     """
     if series.empty:
-        return pd.DataFrame([], columns=[CTK.start_f, CTK.end_f])
+        return pd.DataFrame([], columns=[ETK.start_f, ETK.end_f])
     # [1] diffs in a Bool series -> True if element differs from previous
     over_status_shift = (series > low_tshd).diff()
     # [2]
@@ -105,11 +105,11 @@ def intervals_over(series, low_tshd, return_positions=False):
     bound_labels = [[over_status_shift.index[s], over_status_shift.index[e]]
                     for s, e in bound_indexes]
     intervals = pd.DataFrame(bound_labels,
-                             columns=[CTK.start_f, CTK.end_f])
+                             columns=[ETK.start_f, ETK.end_f])
     # [4]
     if return_positions:
         iloc_bounds = pd.DataFrame(bound_indexes,
-                                   columns=[CTK.start_f, CTK.end_f])
+                                   columns=[ETK.start_f, ETK.end_f])
         return intervals, iloc_bounds
     else:
         return intervals

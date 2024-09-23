@@ -53,18 +53,18 @@ def to_freq(timeseries : "pd.Series[float]", freq, origin=None, last_step_durati
     timeseries of pointwise temperature can be resampled using piecewise affine
     interpolation:
 
-    >>> new_temp = ct.timeseries.resample.to_freq(temperature, '1min', method='piecewise_affine')
+    >>> new_temp = et.timeseries.resample.to_freq(temperature, '1min', method='piecewise_affine')
 
     The same is true for an energy index :
 
-    >>> new_index = ct.timeseries.resample.to_freq(temperature, '1min', method='piecewise_affine')
+    >>> new_index = et.timeseries.resample.to_freq(temperature, '1min', method='piecewise_affine')
 
     Regarding a quantity that is conserved over time, such as a volume or a flow
     rate, the resampling should be done using a conservative method. For power and
     energy, dedicated functions exists, but this function can also be used:
 
-    >>> new_volume = ct.timeseries.resample.to_freq(volume, '1min', method='volume_conservative')
-    >>> new_flow_rate = ct.timeseries.resample.to_freq(flow_rate, '1min', method='flow_rate_conservative')
+    >>> new_volume = et.timeseries.resample.to_freq(volume, '1min', method='volume_conservative')
+    >>> new_flow_rate = et.timeseries.resample.to_freq(flow_rate, '1min', method='flow_rate_conservative')
 
     See more examples of use in :doc:`/user_guide/Resampling_time_series`.
 

@@ -37,9 +37,9 @@ rst_prolog="""
 .. |flow_rate_conservative| replace:: :py:func:`flow_rate_conservative <cenergy_toolbox.timeseries.power.conservative.flow_rate_conservative`
 .. |volume_conservative| replace:: :py:func:`volume_conservative <energy_toolbox.timeseries.power.conservative.volume_conservative`
 
-.. |CTK.start_f| replace:: :py:const:`CTK.start_f <energy_toolbox.keywords.start_f>`
-.. |CTK.end_f| replace:: :py:const:`CTK.end_f <energy_toolbox.keywords.end_f>`
-.. |CTK.time_f| replace:: :py:const:`CTK.time_f <energy_toolbox.keywords.time_f>`
+.. |ETK.start_f| replace:: :py:const:`ETK.start_f <energy_toolbox.keywords.start_f>`
+.. |ETK.end_f| replace:: :py:const:`ETK.end_f <energy_toolbox.keywords.end_f>`
+.. |ETK.time_f| replace:: :py:const:`ETK.time_f <energy_toolbox.keywords.time_f>`
 
 """
 

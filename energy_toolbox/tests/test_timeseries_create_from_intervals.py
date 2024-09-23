@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from ..timeseries.create.from_intervals import flatten_and_fill
-from .. import keywords as CTK
+from .. import keywords as ETK
 # =============================================================================
 # flatten overconsumption
 # =============================================================================
@@ -17,11 +17,11 @@ def test_flatten_one_interval():
     start = pd.Timestamp("2020-02-29")
     end = start + pd.Timedelta('1min')
     test_data = pd.DataFrame([[start, end, 42.]],
-                             columns=[CTK.start_f, CTK.end_f, 'test'])
+                             columns=[ETK.start_f, ETK.end_f, 'test'])
     flat_consumption = flatten_and_fill(
-        test_data, start_f=CTK.start_f, end_f=CTK.end_f, time_f=CTK.time_f)
+        test_data, start_f=ETK.start_f, end_f=ETK.end_f, time_f=ETK.time_f)
     expect_index = pd.DatetimeIndex([start, end],
-                                    name=CTK.time_f)
+                                    name=ETK.time_f)
     expect_series = pd.DataFrame(
         np.array([42., np.nan]).reshape(2, 1),
         index=expect_index,

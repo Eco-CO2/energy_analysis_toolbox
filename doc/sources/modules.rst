@@ -18,7 +18,7 @@ The main subpackages in `ct` are the following :
 The most commonly used of these functionalities can directly be accessed as pandas
 series/Dataframe methods such as::
 
-   my_power_series.ct.power_to_freq(...)
+   my_power_series.et.power_to_freq(...)
 
 by importing the :py:mod:`energy_toolbox.pandas` extension module.
 

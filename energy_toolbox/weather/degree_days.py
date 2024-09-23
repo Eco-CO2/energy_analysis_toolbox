@@ -44,7 +44,7 @@ Freq: D, Name: heating_degree_days, dtype: float64
 Freq: D, Name: cooling_degree_days, dtype: float64
 
 """
-import energy_toolbox as ct
+import energy_toolbox as et
 import pandas as pd
 from typing import Literal, Callable
 
@@ -107,7 +107,7 @@ def dd_min_max(temperature: pd.Series,
     degree_days = (reference - min_max.sum(axis=1, min_count=2) / 2 )
     if type == "cooling":
         degree_days = -degree_days
-    degree_days.name = ct.keywords.heating_dd_f if type == "heating" else ct.keywords.cooling_dd_f
+    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days.clip(lower=clip_tshd)
 
 def dd_pro(temperature: pd.Series,
@@ -143,7 +143,7 @@ def dd_pro(temperature: pd.Series,
     degree_days[mask_between_tmin_tmax] = (reference - min_max_mean['min']) * (
         0.08 + 0.42 * (reference - min_max_mean['min']) / (min_max_mean['max'] - min_max_mean['min'])
     )
-    degree_days.name = ct.keywords.heating_dd_f if type == "heating" else ct.keywords.cooling_dd_f
+    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days
 
 def dd_mean(temperature: pd.Series,
@@ -197,7 +197,7 @@ def dd_mean(temperature: pd.Series,
     degree_days = (reference - temperature.resample('D').mean())
     if type == "cooling":
         degree_days = -degree_days
-    degree_days.name = ct.keywords.heating_dd_f if type == "heating" else ct.keywords.cooling_dd_f
+    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days.clip(lower=clip_tshd)
 
 
@@ -269,7 +269,7 @@ def dd_integral(temperature: pd.Series,
     Freq: D, Name: heating_degree_days, dtype: float64
     """
     _assert_dd_type(type)
-    timesteps = ct.timeseries.extract_features.timestep_durations(temperature)
+    timesteps = et.timeseries.extract_features.timestep_durations(temperature)
     sign = 1 if type == "heating" else -1
     degree_days = ((
         (sign*(reference - temperature)).clip(lower=intraday_clip_tshd) * timesteps)
@@ -277,7 +277,7 @@ def dd_integral(temperature: pd.Series,
         .sum()
         / timesteps.resample('D').sum()
         )
-    degree_days.name = ct.keywords.heating_dd_f if type == "heating" else ct.keywords.cooling_dd_f
+    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days.clip(lower=clip_tshd)
 
 

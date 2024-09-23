@@ -10,7 +10,7 @@ from ..errors import (
     CTUndefinedTimestepError,
     CTEmptyDataError,
 )
-from .. import keywords as CTK
+from .. import keywords as ETK
 from ..timeseries.extract_features.basics import (
     timestep_durations,
     intervals_over,
@@ -148,10 +148,10 @@ def test_intervals_over_2_timesteps():
     power = pd.Series(np.array([0, 1, 1, 0, 0]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:05:00")
-    assert up_loc[CTK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
+    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
 
 def test_intervals_over_one_slot_only():
     """Check on a very simple case when the period over threshold lasts one timestep
@@ -165,10 +165,10 @@ def test_intervals_over_one_slot_only():
     power = pd.Series(np.array([0, 0, 1, 0, 0]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:10:00")
-    assert up_loc[CTK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
+    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
 
 def test_intervals_over_last_step_front():
     """Check on a very simple case with period finishing on the last time-step
@@ -182,10 +182,10 @@ def test_intervals_over_last_step_front():
     power = pd.Series(np.array([0, 1, 1, 1, 0]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:05:00")
-    assert up_loc[CTK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
 
 def test_intervals_over_left_overlap():
     """Check on a very simple case with period overlaping left bound
@@ -199,7 +199,7 @@ def test_intervals_over_left_overlap():
     power = pd.Series(np.array([1, 1, 1, 0, 0]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:00:00")
 
@@ -215,10 +215,10 @@ def test_intervals_over_right_overlap():
     power = pd.Series(np.array([0, 0, 1, 1, 1]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:10:00")
-    assert up_loc[CTK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
 
 def test_intervals_over_always_over():
     """Check on a very simple case when the value is always over the threshold
@@ -232,7 +232,7 @@ def test_intervals_over_always_over():
     power = pd.Series(np.array([1, 1, 1, 1, 1]) * 1000,
                       index=time_range)
     up_loc = intervals_over(power, low_tshd=0.)
-    start = up_loc[CTK.start_f].iloc[0]
+    start = up_loc[ETK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:00:00")
-    assert up_loc[CTK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
