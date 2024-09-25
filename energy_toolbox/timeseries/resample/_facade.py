@@ -1,12 +1,24 @@
 
 import pandas as pd
 from .index_transformation import index_to_freq
-from .interpolate import piecewise_affine, piecewise_constant
-from .conservative import volume_to_freq, flow_rate_to_freq
+from .interpolate import (
+    piecewise_affine,
+    piecewise_constant,
+)
+from .conservative import (
+    volume_to_freq,
+    flow_rate_to_freq,
+)
 
 
-def to_freq(timeseries : "pd.Series[float]", freq, origin=None, last_step_duration=None,
-            method='piecewise_affine', **kwargs) -> "pd.Series[float]":
+def to_freq(
+    timeseries: "pd.Series[float]",
+    freq,
+    origin=None,
+    last_step_duration=None,
+    method='piecewise_affine',
+    **kwargs,
+) -> "pd.Series[float]":
     """Return a timeseries resampled at a given frequency.
 
     Parameters
@@ -100,7 +112,12 @@ def to_freq(timeseries : "pd.Series[float]", freq, origin=None, last_step_durati
     new_series.index.name = timeseries.index.name
     return new_series
 
-def trim_out_of_bounds(data, resampled_data, fill_value={'value': pd.NA}):
+
+def trim_out_of_bounds(
+    data,
+    resampled_data,
+    fill_value={'value': pd.NA},
+):
     """Fill resampled data with NA outside the boundaries of initial index.
 
     Parameters

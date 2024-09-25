@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This module contains basic mathematical transformations to be
 applied to timeseries of physical values.
@@ -20,7 +19,12 @@ be questioned VS a well-chosen aggregation.
 import numpy as np
 import pandas as pd
 
-def piecewise_affine(timeseries, target_instants, **kwargs):
+
+def piecewise_affine(
+    timeseries,
+    target_instants,
+    **kwargs,
+):
     """Return resampled timeseries assuming a piecewise affine function of time.
 
     Parameters
@@ -64,7 +68,13 @@ def piecewise_affine(timeseries, target_instants, **kwargs):
     new_series.index.name = timeseries.index.name
     return new_series
 
-def piecewise_constant(timeseries, target_instants, left_pad=None, **kwargs):
+
+def piecewise_constant(
+    timeseries,
+    target_instants,
+    left_pad=None,
+    **kwargs,
+):
     """Return resampled timeseries assuming a piecewise constant function of time.
 
     Parameters

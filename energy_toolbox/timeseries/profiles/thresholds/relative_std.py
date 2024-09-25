@@ -1,15 +1,19 @@
-# -*- coding: utf-8 -*-
 """A profile based on deviation from the mean profile driven by the standard
 deviation of the history on each slot.
 
 """
 from ..mean_profile import MeanProfile
 
+
 class RelativeSTDThreshold(MeanProfile):
     """A class which implements a statistical deviation from the mean profile.
     """
 
-    def __init__(self, offset_std=3, **kwargs):
+    def __init__(
+        self,
+        offset_std=3,
+        **kwargs,
+    ):
         """
 
         Parameters
@@ -23,7 +27,13 @@ class RelativeSTDThreshold(MeanProfile):
         self.offset_std = offset_std
         super().__init__(**kwargs)
 
-    def compute(self, history, time, **kwargs):
+
+    def compute(
+        self,
+        history,
+        time,
+        **kwargs,
+    ):
         """Return a threshold profile.
 
         The threshold profile is obtained using a user-defined relative variation

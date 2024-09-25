@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 The module defines a base class to compute average load profiles from history.
 """
@@ -7,11 +6,13 @@ class MeanProfile():
     """A class which computes a simple mean profile, without special pre/post.
     """
 
-    def __init__(self,
-                 period='D',
-                 is_max=True,
-                 window=1,
-                 **kwargs):
+    def __init__(
+        self,
+        period='D',
+        is_max=True,
+        window=1,
+        **kwargs,
+    ):
         """
 
         Parameters
@@ -33,7 +34,11 @@ class MeanProfile():
         self.is_max = is_max
         self.window = window
 
-    def group(self, history):
+
+    def group(
+        self,
+        history,
+    ):
         """Group history data by chunks of ``self.period``
 
         Parameters
@@ -47,7 +52,13 @@ class MeanProfile():
         """
         return history.groupby(history.index - history.index.floor(self.period))
 
-    def compute(self, history, time, **kwargs):
+
+    def compute(
+        self,
+        history,
+        time,
+        **kwargs,
+    ):
         """Return an averaged profile.
 
         Parameters

@@ -44,16 +44,29 @@ More examples in :doc:`/user_guide/using_the_accessor`.
 """
 
 import pandas as pd
-from . import power, energy, timeseries
+from . import (
+    power,
+    energy,
+    timeseries,
+)
+
 
 @pd.api.extensions.register_series_accessor("et")
 class ETAccessorSeries:
     """Define a new namespace for the computation toolbox on pandas.Series."""
 
-    def __init__(self, pandas_obj):
+    def __init__(
+        self,
+        pandas_obj,
+    ):
         self._obj = pandas_obj
 
-    def to_energy(self, *args, **kwargs):
+
+    def to_energy(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Convert a power series to an energy series.
         See :func:`energy_toolbox.power.to_energy` for details.
 
@@ -64,7 +77,12 @@ class ETAccessorSeries:
         """
         return power.to_energy(self._obj, *args, **kwargs)
 
-    def to_power(self, *args, **kwargs):
+
+    def to_power(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Convert an energy series to a power series.
         See :func:`energy_toolbox.energy.to_power` for details.
 
@@ -75,7 +93,12 @@ class ETAccessorSeries:
         """
         raise NotImplementedError("to_power is not implemented yet")
 
-    def power_to_freq(self, *args, **kwargs):
+
+    def power_to_freq(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Resample a power series to a fixed frequency.
         See :func:`energy_toolbox.power.to_freq` for details.
 
@@ -86,7 +109,12 @@ class ETAccessorSeries:
         """
         return power.to_freq(self._obj, *args, **kwargs)
 
-    def energy_to_freq(self, *args, **kwargs):
+
+    def energy_to_freq(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Resample an energy series to a fixed frequency.
         See :func:`energy_toolbox.energy.to_freq` for details.
 
@@ -97,8 +125,16 @@ class ETAccessorSeries:
         """
         return energy.to_freq(self._obj, *args, **kwargs)
 
-    def to_freq(self, freq, origin=None, last_step_duration=None,
-            method='piecewise_affine', *args, **kwargs):
+
+    def to_freq(
+        self,
+        freq,
+        origin=None,
+        last_step_duration=None,
+        method='piecewise_affine',
+        *args,
+        **kwargs,
+    ):
         """Resample a series to a fixed frequency with various strategies.
         See :func:`energy_toolbox.timeseries.resample.to_freq` for details.
 
@@ -112,15 +148,22 @@ class ETAccessorSeries:
         pd.Series
             A series resampled to a fixed frequency.
         """
-        return timeseries.resample.to_freq(timeseries=self._obj,
-                                           freq=freq,
-                                           origin=origin,
-                                           last_step_duration=last_step_duration,
-                                           method='piecewise_affine',
-                                           *args, 
-                                           **kwargs)
+        return timeseries.resample.to_freq(
+            timeseries=self._obj,
+            freq=freq,
+            origin=origin,
+            last_step_duration=last_step_duration,
+            method='piecewise_affine',
+            *args, 
+            **kwargs,
+        )
 
-    def intervals_over(self, *args, **kwargs):
+
+    def intervals_over(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Detect intervals over a threshold.
         See :func:`energy_toolbox.timeseries.extract_features.intervals_over` for details.
 
@@ -131,7 +174,12 @@ class ETAccessorSeries:
         """
         return timeseries.extract_features.intervals_over(self._obj, *args, **kwargs)
 
-    def timestep_durations(self, *args, **kwargs):
+
+    def timestep_durations(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Return the series of timestep durations of a timeseries.
         See :func:`energy_toolbox.timeseries.timestep_durations` for details.
 
@@ -142,7 +190,12 @@ class ETAccessorSeries:
         """
         return timeseries.extract_features.timestep_durations(self._obj, *args, **kwargs)
 
-    def fill_data_holes(self, *args, **kwargs):
+
+    def fill_data_holes(
+        self,
+        *args,
+        **kwargs,
+    ):
         """Fill the holes in a timeseries.
         See :func:`energy_toolbox.timeseries.fill_data_holes` for details.
 
@@ -152,6 +205,7 @@ class ETAccessorSeries:
             The timeseries with the holes filled.
         """
         return timeseries.resample.fill_data_holes(self._obj, *args, **kwargs)
+
 
 @pd.api.extensions.register_dataframe_accessor("et")
 class ETAccessorDataFrame:

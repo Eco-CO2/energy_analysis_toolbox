@@ -5,11 +5,12 @@ import pandas as pd
 from ...timeseries.extract_features import intervals_over
 from .. import basics as power
 
+
 def from_power_threshold(
-        power_series,
-        overshoot_tshd,
-        reference_energy_tshd=None,
-        ):
+    power_series,
+    overshoot_tshd,
+    reference_energy_tshd=None,
+):
     """Return a table of overconsumption where power_series is above overshoot_tshd.
 
     The function also computes the overshoot energy as the energy of the difference

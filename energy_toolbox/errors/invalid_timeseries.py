@@ -1,6 +1,7 @@
-from .base import CTExcept
+from .base import ETExcept
 
-class CTInvalidTimeseriesError(CTExcept):
+
+class ETInvalidTimeseriesError(ETExcept):
     """A timeseries is inconsistent.
 
     This exception is used to notify a problem regarding the consistency of
@@ -11,17 +12,17 @@ class CTInvalidTimeseriesError(CTExcept):
     pass
 
 
-class CTUndefinedTimestepError(CTInvalidTimeseriesError):
+class ETUndefinedTimestepError(ETInvalidTimeseriesError):
     """A timestep is undefined in an interval-sampled timeseries.
 
     A timestep duration is undefined, either explicitly or implicitly in a
-    timeseries which contain values defined "over overconsumption" (VS at instantaneous
-    timestamps).
-
+    timeseries which contain values defined "over overconsumption" (VS at
+    instantaneous timestamps).
     """
     pass
 
-class CTInvalidTimestepDurationError(CTInvalidTimeseriesError):
+
+class ETInvalidTimestepDurationError(ETInvalidTimeseriesError):
     """An invalid timestep duration has been passed for a timeseries.
 
     This exception is used when a timestep duration is encountered which does

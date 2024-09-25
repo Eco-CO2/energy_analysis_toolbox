@@ -2,8 +2,14 @@ import numpy as np
 import pandas as pd
 from ... import keywords as ETK
 
-def flatten_and_fill(data, fill_values=None, start_f=ETK.start_f, end_f=ETK.end_f,
-                     time_f=ETK.time_f):
+
+def flatten_and_fill(
+    data,
+    fill_values=None,
+    start_f=ETK.start_f,
+    end_f=ETK.end_f,
+    time_f=ETK.time_f,
+):
     """Return data as a table of timeseries.
 
     Parameters
@@ -91,11 +97,20 @@ def flatten_and_fill(data, fill_values=None, start_f=ETK.start_f, end_f=ETK.end_
     if fill_values is not None:
         fill_inputs.update(fill_values)
         for col, value in fill_inputs.items():
-            new_col = pd.Series(data=value, index=fillers.index, name=col, dtype=fillers.dtypes[col])
+            new_col = pd.Series(
+                data=value,
+                index=fillers.index,
+                name=col,
+                dtype=fillers.dtypes[col],
+            )
             fillers.loc[:, col] = new_col
     else:
         for col in fillers.columns:
-            fillers.loc[:, col] = pd.Series(data=np.nan, index=fillers.index, name=col).astype(fillers.dtypes[col])
+            fillers.loc[:, col] = pd.Series(
+                data=np.nan,
+                index=fillers.index,
+                name=col,
+            ).astype(fillers.dtypes[col])
     timeseries_table = pd.concat(
         [data.set_index(start_f).drop(columns=[end_f]), fillers]).sort_index()
     timeseries_table.index.name = time_f

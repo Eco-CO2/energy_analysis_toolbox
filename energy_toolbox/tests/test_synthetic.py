@@ -3,29 +3,29 @@ import pytest
 import pandas as pd
 import numpy as np
 from  ..synthetic import (
-    SynthDJUConsumption,
+    SynthDDConsumption,
     SynthTSConsumption,
     DateSynthTSConsumption,
 )
 
 
-class TestSynthDJUConsumption:
+class TestSynthDDConsumption:
 
     base_energry=1000
     ts_slope=10
     noise_std=5
     noise_seed=42
-    expected_columns = ["DJU", "energy", "thermosensitive", "base", "residual"]
+    expected_columns = ["DD", "energy", "thermosensitive", "base", "residual"]
 
     @pytest.fixture
-    def setup(self) -> SynthDJUConsumption:
-        # Initialize your SynthDJUConsumption object here
-        synth_dju_consumption = SynthDJUConsumption(
+    def setup(self) -> SynthDDConsumption:
+        # Initialize your SynthDDConsumption object here
+        synth_dd_consumption = SynthDDConsumption(
             base_energy = self.base_energry,
             ts_slope = self.ts_slope,
             noise_std = self.noise_std
         )
-        return synth_dju_consumption
+        return synth_dd_consumption
 
     def reset_seed(self, synth):
         # resetting the seed
@@ -33,35 +33,35 @@ class TestSynthDJUConsumption:
 
     def test_init(self):
         """Test the initialisation"""
-        synth_dju_consumption = SynthDJUConsumption(
+        synth_dd_consumption = SynthDDConsumption(
             base_energy = self.base_energry,
             ts_slope = self.ts_slope,
             noise_std = self.noise_std
         )
 
-    def test_random_djus(self, setup: SynthDJUConsumption):
-        synth_dju_consumption = setup
+    def test_random_dds(self, setup: SynthDDConsumption):
+        synth_dd_consumption = setup
         size = 45
         start = "2024-04-18"
-        djus = synth_dju_consumption.random_djus(size=size,
+        dds = synth_dd_consumption.random_dds(size=size,
                                             start=start)
-        assert isinstance(djus, pd.Series)
-        assert len(djus) == size
-        assert djus.index[0] == pd.Timestamp(start)
-        assert djus.index.freq == "D"
+        assert isinstance(dds, pd.Series)
+        assert len(dds) == size
+        assert dds.index[0] == pd.Timestamp(start)
+        assert dds.index.freq == "D"
 
         # test that start can be a pd.Timestamp
-        djus = synth_dju_consumption.random_djus(start=pd.Timestamp(start))
-        assert djus.index[0] == pd.Timestamp(start)
+        dds = synth_dd_consumption.random_dds(start=pd.Timestamp(start))
+        assert dds.index[0] == pd.Timestamp(start)
         # test that start can be a Date
-        djus = synth_dju_consumption.random_djus(start= pd.Timestamp(start).date())
-        assert djus.index[0] == pd.Timestamp(start)
+        dds = synth_dd_consumption.random_dds(start= pd.Timestamp(start).date())
+        assert dds.index[0] == pd.Timestamp(start)
 
-    def test_random_consumption(self, setup: SynthDJUConsumption):
-        synth_dju_consumption = setup
+    def test_random_consumption(self, setup: SynthDDConsumption):
+        synth_dd_consumption = setup
         size = 45
         start = "2024-04-18"
-        consumption = synth_dju_consumption.random_consumption(size=size,
+        consumption = synth_dd_consumption.random_consumption(size=size,
                                             start=start)
         assert isinstance(consumption, pd.DataFrame)
         assert len(consumption) == size
@@ -72,19 +72,19 @@ class TestSynthDJUConsumption:
         assert consumption.index.freq == "D"
         assert all(consumption["base"] == self.base_energry)
         # generate a large sample to test the noise std
-        consumption = synth_dju_consumption.random_consumption(size=10_000)
+        consumption = synth_dd_consumption.random_consumption(size=10_000)
         assert abs(consumption["residual"].std() - self.noise_std) < 0.05 # 1% error
 
 
-    def test_measures(self, setup: SynthDJUConsumption):
-        synth_dju_consumption = setup
-        measures = synth_dju_consumption.measures()
-        self.reset_seed(synth_dju_consumption)
-        consumption = synth_dju_consumption.random_consumption()
+    def test_measures(self, setup: SynthDDConsumption):
+        synth_dd_consumption = setup
+        measures = synth_dd_consumption.measures()
+        self.reset_seed(synth_dd_consumption)
+        consumption = synth_dd_consumption.random_consumption()
         pd.testing.assert_frame_equal(measures, consumption)
 
 
-class TestSynthTSConsumption(TestSynthDJUConsumption):
+class TestSynthTSConsumption(TestSynthDDConsumption):
     """Test the synthtic data generators"""
     base_energry=1000
     ts_heat=10
@@ -93,8 +93,8 @@ class TestSynthTSConsumption(TestSynthDJUConsumption):
     t_ref_cool=25
     noise_std=5
     noise_seed=42
-    expected_columns = ["DJU_heating",
-                        "DJU_cooling",
+    expected_columns = ["DD_heating",
+                        "DD_cooling",
                         "energy",
                         "thermosensitive",
                         "base",
@@ -120,23 +120,23 @@ class TestSynthTSConsumption(TestSynthDJUConsumption):
         synth.heating._rng = np.random.default_rng(seed=self.noise_seed)
         synth.cooling._rng = np.random.default_rng(seed=self.noise_seed)
 
-    def test_random_djus(self, setup: SynthTSConsumption):
-        synth_dju_consumption = setup
+    def test_random_dds(self, setup: SynthTSConsumption):
+        synth_dd_consumption = setup
         size = 45
         start = "2024-04-18"
-        djus = synth_dju_consumption.random_djus(size=size,
+        dds = synth_dd_consumption.random_dds(size=size,
                                             start=start)
-        assert isinstance(djus, pd.DataFrame)
-        assert len(djus) == size
-        assert djus.index[0] == pd.Timestamp(start)
-        assert djus.index.freq == "D"
+        assert isinstance(dds, pd.DataFrame)
+        assert len(dds) == size
+        assert dds.index[0] == pd.Timestamp(start)
+        assert dds.index.freq == "D"
 
         # test that start can be a pd.Timestamp
-        djus = synth_dju_consumption.random_djus(start=pd.Timestamp(start))
-        assert djus.index[0] == pd.Timestamp(start)
+        dds = synth_dd_consumption.random_dds(start=pd.Timestamp(start))
+        assert dds.index[0] == pd.Timestamp(start)
         # test that start can be a Date
-        djus = synth_dju_consumption.random_djus(start= pd.Timestamp(start).date())
-        assert djus.index[0] == pd.Timestamp(start)
+        dds = synth_dd_consumption.random_dds(start= pd.Timestamp(start).date())
+        assert dds.index[0] == pd.Timestamp(start)
 
 class TestDateTimeSynthTSConsumption(TestSynthTSConsumption):
 

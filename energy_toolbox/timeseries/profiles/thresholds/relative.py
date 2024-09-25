@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-"""
 from ..mean_profile import MeanProfile
 
 class RelativeThreshold(MeanProfile):
     """A class which implements a relative deviation from the mean profile.
     """
 
-    def __init__(self, offset_relative=0.5, **kwargs):
+    def __init__(
+        self,
+        offset_relative=0.5,
+        **kwargs,
+    ):
         """Return a threshold profile.
 
         The threshold profile is obtained using a user-defined relative variation
@@ -24,7 +25,13 @@ class RelativeThreshold(MeanProfile):
         self.offset_rel = offset_relative
         super().__init__(**kwargs)
 
-    def compute(self, history, time, **kwargs):
+
+    def compute(
+        self,
+        history,
+        time,
+        **kwargs,
+    ):
         """Return a threshold profile.
 
         The threshold profile is obtained using a user-defined relative variation

@@ -16,7 +16,7 @@ and contributing guidelines.
     - Aggregators that compute daily profiles
     - Pre-processing that clean the data from ouliers
 - Specialised tools
-    - For Weather : DJU computations
+    - For Weather : DD computations
     - Energy precessing, that can classify different periods or apply weather correction.
     - TBD
 - Tests to verify the precision of the processing tools

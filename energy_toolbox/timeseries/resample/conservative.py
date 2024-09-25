@@ -1,26 +1,18 @@
 """
 This module contains functions to power timeseries of flows and volumes per
 timestep without breaking conservation laws.
-
 """
-import logging
 import pandas as pd
 import numpy as np
-
 from .index_transformation import index_to_freq
 from .interpolate import piecewise_affine
 from ..extract_features.basics import timestep_durations, index_to_timesteps
 from ...errors import (
     CTEmptySourceError,
     CTEmptyTargetsError,
-    CTInvalidTimestepDurationError,
+    ETInvalidTimestepDurationError,
 )
 
-# Create a logger
-logger = logging.getLogger(__name__)
-
-# Set the logging level
-logger.setLevel(logging.INFO)
 
 # =============================================================================
 # Resampling with volume conservation
@@ -117,9 +109,9 @@ def flow_rate_conservative(
         In case ``flow_rates`` is empty.
     CTEmptyTargetsError :
         In case ``target_instants`` is empty.
-    CTInvalidTimestepDurationError :
+    ETInvalidTimestepDurationError :
         In case ``last_step_duration <= 0``
-    CTInvalidTimestepDurationError :
+    ETInvalidTimestepDurationError :
         In case ``last_target_step_duration <= 0``
 
 
@@ -242,9 +234,9 @@ def volume_conservative(
         In case ``volumes`` is empty.
     CTEmptyTargetsError :
         In case ``target_instants`` is empty.
-    CTInvalidTimestepDurationError :
+    ETInvalidTimestepDurationError :
         In case ``last_step_duration <= 0``.
-    CTInvalidTimestepDurationError :
+    ETInvalidTimestepDurationError :
         In case ``last_target_step_duration <= 0``.
 
     Example
@@ -371,9 +363,9 @@ def volume_conservative(
         raise CTEmptyTargetsError(
             "Target instants must be provided for the series to be resampled.")
     elif last_step_duration is not None and last_step_duration <= 0:
-        raise CTInvalidTimestepDurationError("Last step duration cannot be zero.")
+        raise ETInvalidTimestepDurationError("Last step duration cannot be zero.")
     elif last_target_step_duration is not None and last_target_step_duration <= 0:
-        raise CTInvalidTimestepDurationError("Last step duration cannot be zero.")
+        raise ETInvalidTimestepDurationError("Last step duration cannot be zero.")
     else:
         pass
     vol_index = volumes.cumsum() # [1.]

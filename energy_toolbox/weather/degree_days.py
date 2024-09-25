@@ -51,10 +51,13 @@ from typing import Literal, Callable
 literal_type = Literal["heating", "cooling"]
 literal_method = Literal["min_max", "mean", "integral", "pro"]
 
-def dd_min_max(temperature: pd.Series,
-               reference: float,
-               clip_tshd: float=0,
-               type: literal_type="heating") -> pd.Series:
+
+def dd_min_max(
+    temperature: pd.Series,
+    reference: float,
+    clip_tshd: float=0,
+    type: literal_type="heating",
+) -> pd.Series:
     """Return daily degree-days with min-max method.
 
     .. math::
@@ -110,10 +113,12 @@ def dd_min_max(temperature: pd.Series,
     degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days.clip(lower=clip_tshd)
 
-def dd_pro(temperature: pd.Series,
-               reference: float,
-               clip_tshd: float=0,
-               type: literal_type="heating"
+
+def dd_pro(
+    temperature: pd.Series,
+    reference: float,
+    clip_tshd: float=0,
+    type: literal_type="heating",
 ):
     """Return daily degree-days with pro method.
 
@@ -146,10 +151,13 @@ def dd_pro(temperature: pd.Series,
     degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
     return degree_days
 
-def dd_mean(temperature: pd.Series,
-            reference: float,
-            clip_tshd: float=0,
-            type: literal_type="heating") -> pd.Series:
+
+def dd_mean(
+    temperature: pd.Series,
+    reference: float,
+    clip_tshd: float=0,
+    type: literal_type="heating",
+) -> pd.Series:
     """Return daily degree-days with mean method.
 
     This uses a better estimate of the daily average temperature than the
@@ -201,11 +209,13 @@ def dd_mean(temperature: pd.Series,
     return degree_days.clip(lower=clip_tshd)
 
 
-def dd_integral(temperature: pd.Series,
-                reference: float,
-                clip_tshd: float=0,
-                type: literal_type="heating",
-                intraday_clip_tshd: float=0) -> pd.Series:
+def dd_integral(
+    temperature: pd.Series,
+    reference: float,
+    clip_tshd: float=0,
+    type: literal_type="heating",
+    intraday_clip_tshd: float=0,
+) -> pd.Series:
     """Return daily degree-days with integral method.
 
     This is the most accurate method for computing degree-days, as it takes into
@@ -281,12 +291,14 @@ def dd_integral(temperature: pd.Series,
     return degree_days.clip(lower=clip_tshd)
 
 
-def dd_compute(temperature: pd.Series,
-               reference: float,
-               clip_tshd: float=0,
-               type: literal_type="heating",
-               method: literal_method="integral",
-               **kwargs) -> pd.Series:
+def dd_compute(
+    temperature: pd.Series,
+    reference: float,
+    clip_tshd: float=0,
+    type: literal_type="heating",
+    method: literal_method="integral",
+    **kwargs,
+) -> pd.Series:
     """Return daily degree-days with the specified method.
 
     Parameters
@@ -353,7 +365,9 @@ def dd_compute(temperature: pd.Series,
     return func(temperature, reference, clip_tshd, type, **kwargs)
 
 
-def dd_calc_method(func: Callable) -> Literal["min_max", "mean", "integral", "unknown"]:
+def dd_calc_method(
+    func: Callable,
+) -> Literal["min_max", "mean", "integral", "unknown"]:
     """Return the name of the method used for computing degree-days.
 
     Parameters
@@ -379,7 +393,9 @@ def dd_calc_method(func: Callable) -> Literal["min_max", "mean", "integral", "un
         return "unknown"
 
 
-def _assert_dd_type(type: str) -> None:
+def _assert_dd_type(
+    type: str,
+) -> None:
     """Check that the degree-days type is valid.
 
     Parameters

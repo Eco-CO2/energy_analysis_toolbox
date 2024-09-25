@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This moduel contains utilities to compute time-derivatives of physical values
 in a timeseries :
@@ -11,11 +10,13 @@ for the interest of signal analysis in the draw-detection than for numerical
 simulation.
 
 """
-
 import numpy as np
 import pandas as pd
 
-def time_derivative_fwd(timeseries):
+
+def time_derivative_fwd(
+    timeseries,
+):
     """Return the forward 1st-order time-derivative of a time-series.
 
     Parameters
@@ -99,7 +100,9 @@ def time_derivative_fwd(timeseries):
     return grad_ts
 
 
-def time_derivative_second(timeseries):
+def time_derivative_second(
+    timeseries,
+):
     """Return the forward second order time-derivative of a time-series.
 
     Parameters
@@ -164,10 +167,8 @@ def time_derivative_second(timeseries):
         2021-03-14 00:00:09    0.0
         Freq: S, dtype: float64
 
-
     """
     dts = (timeseries.index - timeseries.index[0]).total_seconds()
-    # [1.]
     grads = np.empty(timeseries.index.size)
     grads[0:-1] = np.ediff1d(timeseries.values) / np.ediff1d(dts)
     grads[-1] = ((timeseries.values[-1]  - timeseries.values[-2])

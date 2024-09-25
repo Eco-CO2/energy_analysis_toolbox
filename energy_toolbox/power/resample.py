@@ -1,11 +1,14 @@
 """Function to resample a power series."""
-import logging
 import pandas as pd
 from ..timeseries.resample.conservative import flow_rate_to_freq
 
-logger = logging.getLogger(__name__)
 
-def to_freq(series: "pd.Series[float]", freq, origin=None, last_step_duration=None) -> "pd.Series[float]":
+def to_freq(
+    series: "pd.Series[float]",
+    freq,
+    origin=None,
+    last_step_duration=None,
+) -> "pd.Series[float]":
     """Resample a power series to a given frequency.
 
     The last step duration of the resampled series is set to the frequency ``freq``.

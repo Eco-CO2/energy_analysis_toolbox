@@ -6,9 +6,9 @@ import pandas as pd
 import pytest
 
 from ..errors import (
-    CTInvalidTimestepDurationError,
-    CTUndefinedTimestepError,
-    CTEmptyDataError,
+    ETInvalidTimestepDurationError,
+    ETUndefinedTimestepError,
+    ETEmptyDataError,
 )
 from .. import keywords as ETK
 from ..timeseries.extract_features.basics import (
@@ -60,11 +60,11 @@ def test_durations_limit_cases():
     series = pd.Series(
         np.ones(1),
         index=pd.date_range(start="2021-01-06", freq='10s', periods=1))
-    with pytest.raises(CTEmptyDataError):
+    with pytest.raises(ETEmptyDataError):
         timestep_durations(series.iloc[:0])
-    with pytest.raises(CTUndefinedTimestepError):
+    with pytest.raises(ETUndefinedTimestepError):
         timestep_durations(series.iloc[:1], last_step=None)
-    with pytest.raises(CTInvalidTimestepDurationError):
+    with pytest.raises(ETInvalidTimestepDurationError):
         timestep_durations(series.iloc[:1], last_step=-42.)
     durs = timestep_durations(series.iloc[:1], last_step=42.)
     assert durs.size == 1

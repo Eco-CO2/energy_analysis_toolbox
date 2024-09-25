@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """A profile based on deviation from the mean profile driven by the standard
 deviation of the history on each slot.
 
@@ -6,15 +5,18 @@ deviation of the history on each slot.
 import pandas as pd
 from ..mean_profile import MeanProfile
 
+
 class HybridThreshold(MeanProfile):
     """A class which implements deviation from the mean profile which is
     an hybrid between std and relative thresholds.
     """
 
-    def __init__(self,
-                 offset_std=3,
-                 offset_relative=0.5,
-                 **kwargs):
+    def __init__(
+        self,
+        offset_std=3,
+        offset_relative=0.5,
+        **kwargs,
+    ):
         """
 
         Parameters
@@ -36,7 +38,13 @@ class HybridThreshold(MeanProfile):
         self.offset_std = offset_std
         self.offset_rel = offset_relative
 
-    def compute(self, history, time, **kwargs):
+
+    def compute(
+        self,
+        history,
+        time,
+        **kwargs,
+    ):
         """Return a threshold profile.
 
         The threshold profile is obtained using a user-defined relative variation

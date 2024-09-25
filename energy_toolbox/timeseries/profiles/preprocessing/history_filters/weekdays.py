@@ -1,9 +1,12 @@
-# -*- coding: utf-8 -*-
 """This module contains functions which filter history data based on day of week.
 """
 import pandas as pd
 
-def weekdays_only(history, **kwargs):
+
+def weekdays_only(
+    history,
+    **kwargs,
+):
     """Returns the weekdays in history.
 
     Parameters
@@ -20,7 +23,11 @@ def weekdays_only(history, **kwargs):
     """
     return history.loc[history.index.day_of_week < 5]
 
-def weekends_only(history, **kwargs):
+
+def weekends_only(
+    history,
+    **kwargs,
+):
     """Returns the weekends in history.
 
     Parameters
@@ -37,7 +44,12 @@ def weekends_only(history, **kwargs):
     """
     return history.loc[history.index.day_of_week > 4]
 
-def same_day_only(history, date=None, **kwargs):
+
+def same_day_only(
+    history,
+    date=None,
+    **kwargs,
+):
     """Returns the same days of week in history n_days before date.
 
     Parameters

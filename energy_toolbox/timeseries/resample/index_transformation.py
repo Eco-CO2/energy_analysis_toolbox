@@ -3,12 +3,17 @@ import pandas as pd
 import numpy as np
 import logging
 from scipy.stats import gaussian_kde, mode
-from ...errors import CTUndefinedTimestepError
-from ..extract_features.basics import index_to_timesteps, timestep_durations
+from ...errors import ETUndefinedTimestepError
+from ..extract_features.basics import (
+    index_to_timesteps,
+    timestep_durations,
+)
 
-logger = logging.getLogger(__name__)
 
-def tz_convert_or_localize(timeseries: pd.Series | pd.DataFrame, tz) -> pd.Series | pd.DataFrame:
+def tz_convert_or_localize(
+    timeseries: pd.Series | pd.DataFrame,
+    tz,
+) -> pd.Series | pd.DataFrame:
     """Assign the requested timezone to the index of a timeseries.
 
     Parameters
@@ -42,7 +47,13 @@ def tz_convert_or_localize(timeseries: pd.Series | pd.DataFrame, tz) -> pd.Serie
     except TypeError:
         return timeseries.tz_localize(tz, ambiguous=True, nonexistent='NaT')
 
-def index_to_freq(index: pd.DatetimeIndex, freq, origin=None, last_step_duration=None) -> pd.DatetimeIndex:
+
+def index_to_freq(
+    index: pd.DatetimeIndex,
+    freq,
+    origin=None,
+    last_step_duration=None,
+) -> pd.DatetimeIndex:
     """Returns the expected index resulting from resampling a time series to a given frequency.
 
     Parameters
@@ -97,7 +108,7 @@ def index_to_freq(index: pd.DatetimeIndex, freq, origin=None, last_step_duration
             try:
                 start = start.tz_convert(index.tz)
             except TypeError:
-                logger.debug(
+                print(
                     "The passed origin could not be localized or converted to the"
                     " timezone of the original index. It is processed as if it were time-naive."
                     )
@@ -105,7 +116,7 @@ def index_to_freq(index: pd.DatetimeIndex, freq, origin=None, last_step_duration
         try:
             last_step_duration = (index[-1] - index[-2]).seconds
         except IndexError:
-            raise CTUndefinedTimestepError(
+            raise ETUndefinedTimestepError(
                 "The last step duration could not be determined from the index."
                 " Please provide it explicitly."
                 )
@@ -119,7 +130,11 @@ def index_to_freq(index: pd.DatetimeIndex, freq, origin=None, last_step_duration
         )
     return target_instants
 
-def estimate_timestep(data: pd.Series | pd.DataFrame | pd.DatetimeIndex, method: str = "median") -> float:
+
+def estimate_timestep(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+    method: str = "median",
+) -> float:
     """Returns an estimation of the sampling period of a time series.
 
     .. note::
@@ -168,7 +183,10 @@ def estimate_timestep(data: pd.Series | pd.DataFrame | pd.DatetimeIndex, method:
     else :
         raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
 
-def median_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
+
+def median_time_step(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+) -> float:
     """Returns the median timestep of a time series.
 
     Parameters
@@ -191,7 +209,10 @@ def median_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float
     timesteps = index_to_timesteps(data)
     return np.median(timesteps)
 
-def mean_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
+
+def mean_time_step(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+) -> float:
     """Returns the mean timestep of a time series.
 
     Parameters
@@ -214,7 +235,10 @@ def mean_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
     timesteps = index_to_timesteps(data)
     return np.mean(timesteps)
 
-def mode_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
+
+def mode_time_step(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+) -> float:
     """Returns the mode timestep of a time series.
 
     .. warning:: The mode is the most frequent value. If there are several
@@ -243,7 +267,9 @@ def mode_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
     return mode(timesteps, nan_policy="omit").mode
 
 
-def max_kde_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> float:
+def max_kde_time_step(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+) -> float:
     """Returns the maximum probable timestep of a time series.
 
     .. note:: It differs from the Mode as the distribution is first
@@ -281,7 +307,9 @@ def max_kde_time_step(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> floa
     return maxima
 
 
-def data_to_datetimeindex(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> pd.DatetimeIndex:
+def data_to_datetimeindex(
+    data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
+) -> pd.DatetimeIndex:
     """Convert the data to DatetimeIndex.
 
     Used to allow the use of the same functions for Series, DataFrame and
@@ -311,7 +339,13 @@ def data_to_datetimeindex(data: pd.Series | pd.DataFrame | pd.DatetimeIndex) -> 
         raise ValueError("The data cannot be converted to pandas.DateTimeIndex")
     return data
 
-def fill_missing_entries(data: pd.Series | pd.DataFrame, sampling_period, security_factor=2, fill_value=pd.NA):
+
+def fill_missing_entries(
+    data: pd.Series | pd.DataFrame,
+    sampling_period,
+    security_factor=2,
+    fill_value=pd.NA,
+):
     """Fill the data with new entries where the interval is too long.
 
     .. note:: The duration between the last new entry of a hole and the next
@@ -356,7 +390,13 @@ def fill_missing_entries(data: pd.Series | pd.DataFrame, sampling_period, securi
     new_data = data.reindex(data.index.append(missing_index).sort_values(), fill_value=fill_value)
     return new_data
 
-def fill_data_holes(data: pd.Series | pd.DataFrame, method="mode", security_factor=2, fill_value=pd.NA):
+
+def fill_data_holes(
+    data: pd.Series | pd.DataFrame,
+    method="mode",
+    security_factor=2,
+    fill_value=pd.NA,
+):
     """Return the data with new entries where the interval is too long.
 
     .. note:: the new indexes are created using the expected timestep determined
@@ -388,4 +428,9 @@ def fill_data_holes(data: pd.Series | pd.DataFrame, method="mode", security_fact
 
     """
     sampling_period = estimate_timestep(data, method=method)
-    return fill_missing_entries(data, sampling_period, security_factor=security_factor, fill_value=fill_value)
+    return fill_missing_entries(
+        data,
+        sampling_period,
+        security_factor=security_factor,
+        fill_value=fill_value,
+    )

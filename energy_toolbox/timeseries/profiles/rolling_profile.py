@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The module defines rolling aggregations from history.
 
 The two following sections explain the main steps of the
@@ -61,8 +60,14 @@ from .mean_profile import MeanProfile
 class RollingProfile():
     """A profile which is computed by aggregating the history on rolling windows of time-periods."""
 
-    def __init__(self, window, aggregation, as_mean_offset=False,
-                 offset_factor=1., column_name="value"):
+    def __init__(
+        self,
+        window,
+        aggregation,
+        as_mean_offset=False,
+        offset_factor=1.,
+        column_name="value",
+    ):
         """Create a Rolling Agg Profile.
 
         Parameters
@@ -94,7 +99,13 @@ class RollingProfile():
             self.reference = MeanProfile()
             self.offset_factor = offset_factor
 
-    def compute(self, history, time, **kwargs):
+
+    def compute(
+        self,
+        history,
+        time,
+        **kwargs,
+    ):
         """Compute the rolling aggregation profile.
 
         Parameters
@@ -123,7 +134,11 @@ class RollingProfile():
             profile = ref.loc[:, [self.column_name]] + self.offset_factor * profile
         return profile
 
-    def daily_pivot(self, history):
+
+    def daily_pivot(
+        self,
+        history,
+    ):
         """Return the history as as 2D table where each column is a day and each row a time-of-day.
 
         .. warning::
@@ -149,7 +164,11 @@ class RollingProfile():
             labels=df_day_by_time.index[df_day_by_time.index >= pd.Timedelta('1D')])
         return df_day_by_time[self.column_name]
 
-    def windowed_rolling_agg(self, pivoted_history):
+
+    def windowed_rolling_agg(
+        self,
+        pivoted_history,
+    ):
         """Return rolling aggregation over date and time-of-day-window in a pivoted history.
 
         Parameters
@@ -196,13 +215,14 @@ class RollingQuantileProfile(RollingProfile):
     """A profile which is computed by a Quantile of the history on rolling windows of time-periods.
     """
 
-    def __init__(self,
-                 window,
-                 threshold_quantile,
-                 as_mean_offset=False,
-                 offset_factor=1.,
-                 column_name="value",
-                ):
+    def __init__(
+        self,
+        window,
+        threshold_quantile,
+        as_mean_offset=False,
+        offset_factor=1.,
+        column_name="value",
+    ):
         """Create a Rolling Agg Profile.
 
         Parameters
@@ -226,9 +246,10 @@ class RollingQuantileProfile(RollingProfile):
 
         """
         aggregation = partial(np.quantile, q=threshold_quantile)
-        super().__init__(window,
-                 aggregation,
-                 as_mean_offset,
-                 offset_factor,
-                 column_name,
-                 )
+        super().__init__(
+            window,
+            aggregation,
+            as_mean_offset,
+            offset_factor,
+            column_name,
+        )

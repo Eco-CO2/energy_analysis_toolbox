@@ -2,10 +2,17 @@
 they have beem located.
 """
 
-from ...timeseries.extract_features import timestep_durations, intervals_over
+from ...timeseries.extract_features import (
+    timestep_durations,
+    intervals_over,
+)
 from ...timeseries.create.from_intervals import flatten_and_fill
 
-def merge_by_proximity(intervals_overshoot, min_interval=600,):
+
+def merge_by_proximity(
+    intervals_overshoot,
+    min_interval=600,
+):
     """Return a table where the overconsumption separated by less than min_interval seconds are merged.
 
     Parameters

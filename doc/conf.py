@@ -55,9 +55,7 @@ html_theme_options = {
 html_static_path = ['_static']
 html_sidebars = {
     "**": ["search-field.html", "sidebar-nav-bs.html", 'globaltoc.html',]
-    # "**": ["search-field.html", "sidebar-nav-bs.html"]
 }
-# If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = False
 
 html_title = f"{project} v{version} Manual"

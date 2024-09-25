@@ -1,6 +1,7 @@
-from .base import CTExcept, CTEmptyDataError
+from .base import ETExcept, ETEmptyDataError
 
-class CTResamplingError(CTExcept):
+
+class CTResamplingError(ETExcept):
     """A resampling operation is impossible.
 
     This base class is used when an invalid resampling operation is attempted in |et|.
@@ -8,7 +9,7 @@ class CTResamplingError(CTExcept):
     """
     pass
 
-class CTEmptySourceError(CTResamplingError, CTEmptyDataError):
+class CTEmptySourceError(CTResamplingError, ETEmptyDataError):
     """Resampling an empty timeseries to specific instants is impossible.
 
     This exception is used when :
@@ -19,7 +20,7 @@ class CTEmptySourceError(CTResamplingError, CTEmptyDataError):
     """
     pass
 
-class CTEmptyTargetsError(CTResamplingError, CTEmptyDataError):
+class CTEmptyTargetsError(CTResamplingError, ETEmptyDataError):
     """Resampling a timeseries to empty targets is meaningless in this situation.
 
     This exception is used when :

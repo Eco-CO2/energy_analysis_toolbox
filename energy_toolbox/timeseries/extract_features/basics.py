@@ -1,15 +1,18 @@
 import numpy as np
 import pandas as pd
-
 from ... import keywords as ETK
 from ...errors import (
-    CTEmptySourceError,
-    CTEmptyDataError,
-    CTUndefinedTimestepError,
-    CTInvalidTimestepDurationError,
+    ETEmptyDataError,
+    ETUndefinedTimestepError,
+    ETInvalidTimestepDurationError,
 )
 
-def intervals_over(series, low_tshd, return_positions=False):
+
+def intervals_over(
+    series,
+    low_tshd,
+    return_positions=False,
+):
     """Return the limits of overconsumption when the series values are over the threshold.
 
     Parameters
@@ -114,7 +117,11 @@ def intervals_over(series, low_tshd, return_positions=False):
     else:
         return intervals
 
-def timestep_durations(timeseries, last_step=None):
+
+def timestep_durations(
+    timeseries,
+    last_step=None,
+):
     """Return the series of timestep durations of a timeseries.
 
     Parameters
@@ -128,9 +135,9 @@ def timestep_durations(timeseries, last_step=None):
 
     Raises
     ------
-    CTEmptyDataError :
+    ETEmptyDataError :
         If the series is empty.
-    CTUndefinedTimestepError :
+    ETUndefinedTimestepError :
         If the series contains only one element and ``last_step``
         is |None|.
 
@@ -153,17 +160,20 @@ def timestep_durations(timeseries, last_step=None):
 
     """
     if timeseries.empty:
-        raise CTEmptyDataError(
+        raise ETEmptyDataError(
             "Interval durations cannot be inferred for empty series.")
     elif timeseries.size < 2 and last_step is None:
-        raise CTUndefinedTimestepError(
+        raise ETUndefinedTimestepError(
             "One element is not enough to infer a duration when last_step value is None.")
     durations = pd.Series(index_to_timesteps(timeseries.index, last_step),
                           index=timeseries.index)
     return durations
 
 
-def index_to_timesteps(time_indexes, last_step=None):
+def index_to_timesteps(
+    time_indexes,
+    last_step=None,
+):
     """Return the array of interval durations of a DatetimeIndex.
 
     Parameters
@@ -177,12 +187,12 @@ def index_to_timesteps(time_indexes, last_step=None):
 
     Raises
     ------
-    CTEmptyDataError :
+    ETEmptyDataError :
         If ``time_indexes`` is empty.
-    CTUndefinedTimestepError :
+    ETUndefinedTimestepError :
         If ``time_indexes``  contains only one element and ``last_step``
         is |None|.
-    CTInvalidTimestepDurationError :
+    ETInvalidTimestepDurationError :
         If ``last_step < 0``.
 
     Returns
@@ -204,13 +214,13 @@ def index_to_timesteps(time_indexes, last_step=None):
 
     """
     if time_indexes.empty:
-        raise CTEmptyDataError(
+        raise ETEmptyDataError(
             "Interval durations cannot be inferred for empty time-sequences.")
     elif time_indexes.size < 2 and last_step is None:
-        raise CTUndefinedTimestepError(
+        raise ETUndefinedTimestepError(
             "One element is not enough to infer a duration when last_step value is None.")
     elif last_step is not None and last_step < 0:
-        raise CTInvalidTimestepDurationError(
+        raise ETInvalidTimestepDurationError(
             f"Last step duration must be >=0. Received {last_step} s.")
     else:
         # better initialize and assign to avoid table extension in the next step

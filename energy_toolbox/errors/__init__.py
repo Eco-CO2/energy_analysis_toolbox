@@ -1,13 +1,16 @@
 """This namespace defines the custom except for |et|.
 """
 
-from .base import CTExcept, CTEmptyDataError
-from .invalid_timeseries_errors import (
-    CTInvalidTimeseriesError,
-    CTUndefinedTimestepError,
-    CTInvalidTimestepDurationError,
+from .base import (
+    ETExcept,
+    ETEmptyDataError,
 )
-from .resampling_errors import (
+from .invalid_timeseries import (
+    ETInvalidTimeseriesError,
+    ETUndefinedTimestepError,
+    ETInvalidTimestepDurationError,
+)
+from .resampling import (
     CTResamplingError,
     CTEmptySourceError,
     CTEmptyTargetsError,

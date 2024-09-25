@@ -18,12 +18,12 @@ any exception specific to |et| library, whatever its type.
 
 Errors related to timeseries consistency
 ----------------------------------------
-.. automodule:: energy_toolbox.errors.invalid_timeseries_errors
+.. automodule:: energy_toolbox.errors.invalid_timeseries
    :members:
    :show-inheritance:
 
 Errors related to resampling
 ----------------------------
-.. automodule:: energy_toolbox.errors.resampling_errors
+.. automodule:: energy_toolbox.errors.resampling
    :members:
    :show-inheritance:

@@ -2,7 +2,11 @@
 """
 import pandas as pd
 from .mean_profile import MeanProfile
-from .rolling_profile import RollingProfile, RollingQuantileProfile
+from .rolling_profile import (
+    RollingProfile,
+    RollingQuantileProfile,
+)
+
 
 class LocalizedProfileMixin():
     """A profile version where time-zoned data is managed, including DSTs.
@@ -12,7 +16,12 @@ class LocalizedProfileMixin():
     On and across DSTs, the data remains aligned "on the clock" (VS on the sun).
     """
 
-    def compute(self, history:pd.DataFrame, time:pd.Timestamp, **kwargs) -> pd.DataFrame:
+    def compute(
+        self,
+        history:pd.DataFrame,
+        time:pd.Timestamp,
+        **kwargs,
+    ) -> pd.DataFrame:
         """Compute the profile at ``time`` from the ``history``.
 
         The computation is managed as follows :
@@ -55,19 +64,30 @@ class LocalizedProfileMixin():
         return profile_ref
 
 
-class LocalizedMeanProfile(LocalizedProfileMixin, MeanProfile ):
+class LocalizedMeanProfile(
+    LocalizedProfileMixin,
+    MeanProfile,
+):
     """Compute the mean profile with timezone data.
 
     see :py:class:`.MeanProfile`
     """
 
-class LocalizedRollingProfile(LocalizedProfileMixin, RollingProfile ):
+
+class LocalizedRollingProfile(
+    LocalizedProfileMixin,
+    RollingProfile,
+):
     """Compute a rolling profile with timezone data.
 
     see :py:class:`.RollingProfile`
     """
 
-class LocalizedRollingQuantileProfile(LocalizedProfileMixin, RollingQuantileProfile ):
+
+class LocalizedRollingQuantileProfile(
+    LocalizedProfileMixin,
+    RollingQuantileProfile,
+):
     """Compute a rolling quantile with timezone data.
 
     see :py:class:`.RollingQuantProfile`

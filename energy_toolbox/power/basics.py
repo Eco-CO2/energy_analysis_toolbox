@@ -4,7 +4,11 @@ This module contains elementary yet useful operations on power timeseries.
 
 from ..timeseries.extract_features import timestep_durations
 
-def integrate_over(intervals, power_series):
+
+def integrate_over(
+    intervals,
+    power_series,
+):
     """Return the energy integrated over slices of the power series.
 
     .. warning::
@@ -78,7 +82,10 @@ def integrate_over(intervals, power_series):
     energies = intervals.apply(integrate, axis=1)
     return energies
 
-def to_energy(power_series):
+
+def to_energy(
+    power_series,
+):
     """Return a series of energy per timestep.
 
     Parameters

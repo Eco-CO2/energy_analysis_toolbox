@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
-from ..errors import CTUndefinedTimestepError
+from ..errors import ETUndefinedTimestepError
 from ..power import integrate_over, to_energy
 
 def _constant_power():
@@ -30,7 +30,7 @@ def test_to_energy_failure():
     """Check that the function fails on series with only one element.
     """
     power_series = _constant_power().iloc[:1]
-    with pytest.raises(CTUndefinedTimestepError):
+    with pytest.raises(ETUndefinedTimestepError):
         to_energy(power_series)
 
 # ==============================================================================

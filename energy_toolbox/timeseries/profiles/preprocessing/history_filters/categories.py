@@ -1,6 +1,12 @@
 import pandas as pd
 
-def same_category(history, date=None, classificator=None, **kwargs):
+
+def same_category(
+    history,
+    date=None,
+    classificator=None,
+    **kwargs,
+):
     """Returns the subset of history for which the category is the same as which of date.
 
     Parameters
@@ -32,7 +38,13 @@ def same_category(history, date=None, classificator=None, **kwargs):
     ref_category = classificator(date)
     return history.loc[categories == ref_category]
 
-def keep_categories(history, classificator=None, keep=None, **kwargs):
+
+def keep_categories(
+    history,
+    classificator=None,
+    keep=None,
+    **kwargs,
+):
     """Returns the subset of history for which the category is in the list.
 
     Parameters
@@ -47,7 +59,6 @@ def keep_categories(history, classificator=None, keep=None, **kwargs):
         A list of categories representation.
         All rows in ``history`` for which index the ``classificator`` returns
         a value which ``not is in keep`` are dumped from the returned history.
-    ** kwargs
 
     Returns
     -------
@@ -64,7 +75,13 @@ def keep_categories(history, classificator=None, keep=None, **kwargs):
     mask = [(cat_image in keep) for cat_image in categories.values]
     return history.loc[mask]
 
-def remove_categories(history, classificator=None, remove=None, **kwargs):
+
+def remove_categories(
+    history,
+    classificator=None,
+    remove=None,
+    **kwargs,
+):
     """Returns the subset of history for which the category is the same as which of date.
 
     Parameters
@@ -79,7 +96,6 @@ def remove_categories(history, classificator=None, remove=None, **kwargs):
         A list of categories representation.
         All rows in ``history`` for which index the ``classificator`` returns
         a value which ``is in remove`` are dumped from the returned history.
-    ** kwargs
 
     Returns
     -------
@@ -95,4 +111,3 @@ def remove_categories(history, classificator=None, remove=None, **kwargs):
     categories = history.index.to_series().apply(classificator)
     mask = [(day_cat not in remove) for day_cat in categories.values]
     return history.loc[mask]
-

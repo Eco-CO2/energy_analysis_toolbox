@@ -16,10 +16,10 @@ overconsumption according to various criteria :
 """
 
 def by_individual_proportion(
-        intervals_overshoot,
-        proportion_tshd=0.05,
-        energy_reference=None,
-       ):
+    intervals_overshoot,
+    proportion_tshd=0.05,
+    energy_reference=None,
+):
     """Return only overconsumption for which the overshoot energy is above a certain proportion of the total.
 
     Parameters
@@ -54,11 +54,12 @@ def by_individual_proportion(
     intervals_overshoot.sort_values(by='energy', ascending=False, inplace=True)
     return intervals_overshoot[intervals_overshoot['proportion'] >= proportion_tshd]
 
+
 def by_cumulated_proportion(
-        intervals_overshoot,
-        proportion_tshd=0.80,
-        energy_reference=None,
-       ):
+    intervals_overshoot,
+    proportion_tshd=0.80,
+    energy_reference=None,
+):
     """Return only overconsumption which total energy represent a certain proportion of the total
     overshoot energy.
 
@@ -97,12 +98,13 @@ def by_cumulated_proportion(
     selected = intervals_overshoot.iloc[:last_selected, :]
     return selected
 
+
 def by_combined_proportions(
-        intervals_overshoot,
-        proportion_tshd=0.80,
-        proportion_indiv_tshd=0.05,
-        energy_reference=None,
-       ):
+    intervals_overshoot,
+    proportion_tshd=0.80,
+    proportion_indiv_tshd=0.05,
+    energy_reference=None,
+):
     """Return only based on cumulated and individual proportions of the total overshoot energy
 
     Parameters
