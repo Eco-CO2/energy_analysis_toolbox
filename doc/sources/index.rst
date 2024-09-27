@@ -1,5 +1,5 @@
-API reference documentation
-===========================
+API reference
+=============
 
 |et| library is structured as follows.
 The main subpackages in `ct` are the following :

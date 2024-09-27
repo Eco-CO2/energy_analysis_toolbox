@@ -1,0 +1,9 @@
+.. _whatsnew_0_1_0:
+
+Version 0.1.0 (September 25, 2024)
+----------------------------------
+
+{{ header }}
+
+
+First public release.

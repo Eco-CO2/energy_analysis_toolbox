@@ -1,7 +1,7 @@
-User Guide
+User guide
 ==========
 Interested in learning more about |et| ? Check the notebooks below to get started
-on specific topics, or head over to the :doc:`../sources/modules` for a complete overview
+on specific topics, or head over to the :doc:`../sources/index` for a complete overview
 of the package.
 
 .. toctree::

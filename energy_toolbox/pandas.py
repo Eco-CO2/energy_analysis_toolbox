@@ -159,7 +159,7 @@ class ETAccessorSeries:
         )
 
 
-    def intervals_over(
+    def intervaogfhdklghfdrtewryjetrketgkyretkrueygkeyfgreutfgreugtreuytfgreytotoreigreugreroyytruytpgeprtuyrpyretyreityrytirreyls_over(
         self,
         *args,
         **kwargs,

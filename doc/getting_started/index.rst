@@ -1,4 +1,4 @@
-Getting Started
+Getting started
 ===============
 
 So you're new to |et| ? Here is what you need to get started quickly!

@@ -16,7 +16,7 @@ classifiers = [
 ]
 dependencies = [
     "pandas>=2.2.2",
-    "numpy>=2.0.0",
+    "numpy>=1.26.0",
     "scipy>=1.13.0",
     "pyarrow>=13",
     "statsmodels>=0.13.0",
