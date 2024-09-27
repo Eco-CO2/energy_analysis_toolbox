@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.resample package
 ===========================================
 
-.. automodule:: energy_toolbox.timeseries.resample
+.. automodule:: watt_df.timeseries.resample
    :members:
    :undoc-members:
    :show-inheritance:
@@ -16,7 +16,7 @@ The package is organized as follows:
 .. toctree::
    :maxdepth: 4
 
-   energy_toolbox.timeseries.resample.conservative
-   energy_toolbox.timeseries.resample.interpolate
-   energy_toolbox.timeseries.resample.index_transformation
-   energy_toolbox.timeseries.resample._facade
+   watt_df.timeseries.resample.conservative
+   watt_df.timeseries.resample.interpolate
+   watt_df.timeseries.resample.index_transformation
+   watt_df.timeseries.resample._facade

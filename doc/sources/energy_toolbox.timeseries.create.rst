@@ -1,6 +1,6 @@
 energy\_toolbox.timeseries.create package
 =========================================
-.. automodule:: energy_toolbox.timeseries.create
+.. automodule:: watt_df.timeseries.create
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,4 +12,4 @@ representations of time-dependent data.
 .. toctree::
    :maxdepth: 1
 
-   energy_toolbox.timeseries.create.from_intervals
+   watt_df.timeseries.create.from_intervals

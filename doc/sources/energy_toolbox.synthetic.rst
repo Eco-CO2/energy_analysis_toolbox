@@ -9,9 +9,9 @@ The package is structured as follows:
 .. toctree::
     :maxdepth: 2
 
-    energy_toolbox.synthetic.thermosensitive_consumption
+    watt_df.synthetic.thermosensitive_consumption
 
-.. automodule:: energy_toolbox.synthetic
+.. automodule:: watt_df.synthetic
    :members:
    :undoc-members:
    :show-inheritance:

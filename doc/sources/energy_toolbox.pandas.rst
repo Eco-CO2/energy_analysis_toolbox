@@ -1,6 +1,6 @@
 energy\_toolbox.pandas
 ======================
-.. automodule:: energy_toolbox.pandas
+.. automodule:: watt_df.pandas
    :members:
    :undoc-members:
    :show-inheritance:

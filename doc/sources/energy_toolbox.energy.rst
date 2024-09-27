@@ -1,6 +1,6 @@
 energy\_toolbox.energy
 ======================
-.. automodule:: energy_toolbox.energy
+.. automodule:: watt_df.energy
    :members:
    :undoc-members:
    :show-inheritance:
@@ -17,4 +17,4 @@ The subpackage is organized as follows:
 .. toctree::
     :maxdepth: 2
 
-    energy_toolbox.energy.resample
+    watt_df.energy.resample

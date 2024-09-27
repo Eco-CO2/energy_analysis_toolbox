@@ -1,7 +1,7 @@
 energy\_toolbox.weather.degree\_days
 ====================================
 
-.. automodule:: energy_toolbox.weather.degree_days
+.. automodule:: watt_df.weather.degree_days
    :members:
    :undoc-members:
    :show-inheritance:

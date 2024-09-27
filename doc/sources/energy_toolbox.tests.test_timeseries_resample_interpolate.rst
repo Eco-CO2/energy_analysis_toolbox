@@ -1,7 +1,7 @@
 energy\_toolbox.tests.test\_timeseries\_resample\_interpolate module
 ====================================================================
 
-.. automodule:: energy_toolbox.tests.test_timeseries_resample_interpolate
+.. automodule:: watt_df.tests.test_timeseries_resample_interpolate
    :members:
    :undoc-members:
    :show-inheritance:

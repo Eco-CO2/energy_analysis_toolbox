@@ -12,11 +12,11 @@ The package is structured as follows:
 .. toctree::
     :maxdepth: 2
 
-    energy_toolbox.power.basics
-    energy_toolbox.power.resample
-    energy_toolbox.power.overconsumption
+    watt_df.power.basics
+    watt_df.power.resample
+    watt_df.power.overconsumption
 
-.. automodule:: energy_toolbox.power
+.. automodule:: watt_df.power
    :members:
    :undoc-members:
    :show-inheritance:

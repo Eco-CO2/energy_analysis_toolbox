@@ -1,7 +1,7 @@
 energy\_toolbox.tests.tests\_load\_profile.test\_hybrid module
 ==============================================================
 
-.. automodule:: energy_toolbox.tests.tests_load_profile.test_hybrid
+.. automodule:: watt_df.tests.tests_load_profile.test_hybrid
    :members:
    :undoc-members:
    :show-inheritance:

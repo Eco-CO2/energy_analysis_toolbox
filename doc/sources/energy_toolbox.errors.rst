@@ -1,6 +1,6 @@
 energy\_toolbox.errors package
 ==============================
-.. automodule:: energy_toolbox.errors
+.. automodule:: watt_df.errors
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,18 +12,18 @@ Base class for all custom errors
 All exceptions in |et| derive from the class below. Catching this class will catch
 any exception specific to |et| library, whatever its type.
 
-.. automodule:: energy_toolbox.errors.base
+.. automodule:: watt_df.errors.base
    :members:
    :show-inheritance:
 
 Errors related to timeseries consistency
 ----------------------------------------
-.. automodule:: energy_toolbox.errors.invalid_timeseries
+.. automodule:: watt_df.errors.invalid_timeseries
    :members:
    :show-inheritance:
 
 Errors related to resampling
 ----------------------------
-.. automodule:: energy_toolbox.errors.resampling
+.. automodule:: watt_df.errors.resampling
    :members:
    :show-inheritance:

@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.profiles package
 ===========================================
 
-.. automodule:: energy_toolbox.timeseries.profiles
+.. automodule:: watt_df.timeseries.profiles
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,8 +15,8 @@ The subpackage is organized as follows:
 .. toctree::
    :maxdepth: 2
 
-   energy_toolbox.timeseries.profiles.mean_profile
-   energy_toolbox.timeseries.profiles.rolling_profile
-   energy_toolbox.timeseries.profiles.localization
-   energy_toolbox.timeseries.profiles.preprocessing
-   energy_toolbox.timeseries.profiles.thresholds
+   watt_df.timeseries.profiles.mean_profile
+   watt_df.timeseries.profiles.rolling_profile
+   watt_df.timeseries.profiles.localization
+   watt_df.timeseries.profiles.preprocessing
+   watt_df.timeseries.profiles.thresholds

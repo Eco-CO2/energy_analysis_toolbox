@@ -1,7 +1,7 @@
 energy\_toolbox.tests package
 =============================
 
-.. automodule:: energy_toolbox.tests
+.. automodule:: watt_df.tests
    :members:
    :undoc-members:
    :show-inheritance:
@@ -10,7 +10,7 @@ energy\_toolbox.tests package
 
 Main module
 -----------
-.. automodule:: energy_toolbox.tests.main
+.. automodule:: watt_df.tests.main
    :members:
    :undoc-members:
    :show-inheritance:
@@ -21,22 +21,22 @@ Test suite
 .. toctree::
     :maxdepth: 2
 
-    energy_toolbox.tests.test_exists
-    energy_toolbox.tests.test_power_basics
-    energy_toolbox.tests.test_power_overconsumption_find
-    energy_toolbox.tests.test_power_overconsumption_select
-    energy_toolbox.tests.test_power_overconsumption_transform
-    energy_toolbox.tests.test_timeseries_create_from_intervals
-    energy_toolbox.tests.test_timeseries_extract_features_basics
-    energy_toolbox.tests.test_timeseries_resample_interpolate
-    energy_toolbox.tests.test_timeseries_resample_conservative
-    energy_toolbox.tests.tests_load_profile
-    energy_toolbox.tests.test_synthetic
-    energy_toolbox.tests.test_thermosensitivity
+    watt_df.tests.test_exists
+    watt_df.tests.test_power_basics
+    watt_df.tests.test_power_overconsumption_find
+    watt_df.tests.test_power_overconsumption_select
+    watt_df.tests.test_power_overconsumption_transform
+    watt_df.tests.test_timeseries_create_from_intervals
+    watt_df.tests.test_timeseries_extract_features_basics
+    watt_df.tests.test_timeseries_resample_interpolate
+    watt_df.tests.test_timeseries_resample_conservative
+    watt_df.tests.tests_load_profile
+    watt_df.tests.test_synthetic
+    watt_df.tests.test_thermosensitivity
 
 Fixtures
 --------
 .. toctree::
     :maxdepth: 1
 
-    energy_toolbox.tests.fake.timeseries
+    watt_df.tests.fake.timeseries

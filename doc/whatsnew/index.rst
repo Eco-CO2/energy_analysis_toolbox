@@ -3,7 +3,7 @@
 Release notes
 =============
 
-This is the list of changes to ``energy_toolbox`` between each release.
+This is the list of changes to ``watt_df`` between each release.
 
 Version 0.1
 -----------

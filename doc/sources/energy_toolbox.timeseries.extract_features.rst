@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.extract\_features package
 ====================================================
 
-.. automodule:: energy_toolbox.timeseries.extract_features
+.. automodule:: watt_df.timeseries.extract_features
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,4 +13,4 @@ It is strucutred as follows:
 .. toctree::
    :maxdepth: 4
 
-   energy_toolbox.timeseries.extract_features.basics
+   watt_df.timeseries.extract_features.basics
