@@ -2,12 +2,12 @@
 deviation of the history on each slot.
 
 """
+
 from ..mean_profile import MeanProfile
 
 
 class RelativeSTDThreshold(MeanProfile):
-    """A class which implements a statistical deviation from the mean profile.
-    """
+    """A class which implements a statistical deviation from the mean profile."""
 
     def __init__(
         self,
@@ -26,7 +26,6 @@ class RelativeSTDThreshold(MeanProfile):
         """
         self.offset_std = offset_std
         super().__init__(**kwargs)
-
 
     def compute(
         self,

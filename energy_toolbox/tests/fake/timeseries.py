@@ -5,7 +5,8 @@ DAY_DEFAULT = pd.Timestamp("2020-03-05")
 
 np.random.seed(42)
 
-def example_volume_one_day(day_start=None, total_volume=1.):
+
+def example_volume_one_day(day_start=None, total_volume=1.0):
     """Return an example series of "volume" on a day.
 
     "volume" means any quantity which follows a conservation law.
@@ -36,8 +37,8 @@ def example_volume_one_day(day_start=None, total_volume=1.):
 
     """
     day_start = day_start or DAY_DEFAULT
-    begin = pd.Timestamp(day_start).floor('D')
-    index_day = pd.date_range(begin, periods=48, freq='30min')
+    begin = pd.Timestamp(day_start).floor("D")
+    index_day = pd.date_range(begin, periods=48, freq="30min")
     day_example = pd.Series(np.zeros(index_day.size), index=index_day)
     day_example.iloc[13] = 0.3  # 6h30 - 30%
     day_example.iloc[16] = 0.05  # 8h - 5%

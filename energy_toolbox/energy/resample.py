@@ -1,12 +1,13 @@
 """Function to resample a energy series."""
-import logging
+
 import pandas as pd
 from ..timeseries.resample.conservative import volume_to_freq
 
 
 def to_freq(
     series: "pd.Series[float]",
-    freq, origin=None,
+    freq,
+    origin=None,
     last_step_duration=None,
 ) -> "pd.Series[float]":
     """Resample an energy series to a given frequency.

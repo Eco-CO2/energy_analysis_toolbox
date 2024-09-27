@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from ..power.overconsumption.find import from_power_threshold
 
+
 def example_power():
     """Return an example power series, threshold and overshoot overconsumption.
 
@@ -14,53 +15,54 @@ def example_power():
 
     """
     times = pd.date_range(
-        start=pd.Timestamp('2023-03-26', tz='Europe/Paris'), # DST
-        end=pd.Timestamp('2023-03-27', tz='Europe/Paris'),
-        inclusive='left',
-        freq='30min'
+        start=pd.Timestamp("2023-03-26", tz="Europe/Paris"),  # DST
+        end=pd.Timestamp("2023-03-27", tz="Europe/Paris"),
+        inclusive="left",
+        freq="30min",
     )
     pow = pd.Series(np.ones_like(times), index=times)
-    s1 = pd.Timestamp('2023-03-26 10:00', tz='Europe/Paris')
-    e1 = pd.Timestamp('2023-03-26 10:30', tz='Europe/Paris')
-    s2 = pd.Timestamp('2023-03-26 14:00', tz='Europe/Paris')
-    e2 = pd.Timestamp('2023-03-26 15:00', tz='Europe/Paris')
+    s1 = pd.Timestamp("2023-03-26 10:00", tz="Europe/Paris")
+    e1 = pd.Timestamp("2023-03-26 10:30", tz="Europe/Paris")
+    s2 = pd.Timestamp("2023-03-26 14:00", tz="Europe/Paris")
+    e2 = pd.Timestamp("2023-03-26 15:00", tz="Europe/Paris")
     threshold = pow.copy()
-    pow.loc[s1:e1] = 11 # inclusive loc
-    pow.loc[s2:e2] = 21 # inclusive loc
-    intervals = pd.DataFrame.from_dict({
-        'start' : [s1, s2],
-        'end' : [e1, e2],
-        'duration' : [3600, 5400],
-        'energy' : [3600 * 10, 5400 * 20],
-    })
-    intervals['end'] += pd.Timedelta('30min') # doom pandas inclusive loc
+    pow.loc[s1:e1] = 11  # inclusive loc
+    pow.loc[s2:e2] = 21  # inclusive loc
+    intervals = pd.DataFrame.from_dict(
+        {
+            "start": [s1, s2],
+            "end": [e1, e2],
+            "duration": [3600, 5400],
+            "energy": [3600 * 10, 5400 * 20],
+        }
+    )
+    intervals["end"] += pd.Timedelta("30min")  # doom pandas inclusive loc
     return pow, threshold, intervals
 
+
 def test_from_power_threshold_constant():
-    """Check the function with constant threshold as float and series
-    """
+    """Check the function with constant threshold as float and series"""
     power, threshold, intervals = example_power()
     # constant as series
     found_intervals = from_power_threshold(
         power,
         overshoot_tshd=threshold,
     )
-    pd.testing.assert_frame_equal(found_intervals, intervals,
-                                  check_dtype=False)
+    pd.testing.assert_frame_equal(found_intervals, intervals, check_dtype=False)
     # constant as float
     found_intervals = from_power_threshold(
         power,
-        overshoot_tshd=1.,
+        overshoot_tshd=1.0,
     )
-    pd.testing.assert_frame_equal(found_intervals, intervals,
-                                  check_dtype=False)
+    pd.testing.assert_frame_equal(found_intervals, intervals, check_dtype=False)
+
 
 def test_from_power_threshold_over_power():
-    """Check the function with threshold over max power
-    """
+    """Check the function with threshold over max power"""
     power, _, _ = example_power()
-    assert from_power_threshold(power, 100.).empty
+    assert from_power_threshold(power, 100.0).empty
     assert from_power_threshold(power, power.max()).empty
+
 
 def test_from_power_threshold_under_power():
     """Check the function with threshold under min power.
@@ -72,33 +74,35 @@ def test_from_power_threshold_under_power():
       series, as the moment after is not known. (should be the end of the timestep).
     """
     power, _, intervals = example_power()
-    found_intervals = from_power_threshold(power, 0.)
-    intervals_expect = pd.DataFrame.from_dict({
-        'start': [power.index[0]],
-        'end': [power.index[-1]],
-        'duration': 1800 * 45,
-        'energy' : 1800 * 45 + intervals['energy'].sum(),
-    })
-    pd.testing.assert_frame_equal(found_intervals,
-                                  intervals_expect,
-                                  check_dtype=False)
+    found_intervals = from_power_threshold(power, 0.0)
+    intervals_expect = pd.DataFrame.from_dict(
+        {
+            "start": [power.index[0]],
+            "end": [power.index[-1]],
+            "duration": 1800 * 45,
+            "energy": 1800 * 45 + intervals["energy"].sum(),
+        }
+    )
+    pd.testing.assert_frame_equal(
+        found_intervals, intervals_expect, check_dtype=False
+    )
+
 
 def test_from_power_threshold_series():
-    """Check that the function works correctly with a variable threshold
-    """
+    """Check that the function works correctly with a variable threshold"""
     power, threshold, intervals = example_power()
-    threshold.loc[:pd.Timestamp('2023-03-26 12:00', tz='Europe/Paris'),] = 11
+    threshold.loc[: pd.Timestamp("2023-03-26 12:00", tz="Europe/Paris"),] = 11
     found_intervals = from_power_threshold(
         power,
         overshoot_tshd=threshold,
     )
-    pd.testing.assert_frame_equal(found_intervals,
-                                  intervals[1:].reset_index(drop=True),
-                                  check_dtype=False)
+    pd.testing.assert_frame_equal(
+        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False
+    )
+
 
 def test_from_power_threshold_custom_ref():
-    """Check that the custom energy reference is correctly accounted for
-    """
+    """Check that the custom energy reference is correctly accounted for"""
     power, threshold, intervals = example_power()
     ref = threshold.copy()
     threshold.loc[:] = 11
@@ -107,6 +111,6 @@ def test_from_power_threshold_custom_ref():
         overshoot_tshd=threshold,
         reference_energy_tshd=ref,
     )
-    pd.testing.assert_frame_equal(found_intervals,
-                                  intervals[1:].reset_index(drop=True),
-                                  check_dtype=False)
+    pd.testing.assert_frame_equal(
+        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False
+    )

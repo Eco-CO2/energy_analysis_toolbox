@@ -1,4 +1,5 @@
 """Function to resample a power series."""
+
 import pandas as pd
 from ..timeseries.resample.conservative import flow_rate_to_freq
 

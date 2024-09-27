@@ -1,6 +1,7 @@
 """This module contains a function to locate the overconsumption from
 a power series and a threshold.
 """
+
 import pandas as pd
 from ...timeseries.extract_features import intervals_over
 from .. import basics as power
@@ -60,26 +61,35 @@ def from_power_threshold(
         reference_energy_tshd = overshoot_tshd
     # Find overshoots of power threshold
     if isinstance(overshoot_tshd, pd.Series):
-        power_series_aligned, overshoot_tshd_aligned = power_series.align(overshoot_tshd)
-    else :
-        power_series_aligned, overshoot_tshd_aligned = power_series, overshoot_tshd
-    intervals_overshoot = intervals_over(
-        power_series_aligned > overshoot_tshd_aligned, 0.5)
-    if intervals_overshoot.empty:
-        intervals_overshoot['duration'] = []
-        intervals_overshoot['energy'] = []
+        power_series_aligned, overshoot_tshd_aligned = power_series.align(
+            overshoot_tshd
+        )
     else:
-        intervals_overshoot['duration'] = (
-                intervals_overshoot['end']
-                - intervals_overshoot['start']
+        power_series_aligned, overshoot_tshd_aligned = (
+            power_series,
+            overshoot_tshd,
+        )
+    intervals_overshoot = intervals_over(
+        power_series_aligned > overshoot_tshd_aligned, 0.5
+    )
+    if intervals_overshoot.empty:
+        intervals_overshoot["duration"] = []
+        intervals_overshoot["energy"] = []
+    else:
+        intervals_overshoot["duration"] = (
+            intervals_overshoot["end"] - intervals_overshoot["start"]
         ).dt.total_seconds()
         # Compute energy criterion associated to overshoots
         if isinstance(reference_energy_tshd, pd.Series):
-            power_series_aligned, reference_energy_tshd_aligned = power_series.align(reference_energy_tshd)
-        else :
-            power_series_aligned, reference_energy_tshd_aligned = power_series, reference_energy_tshd
-        intervals_overshoot['energy'] = power.integrate_over(
-            intervals_overshoot,
-            power_series - reference_energy_tshd_aligned
+            power_series_aligned, reference_energy_tshd_aligned = (
+                power_series.align(reference_energy_tshd)
             )
+        else:
+            power_series_aligned, reference_energy_tshd_aligned = (
+                power_series,
+                reference_energy_tshd,
+            )
+        intervals_overshoot["energy"] = power.integrate_over(
+            intervals_overshoot, power_series - reference_energy_tshd_aligned
+        )
     return intervals_overshoot

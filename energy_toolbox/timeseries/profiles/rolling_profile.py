@@ -51,13 +51,14 @@ missing data via ``pandas``.
     using row indexes.
 
 """
+
 from functools import partial
 import numpy as np
 import pandas as pd
 from .mean_profile import MeanProfile
 
 
-class RollingProfile():
+class RollingProfile:
     """A profile which is computed by aggregating the history on rolling windows of time-periods."""
 
     def __init__(
@@ -65,7 +66,7 @@ class RollingProfile():
         window,
         aggregation,
         as_mean_offset=False,
-        offset_factor=1.,
+        offset_factor=1.0,
         column_name="value",
     ):
         """Create a Rolling Agg Profile.
@@ -99,7 +100,6 @@ class RollingProfile():
             self.reference = MeanProfile()
             self.offset_factor = offset_factor
 
-
     def compute(
         self,
         history,
@@ -131,9 +131,10 @@ class RollingProfile():
         profile.index.name = history.index.name
         if self.as_mean_offset:
             ref = self.reference.compute(history, time, **kwargs)
-            profile = ref.loc[:, [self.column_name]] + self.offset_factor * profile
+            profile = (
+                ref.loc[:, [self.column_name]] + self.offset_factor * profile
+            )
         return profile
-
 
     def daily_pivot(
         self,
@@ -151,19 +152,30 @@ class RollingProfile():
 
         """
         history = history.copy()
-        history["time"] = history.index -  history.index.floor("D")
+        history["time"] = history.index - history.index.floor("D")
         history["day"] = history.index.date
         try:
-            df_day_by_time = pd.pivot(history, index="time", columns=["day"], values=[self.column_name])
+            df_day_by_time = pd.pivot(
+                history,
+                index="time",
+                columns=["day"],
+                values=[self.column_name],
+            )
         except ValueError:
             # Happens on winter DST and time-naive data when the same time happens twice
-            df_day_by_time = pd.pivot(history.loc[~history.index.duplicated(keep='first')],
-                                      index="time", columns=["day"], values=[self.column_name])
+            df_day_by_time = pd.pivot(
+                history.loc[~history.index.duplicated(keep="first")],
+                index="time",
+                columns=["day"],
+                values=[self.column_name],
+            )
         # Deal with winter DST and time-localized data
         df_day_by_time = df_day_by_time.drop(
-            labels=df_day_by_time.index[df_day_by_time.index >= pd.Timedelta('1D')])
+            labels=df_day_by_time.index[
+                df_day_by_time.index >= pd.Timedelta("1D")
+            ]
+        )
         return df_day_by_time[self.column_name]
-
 
     def windowed_rolling_agg(
         self,
@@ -193,6 +205,7 @@ class RollingProfile():
             ``custom_agg`` instead of global scope).
 
         """
+
         def custom_agg(subseries):
             """Compute the ``agg`` function on ``pivoted_history`` using subseries index.
 
@@ -202,25 +215,27 @@ class RollingProfile():
             values = pivoted_history.loc[start:end, :].to_numpy().ravel()
             res = self.agg(values)
             return res
-        aggregated = (pivoted_history
-                      .iloc[:, 0]  # select the first column, as we only roll once.
-                      .rolling(self.window, center=True)
-                      .apply(custom_agg, raw=False)  # we need the index passed.
-                      )
+
+        aggregated = (
+            pivoted_history.iloc[
+                :, 0
+            ]  # select the first column, as we only roll once.
+            .rolling(self.window, center=True)
+            .apply(custom_agg, raw=False)  # we need the index passed.
+        )
         aggregated.name = self.column_name
         return pd.DataFrame(data=aggregated)
 
 
 class RollingQuantileProfile(RollingProfile):
-    """A profile which is computed by a Quantile of the history on rolling windows of time-periods.
-    """
+    """A profile which is computed by a Quantile of the history on rolling windows of time-periods."""
 
     def __init__(
         self,
         window,
         threshold_quantile,
         as_mean_offset=False,
-        offset_factor=1.,
+        offset_factor=1.0,
         column_name="value",
     ):
         """Create a Rolling Agg Profile.

@@ -33,7 +33,7 @@ def same_category(
     if history.empty or classificator is None:
         return history
     elif date is None:
-        date = (history.index[-1].floor('D')) + pd.Timedelta('1D')
+        date = (history.index[-1].floor("D")) + pd.Timedelta("1D")
     categories = history.index.to_series().apply(classificator)
     ref_category = classificator(date)
     return history.loc[categories == ref_category]

@@ -1,114 +1,120 @@
 """Test the degree days module."""
+
 import pandas as pd
 import numpy as np
-from energy_toolbox.weather.degree_days import dd_mean, dd_min_max, dd_integral, dd_compute, dd_calc_method, dd_pro
+from energy_toolbox.weather.degree_days import (
+    dd_mean,
+    dd_min_max,
+    dd_integral,
+    dd_compute,
+    dd_calc_method,
+    dd_pro,
+)
+
 
 def test_dd_mean_basic_features():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
-    index = pd.date_range(start='2023-01-21',
-                          periods=24*60*7,
-                          freq='1min',
-                          tz='Europe/Paris'
-                          )
+    index = pd.date_range(
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+    )
     data = [0] * len(index)
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     dd = dd_mean(temperature, reference=15)
     assert dd.name == "heating_degree_days"
     assert len(dd) == 7
     assert dd.dtype == "float64"
 
+
 def test_dd_mean_missing_data():
     """Verifies that, even a data is set to ``NaN``, the degree-days goes well."""
-    index = pd.date_range(start='2023-01-21',
-                          periods=12*60,
-                          freq='1min',
-                          tz='Europe/Paris'
-                          )
+    index = pd.date_range(
+        start="2023-01-21", periods=12 * 60, freq="1min", tz="Europe/Paris"
+    )
     data = [0] * len(index)
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     temperature.iloc[0] = None
     dd = dd_mean(temperature, reference=15)
-    expected_dd = pd.Series([15.], name="heating_degree_days",
-                            index=pd.date_range(start='2023-01-21',
-                                                periods=1,
-                                                freq='1D',
-                                                tz='Europe/Paris'
-                                                )
-                            )
+    expected_dd = pd.Series(
+        [15.0],
+        name="heating_degree_days",
+        index=pd.date_range(
+            start="2023-01-21", periods=1, freq="1D", tz="Europe/Paris"
+        ),
+    )
     pd.testing.assert_series_equal(dd, expected_dd)
+
 
 def test_dd_min_max():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
-    index = pd.date_range(start='2023-01-21',
-                          periods=24*60*7,
-                          freq='1min',
-                          tz='Europe/Paris'
-                          )
+    index = pd.date_range(
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+    )
     data = [0] * len(index)
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     dd = dd_min_max(temperature, reference=15)
     assert dd.name == "heating_degree_days"
     assert len(dd) == 7
     assert dd.dtype == "float64"
 
+
 def test_dd_integral():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
-    index = pd.date_range(start='2023-01-21',
-                          periods=24*60*7,
-                          freq='1min',
-                          tz='Europe/Paris'
-                          )
+    index = pd.date_range(
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+    )
     data = [0] * len(index)
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     dd = dd_integral(temperature, reference=15)
     assert dd.name == "heating_degree_days"
     assert len(dd) == 7
     assert dd.dtype == "float64"
 
+
 def test_dd_compute():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
-    index = pd.date_range(start='2023-01-21',
-                          periods=24*60*7,
-                          freq='1min',
-                          tz='Europe/Paris'
-                          )
+    index = pd.date_range(
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+    )
     data = [0] * len(index)
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     dd = dd_compute(temperature, reference=15, method="integral")
     assert dd.name == "heating_degree_days"
     assert len(dd) == 7
     assert dd.dtype == "float64"
 
-def generate_days_sin_data(n_periods = 2, frequency = '1h'):
+
+def generate_days_sin_data(n_periods=2, frequency="1h"):
     """Generate one week of sinusoidal data."""
-    start = pd.Timestamp('2023-01-21 00:00:00', tz='Europe/Paris')
+    start = pd.Timestamp("2023-01-21 00:00:00", tz="Europe/Paris")
     end = start + pd.Timedelta(days=n_periods, seconds=-1)
-    index = pd.date_range(start=start,
-                          end=end,
-                          freq=frequency,
-                          )
+    index = pd.date_range(
+        start=start,
+        end=end,
+        freq=frequency,
+    )
     number_points = len(index)
-    data = np.sin(np.linspace(0, 2*np.pi * n_periods, number_points))
+    data = np.sin(np.linspace(0, 2 * np.pi * n_periods, number_points))
     temperature = pd.Series(
         data=data,
         index=index,
-        )
+    )
     return temperature
+
 
 def reference_sin_dd(mean, spread, reference=15):
     """Compute the degree days with the integral method
@@ -128,13 +134,14 @@ def reference_sin_dd(mean, spread, reference=15):
         return 0
     if mean + spread <= reference:
         return reference - mean
-    ref_norm = (reference - mean ) / spread
+    ref_norm = (reference - mean) / spread
     # first time when temperature is below reference
-    t0 =  np.arcsin(-ref_norm)
+    t0 = np.arcsin(-ref_norm)
     # second time when temperature is above reference
     t1 = np.pi - t0
     expected_dd = np.cos(t0) - np.cos(t1) + (t1 - t0) * ref_norm
-    return expected_dd * spread / (2*np.pi)
+    return expected_dd * spread / (2 * np.pi)
+
 
 def test_computation_realistic_data_integral(spread=10, mean=15):
     """Test the value of the computation of the degree_days using integral
@@ -147,9 +154,16 @@ def test_computation_realistic_data_integral(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(temperature, reference=ref, method="integral").mean()
+        computed_dd = dd_compute(
+            temperature, reference=ref, method="integral"
+        ).mean()
         # putting the reference computation in the assert to better debug the test
-        assert np.isclose(computed_dd, reference_sin_dd(mean, spread, reference=ref), rtol=1e-2)
+        assert np.isclose(
+            computed_dd,
+            reference_sin_dd(mean, spread, reference=ref),
+            rtol=1e-2,
+        )
+
 
 def test_computation_realistic_data_pro(spread=10, mean=15):
     """Test the value of the computation of the degree_days using the pro method
@@ -160,12 +174,13 @@ def test_computation_realistic_data_pro(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(temperature, reference=ref, method="pro").mean()
+        computed_dd = dd_compute(
+            temperature, reference=ref, method="pro"
+        ).mean()
         # putting the reference computation in the assert to better debug the test
-        assert np.isclose(computed_dd,
-                          reference_sin_dd(mean, spread, reference=ref),
-                          rtol=0.2) # the pro method is less accurate
-
+        assert np.isclose(
+            computed_dd, reference_sin_dd(mean, spread, reference=ref), rtol=0.2
+        )  # the pro method is less accurate
 
 
 def reference_sin_dd_not_integral(mean, spread, reference):
@@ -173,10 +188,11 @@ def reference_sin_dd_not_integral(mean, spread, reference):
 
     This works for both min-max and mean methods, as both return the same value
     when the temperature is symetric around the mean, as in the sin function."""
-    if mean  > reference:
+    if mean > reference:
         return 0
-    if mean  <= reference:
+    if mean <= reference:
         return reference - mean
+
 
 def test_computation_realistic_data_not_integral(spread=10, mean=15):
     """Test the value of the computation of the degree_days using NOT integral
@@ -189,14 +205,27 @@ def test_computation_realistic_data_not_integral(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(temperature, reference=ref, method="min_max").mean()
+        computed_dd = dd_compute(
+            temperature, reference=ref, method="min_max"
+        ).mean()
         # putting the reference computation in the assert to better debug the test
-        assert np.isclose(computed_dd, reference_sin_dd_not_integral(mean, spread, reference=ref), rtol=1e-2)
+        assert np.isclose(
+            computed_dd,
+            reference_sin_dd_not_integral(mean, spread, reference=ref),
+            rtol=1e-2,
+        )
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(temperature, reference=ref, method="mean").mean()
+        computed_dd = dd_compute(
+            temperature, reference=ref, method="mean"
+        ).mean()
         # putting the reference computation in the assert to better debug the test
-        assert np.isclose(computed_dd, reference_sin_dd_not_integral(mean, spread, reference=ref), rtol=1e-2)
+        assert np.isclose(
+            computed_dd,
+            reference_sin_dd_not_integral(mean, spread, reference=ref),
+            rtol=1e-2,
+        )
+
 
 def test_dd_calc_method():
     """Test the method to compute the degree days."""

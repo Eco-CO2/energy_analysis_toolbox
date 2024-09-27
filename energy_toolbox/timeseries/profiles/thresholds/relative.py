@@ -1,8 +1,8 @@
 from ..mean_profile import MeanProfile
 
+
 class RelativeThreshold(MeanProfile):
-    """A class which implements a relative deviation from the mean profile.
-    """
+    """A class which implements a relative deviation from the mean profile."""
 
     def __init__(
         self,
@@ -24,7 +24,6 @@ class RelativeThreshold(MeanProfile):
         """
         self.offset_rel = offset_relative
         super().__init__(**kwargs)
-
 
     def compute(
         self,
@@ -58,7 +57,7 @@ class RelativeThreshold(MeanProfile):
         profile obtained from history.
 
         """
-        reference =  super().compute(history, time, **kwargs)
+        reference = super().compute(history, time, **kwargs)
         offset = self.offset_rel * reference
         offset.index = reference.index
         profile = reference + offset

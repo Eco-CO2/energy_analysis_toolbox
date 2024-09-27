@@ -33,16 +33,16 @@ The following reproduces the variables declarations from the module.
 
 #: The name of a field containing the beginning of a time-interval. Unless stated
 #: otherwise, the first instant to be included in the interval, as a timestamp.
-start_f = 'start'
+start_f = "start"
 #: The name of a field containing the end of a time-interval. Unless stated
 #: otherwise, the first instant to be excluded in the interval, as a timestamp.
-end_f = 'end'
+end_f = "end"
 #: The name of the time-index in timeseries data.
-time_f = 'timestamp'
+time_f = "timestamp"
 #: The name of the field containing the heating degree-days.
-heating_dd_f = 'heating_degree_days'
+heating_dd_f = "heating_degree_days"
 #: The name of the field containing the cooling degree-days.
-cooling_dd_f = 'cooling_degree_days'
+cooling_dd_f = "cooling_degree_days"
 #: The name of the field containing the base consumption,
 #: i.e. the consumption that is not affected by the weather.
-base_f = 'base'
+base_f = "base"

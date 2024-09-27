@@ -1,5 +1,5 @@
-"""This module contains functions which filter history data based on day of week.
-"""
+"""This module contains functions which filter history data based on day of week."""
+
 import pandas as pd
 
 
@@ -72,7 +72,7 @@ def same_day_only(
     if history.empty:
         return history
     elif date is None:
-        date = (history.index[-1].floor('D')) + pd.Timedelta('1D')
+        date = (history.index[-1].floor("D")) + pd.Timedelta("1D")
     else:
         pass
     return history.loc[history.index.day_of_week == date.day_of_week]

@@ -1,7 +1,7 @@
 """Transforms indices of a time series to a new index according to a given function."""
+
 import pandas as pd
 import numpy as np
-import logging
 from scipy.stats import gaussian_kde, mode
 from ...errors import ETUndefinedTimestepError
 from ..extract_features.basics import (
@@ -45,7 +45,7 @@ def tz_convert_or_localize(
     try:
         return timeseries.tz_convert(tz)
     except TypeError:
-        return timeseries.tz_localize(tz, ambiguous=True, nonexistent='NaT')
+        return timeseries.tz_localize(tz, ambiguous=True, nonexistent="NaT")
 
 
 def index_to_freq(
@@ -92,8 +92,7 @@ def index_to_freq(
         The resulting index of the resampling. Empty if the passed index is empty.
     """
     if index.empty:
-        return pd.DatetimeIndex([], name=index.name, tz=index.tz,
-                                freq=freq)
+        return pd.DatetimeIndex([], name=index.name, tz=index.tz, freq=freq)
     if origin is None:
         start = index[0]
     elif origin == "floor":
@@ -102,7 +101,7 @@ def index_to_freq(
         start = index[0].ceil(freq)
     else:
         start = pd.Timestamp(origin)
-        try :
+        try:
             start = start.tz_localize(index.tz)
         except TypeError:
             try:
@@ -111,7 +110,7 @@ def index_to_freq(
                 print(
                     "The passed origin could not be localized or converted to the"
                     " timezone of the original index. It is processed as if it were time-naive."
-                    )
+                )
     if last_step_duration is None:
         try:
             last_step_duration = (index[-1] - index[-2]).seconds
@@ -119,7 +118,7 @@ def index_to_freq(
             raise ETUndefinedTimestepError(
                 "The last step duration could not be determined from the index."
                 " Please provide it explicitly."
-                )
+            )
     actual_end = index[-1] + pd.Timedelta(seconds=last_step_duration)
     target_instants = pd.date_range(
         start=start,
@@ -127,7 +126,7 @@ def index_to_freq(
         freq=freq,
         inclusive="left",
         name=index.name,
-        )
+    )
     return target_instants
 
 
@@ -180,8 +179,10 @@ def estimate_timestep(
         return mode_time_step(data)
     if method == "kde":
         return max_kde_time_step(data)
-    else :
-        raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
+    else:
+        raise ValueError(
+            "method must be one of {'mean', 'median', 'mode', 'kde'}"
+        )
 
 
 def median_time_step(
@@ -331,7 +332,7 @@ def data_to_datetimeindex(
         If the data cannot be converted to pandas.DateTimeIndex
 
     """
-    try :
+    try:
         data = data.index
     except AttributeError:
         pass
@@ -378,16 +379,23 @@ def fill_missing_entries(
 
     """
     durations = timestep_durations(data)
-    intervals_to_fill = durations[durations >= sampling_period * security_factor]
+    intervals_to_fill = durations[
+        durations >= sampling_period * security_factor
+    ]
     if intervals_to_fill.empty:
         return data
     new_indexes = []
     for index, duration in intervals_to_fill.items():
         number_missing_entries = int(duration // sampling_period)
-        tmp_indexes = [ index + k * pd.Timedelta(seconds=sampling_period) for k in range(1, number_missing_entries)]
+        tmp_indexes = [
+            index + k * pd.Timedelta(seconds=sampling_period)
+            for k in range(1, number_missing_entries)
+        ]
         new_indexes += tmp_indexes
-    missing_index =  pd.DatetimeIndex(new_indexes)
-    new_data = data.reindex(data.index.append(missing_index).sort_values(), fill_value=fill_value)
+    missing_index = pd.DatetimeIndex(new_indexes)
+    new_data = data.reindex(
+        data.index.append(missing_index).sort_values(), fill_value=fill_value
+    )
     return new_data
 
 

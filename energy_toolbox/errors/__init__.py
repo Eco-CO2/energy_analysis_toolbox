@@ -1,5 +1,4 @@
-"""This namespace defines the custom except for |et|.
-"""
+"""This namespace defines the custom except for |et|."""
 
 from .base import (
     ETExcept,

@@ -19,3 +19,5 @@ pytest_report.xml
 coverage.xml
 **/cov.xml
 *.ipynb
+**/.ruff_cache
+*.coverage.ip*

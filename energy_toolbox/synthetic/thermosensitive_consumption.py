@@ -7,6 +7,7 @@ from typing import (
 )
 import numpy as np
 import pandas as pd
+
 # change the default display options for the doctest
 pd.options.display.max_columns = 10
 pd.options.display.width = 256
@@ -73,7 +74,6 @@ class SynthDDConsumption:
         self.exp_scale_dd = exp_scale_dd
         self.clip_negative = clip_negative
 
-
     def random_dds(
         self,
         size=100,
@@ -128,7 +128,6 @@ class SynthDDConsumption:
         )
         return fake_dds
 
-
     def random_consumption(
         self,
         size=100,
@@ -169,7 +168,6 @@ class SynthDDConsumption:
 
         """
         return self.fake_energy(self.random_dds(size=size, start=start))
-
 
     def fake_energy(
         self,
@@ -245,7 +243,6 @@ class SynthDDConsumption:
         else:
             fake_data["energy"] = assembled_energy
         return fake_data
-
 
     def measures(
         self,
@@ -344,7 +341,6 @@ class SynthTSConsumption:
         self.t_ref_cool = t_ref_cool
         self._rng = np.random.default_rng(seed=noise_seed)
 
-
     def fake_energy(
         self,
         dd_heating,
@@ -425,7 +421,6 @@ class SynthTSConsumption:
         fake_data["DD_cooling"] = dd_cooling
         return fake_data
 
-
     def random_dds(
         self,
         t_mean=15,
@@ -478,21 +473,23 @@ class SynthTSConsumption:
         2022-11-05    36.020704     0.000000 -19.020704
 
         """
-        index=pd.date_range(start=start, end=end, periods=size, freq="1D")
-        size=len(index)
+        index = pd.date_range(start=start, end=end, periods=size, freq="1D")
+        size = len(index)
         t_samples = pd.Series(
             self._rng.normal(loc=t_mean, scale=t_std, size=size),
             name="T(°C)",
             index=index,
         )
-        fake_dds = pd.concat([
-            (self.t_ref_heat - t_samples).clip(lower=0),
-            (t_samples - self.t_ref_cool).clip(lower=0),
-            t_samples
-        ], axis=1)
+        fake_dds = pd.concat(
+            [
+                (self.t_ref_heat - t_samples).clip(lower=0),
+                (t_samples - self.t_ref_cool).clip(lower=0),
+                t_samples,
+            ],
+            axis=1,
+        )
         fake_dds.columns = ["DD_heating", "DD_cooling", "T"]
         return fake_dds
-
 
     def random_consumption(
         self,
@@ -528,9 +525,12 @@ class SynthTSConsumption:
             temperature. See :py:meth:`.fake_energy`.
 
         """
-        dd_samples = self.random_dds(size=size, t_mean=t_mean, t_std=t_std, start=start, end=end)
-        return self.fake_energy(dd_samples["DD_heating"], dd_samples["DD_cooling"], dd_samples["T"])
-
+        dd_samples = self.random_dds(
+            size=size, t_mean=t_mean, t_std=t_std, start=start, end=end
+        )
+        return self.fake_energy(
+            dd_samples["DD_heating"], dd_samples["DD_cooling"], dd_samples["T"]
+        )
 
     def measures(
         self,
@@ -670,16 +670,18 @@ class DateSynthTSConsumption(SynthTSConsumption):
             self.temperature_mean_year
             + self.temperature_amplitude_year
             * np.sin(
-                self.temperature_period_year * (julian_date - self.temperature_phase_year)
+                self.temperature_period_year
+                * (julian_date - self.temperature_phase_year)
             )
         )
         t_samples = pd.Series(
-            self._rng.normal(loc=temperature_base, scale=t_std, size=len(index)),
+            self._rng.normal(
+                loc=temperature_base, scale=t_std, size=len(index)
+            ),
             index=index,
             name="T(°C)",
         )
         return t_samples
-
 
     def random_dds(
         self,
@@ -742,7 +744,7 @@ class DateSynthTSConsumption(SynthTSConsumption):
         t_samples = self.synthetic_temperature(t_std, size, start, end=end)
         dd_heating = (self.t_ref_heat - t_samples).clip(lower=0)
         dd_cooling = (t_samples - self.t_ref_cool).clip(lower=0)
-        data= pd.concat([dd_heating, dd_cooling, t_samples], axis=1)
+        data = pd.concat([dd_heating, dd_cooling, t_samples], axis=1)
         data.columns = ["DD_heating", "DD_cooling", "T"]
         return data
 
@@ -782,8 +784,8 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         temperature_mean_year=14,
         temperature_period_year=2 * np.pi / 364.991,
         temperature_phase_year=13,
-        list_categories:list=None,
-        category_func: Callable = None
+        list_categories: list = None,
+        category_func: Callable = None,
     ):
         """
         Parameters
@@ -827,8 +829,9 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         self.list_categories = list_categories
         self.category_func = category_func
         if len(self.list_of_synths) != len(self.list_categories):
-            raise ValueError("The number of categories must match the number of synthetizers")
-
+            raise ValueError(
+                "The number of categories must match the number of synthetizers"
+            )
 
     def fake_energy(
         self,
@@ -896,7 +899,7 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         """
         categories_series = self.category_func(t_samples)
         list_of_fake_data = []
-        for category, synth in zip(self.list_categories,self.list_of_synths):
+        for category, synth in zip(self.list_categories, self.list_of_synths):
             mask = categories_series == category
             fake_data = synth.fake_energy(
                 dd_heating[mask],
@@ -914,6 +917,7 @@ class WeekEndSynthTSConsumption(CategorySynthTSConsumption):
 
     Based on :py:class:`CategorySynthTSConsumption`.
     """
+
     def __init__(
         self,
         parameters: list[TSParameters],
@@ -946,17 +950,19 @@ class WeekEndSynthTSConsumption(CategorySynthTSConsumption):
         >>> synth_consumption = WeekEndSynthTSConsumption(parameters, t_ref_heat=17, t_ref_cool=20)
         """
         list_categories = ["weekend", "weekday"]
+
         def category_func(t_samples):
             return np.where(t_samples.index.dayofweek < 5, "weekday", "weekend")
+
         super().__init__(
-            parameters = parameters,
-            t_ref_heat = t_ref_heat,
-            t_ref_cool = t_ref_cool,
-            noise_seed = noise_seed,
-            temperature_amplitude_year = temperature_amplitude_year,
-            temperature_mean_year = temperature_mean_year,
-            temperature_period_year = temperature_period_year,
-            temperature_phase_year = temperature_phase_year,
-            list_categories = list_categories,
-            category_func = category_func,
+            parameters=parameters,
+            t_ref_heat=t_ref_heat,
+            t_ref_cool=t_ref_cool,
+            noise_seed=noise_seed,
+            temperature_amplitude_year=temperature_amplitude_year,
+            temperature_mean_year=temperature_mean_year,
+            temperature_period_year=temperature_period_year,
+            temperature_phase_year=temperature_phase_year,
+            list_categories=list_categories,
+            category_func=category_func,
         )

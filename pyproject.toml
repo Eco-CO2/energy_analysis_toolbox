@@ -60,8 +60,6 @@ version = {attr = "energy_toolbox.__version__"}
 
 [tool.ruff]
 line-length = 80
-[tool.ruff.lint]
-select = ["NPY201"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"

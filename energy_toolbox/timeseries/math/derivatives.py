@@ -10,6 +10,7 @@ for the interest of signal analysis in the draw-detection than for numerical
 simulation.
 
 """
+
 import numpy as np
 import pandas as pd
 
@@ -94,8 +95,9 @@ def time_derivative_fwd(
     # [1.]
     grads = np.empty(timeseries.index.size)
     grads[0:-1] = np.ediff1d(timeseries.values) / np.ediff1d(dts)
-    grads[-1] = ((timeseries.values[-1]  - timeseries.values[-2])
-                 / (dts[-1] - dts[-2]))
+    grads[-1] = (timeseries.values[-1] - timeseries.values[-2]) / (
+        dts[-1] - dts[-2]
+    )
     grad_ts = pd.Series(grads, index=timeseries.index)
     return grad_ts
 
@@ -171,11 +173,11 @@ def time_derivative_second(
     dts = (timeseries.index - timeseries.index[0]).total_seconds()
     grads = np.empty(timeseries.index.size)
     grads[0:-1] = np.ediff1d(timeseries.values) / np.ediff1d(dts)
-    grads[-1] = ((timeseries.values[-1]  - timeseries.values[-2])
-                 / (dts[-1] - dts[-2]))
+    grads[-1] = (timeseries.values[-1] - timeseries.values[-2]) / (
+        dts[-1] - dts[-2]
+    )
     grads2 = np.empty(timeseries.index.size)
     grads2[0:-1] = np.ediff1d(grads) / np.ediff1d(dts)
-    grads2[-1] = ((grads[-1]  - grads[-2])
-                 / (dts[-1] - dts[-2]))
+    grads2[-1] = (grads[-1] - grads[-2]) / (dts[-1] - dts[-2])
     grad2_ts = pd.Series(grads2, index=timeseries.index)
     return grad2_ts

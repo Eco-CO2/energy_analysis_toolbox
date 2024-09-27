@@ -2,6 +2,7 @@
 deviation of the history on each slot.
 
 """
+
 import pandas as pd
 from ..mean_profile import MeanProfile
 
@@ -37,7 +38,6 @@ class HybridThreshold(MeanProfile):
         super().__init__(**kwargs)
         self.offset_std = offset_std
         self.offset_rel = offset_relative
-
 
     def compute(
         self,
@@ -101,11 +101,12 @@ class HybridThreshold(MeanProfile):
         # std on unsmoothed data
         std_profile = self.group(history).std() * self.offset_std
         std_profile.index = rel_profile.index
-        profile_deviations = pd.DataFrame.from_dict({'std': std_profile,
-                                                    'tshd': rel_profile})
+        profile_deviations = pd.DataFrame.from_dict(
+            {"std": std_profile, "tshd": rel_profile}
+        )
         if self.is_max:
             var_profile = profile_deviations.max(axis=1)
         else:
             var_profile = profile_deviations.min(axis=1)
-        profile_compare = (smooth_mean_profile + var_profile)
+        profile_compare = smooth_mean_profile + var_profile
         return profile_compare

@@ -1,4 +1,3 @@
-
 import pandas as pd
 from .index_transformation import index_to_freq
 from .interpolate import (
@@ -16,7 +15,7 @@ def to_freq(
     freq,
     origin=None,
     last_step_duration=None,
-    method='piecewise_affine',
+    method="piecewise_affine",
     **kwargs,
 ) -> "pd.Series[float]":
     """Return a timeseries resampled at a given frequency.
@@ -85,29 +84,36 @@ def to_freq(
     # Directly apply the method if it is a conservative method for which an
     # integrated method exists
     integrated_methods = {
-        'volume_conservative': volume_to_freq,
-        'flow_rate_conservative': flow_rate_to_freq,
+        "volume_conservative": volume_to_freq,
+        "flow_rate_conservative": flow_rate_to_freq,
     }
     try:
         method = integrated_methods[method]
     except KeyError:
         pass
     else:
-        return method(timeseries, freq, origin=origin,
-                      last_step_duration=last_step_duration)
+        return method(
+            timeseries,
+            freq,
+            origin=origin,
+            last_step_duration=last_step_duration,
+        )
     # Select the method
     known_methods = {
-        'piecewise_affine': piecewise_affine,
-        'piecewise_constant': piecewise_constant,
+        "piecewise_affine": piecewise_affine,
+        "piecewise_constant": piecewise_constant,
     }
     method = known_methods.get(method, method)
     # Resample
     target_instants = index_to_freq(
-        timeseries.index, freq, origin=origin,
-        last_step_duration=last_step_duration)
-    kwargs['freq'] = freq
-    kwargs['origin'] = origin
-    kwargs['last_step_duration'] = last_step_duration
+        timeseries.index,
+        freq,
+        origin=origin,
+        last_step_duration=last_step_duration,
+    )
+    kwargs["freq"] = freq
+    kwargs["origin"] = origin
+    kwargs["last_step_duration"] = last_step_duration
     new_series = method(timeseries, target_instants, **kwargs)
     new_series.index.name = timeseries.index.name
     return new_series
@@ -116,7 +122,7 @@ def to_freq(
 def trim_out_of_bounds(
     data,
     resampled_data,
-    fill_value={'value': pd.NA},
+    fill_value={"value": pd.NA},
 ):
     """Fill resampled data with NA outside the boundaries of initial index.
 
@@ -138,8 +144,12 @@ def trim_out_of_bounds(
     """
     if resampled_data.index[0] < data.index[0]:
         for col, value in fill_value.items():
-            resampled_data.loc[resampled_data.index < data.index[0], col] = value
+            resampled_data.loc[resampled_data.index < data.index[0], col] = (
+                value
+            )
     if resampled_data.index[-1] > data.index[-1]:
         for col, value in fill_value.items():
-            resampled_data.loc[resampled_data.index > data.index[-1], col] = value
+            resampled_data.loc[resampled_data.index > data.index[-1], col] = (
+                value
+            )
     return resampled_data

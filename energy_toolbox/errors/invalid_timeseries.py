@@ -9,6 +9,7 @@ class ETInvalidTimeseriesError(ETExcept):
 
     Derived classes may be inherited in order to deal with more specific problems.
     """
+
     pass
 
 
@@ -19,6 +20,7 @@ class ETUndefinedTimestepError(ETInvalidTimeseriesError):
     timeseries which contain values defined "over overconsumption" (VS at
     instantaneous timestamps).
     """
+
     pass
 
 
@@ -34,4 +36,5 @@ class ETInvalidTimestepDurationError(ETInvalidTimeseriesError):
     - etc.
 
     """
+
     pass

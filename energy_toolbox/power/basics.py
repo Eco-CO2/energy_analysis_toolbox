@@ -72,13 +72,16 @@ def integrate_over(
 
     """
     timesteps = timestep_durations(power_series)
+
     def integrate(row):
         """Integrate on a slice with excluded end"""
-        i_start = timesteps.index.get_slice_bound(row['start'], side='left')
-        i_end = timesteps.index.get_slice_bound(row['end'], side='left')
-        res = (timesteps.iloc[i_start: i_end]
-               * power_series.iloc[i_start:i_end]).sum()
+        i_start = timesteps.index.get_slice_bound(row["start"], side="left")
+        i_end = timesteps.index.get_slice_bound(row["end"], side="left")
+        res = (
+            timesteps.iloc[i_start:i_end] * power_series.iloc[i_start:i_end]
+        ).sum()
         return res
+
     energies = intervals.apply(integrate, axis=1)
     return energies
 

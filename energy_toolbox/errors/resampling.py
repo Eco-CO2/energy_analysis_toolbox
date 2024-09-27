@@ -7,7 +7,9 @@ class CTResamplingError(ETExcept):
     This base class is used when an invalid resampling operation is attempted in |et|.
     Derived classed may be used for more specific resampling errors.
     """
+
     pass
+
 
 class CTEmptySourceError(CTResamplingError, ETEmptyDataError):
     """Resampling an empty timeseries to specific instants is impossible.
@@ -18,7 +20,9 @@ class CTEmptySourceError(CTResamplingError, ETEmptyDataError):
     - empty data is passed as source.
 
     """
+
     pass
+
 
 class CTEmptyTargetsError(CTResamplingError, ETEmptyDataError):
     """Resampling a timeseries to empty targets is meaningless in this situation.
@@ -30,4 +34,5 @@ class CTEmptyTargetsError(CTResamplingError, ETEmptyDataError):
     - empty data is passed as targets.
 
     """
+
     pass

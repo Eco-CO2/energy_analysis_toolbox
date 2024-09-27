@@ -1,7 +1,7 @@
 
 import pandas as pd
 import pytest
-from  .. import pandas
+from  .. import pandas # noqa F401
 
 # Test CTAccessorSeries
 
@@ -17,7 +17,7 @@ def test_series_to_power():
     # Test the to_power method of CTAccessorSeries
     series = pd.Series([24, 48, 72], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     with pytest.raises(NotImplementedError):
-        ct_series = series.et.to_power()
+        series.et.to_power()
 
 def test_series_power_to_freq():
     # Test the power_to_freq method of CTAccessorSeries
@@ -64,11 +64,10 @@ def test_series_fill_missing_entries():
     assert isinstance(ct_series, pd.Series)
     pd.testing.assert_series_equal(ct_series, fill_data_holes(series))
 
-# Test CTAccessorFrame
 
+# Test CTAccessorFrame
 def test_frame():
     # Test the to_energy method of CTAccessorFrame
-    from energy_toolbox.power import to_energy
     df = pd.DataFrame({'value': [1, 2, 3], 'duration': [1000, 2000, 3000]}, index=pd.date_range('2022-01-01', periods=3, freq='D'))
     with pytest.raises(NotImplementedError):
-        ct_df = df.et
+        df.et

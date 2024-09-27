@@ -1,5 +1,5 @@
-"""Define Mixins to use manage localized timeseries.
-"""
+"""Define Mixins to use manage localized timeseries."""
+
 import pandas as pd
 from .mean_profile import MeanProfile
 from .rolling_profile import (
@@ -8,7 +8,7 @@ from .rolling_profile import (
 )
 
 
-class LocalizedProfileMixin():
+class LocalizedProfileMixin:
     """A profile version where time-zoned data is managed, including DSTs.
 
     The compute method of the profile class with which this mixin is combined
@@ -18,8 +18,8 @@ class LocalizedProfileMixin():
 
     def compute(
         self,
-        history:pd.DataFrame,
-        time:pd.Timestamp,
+        history: pd.DataFrame,
+        time: pd.Timestamp,
         **kwargs,
     ) -> pd.DataFrame:
         """Compute the profile at ``time`` from the ``history``.
@@ -56,11 +56,13 @@ class LocalizedProfileMixin():
         if source_tz is None:
             profile_ref = super().compute(history, time, **kwargs)
         else:
-            profile_ref = super().compute(
-                history.tz_localize(None),
-                time.tz_localize(None),
-                **kwargs
-            ).tz_localize(source_tz, ambiguous=True, nonexistent='NaT')
+            profile_ref = (
+                super()
+                .compute(
+                    history.tz_localize(None), time.tz_localize(None), **kwargs
+                )
+                .tz_localize(source_tz, ambiguous=True, nonexistent="NaT")
+            )
         return profile_ref
 
 

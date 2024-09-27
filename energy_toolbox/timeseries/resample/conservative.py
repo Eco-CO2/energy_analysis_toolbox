@@ -2,6 +2,7 @@
 This module contains functions to power timeseries of flows and volumes per
 timestep without breaking conservation laws.
 """
+
 import pandas as pd
 import numpy as np
 from .index_transformation import index_to_freq
@@ -153,23 +154,28 @@ def flow_rate_conservative(
     if flow_rates.empty:
         raise CTEmptySourceError(
             "Resampling an empty flow-rates series to new instants is an invalid"
-            " (undefined) operation.")
+            " (undefined) operation."
+        )
     elif target_instants.empty:
         raise CTEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled.")
+            "Target instants must be provided for the series to be resampled."
+        )
     else:
         pass
-    durations = timestep_durations(flow_rates, last_step=last_step_duration) # [1.]
-    volumes = flow_rates * durations # [2.]
+    durations = timestep_durations(
+        flow_rates, last_step=last_step_duration
+    )  # [1.]
+    volumes = flow_rates * durations  # [2.]
     interp_volumes = volume_conservative(
         volumes,
         target_instants,
         last_step_duration=last_step_duration,
         last_target_step_duration=last_target_step_duration,
-        ) # [3.]
-    target_durations = index_to_timesteps(target_instants,
-                                          last_target_step_duration)
-    interp_flow_rates = interp_volumes / target_durations # [4.]
+    )  # [3.]
+    target_durations = index_to_timesteps(
+        target_instants, last_target_step_duration
+    )
+    interp_flow_rates = interp_volumes / target_durations  # [4.]
     interp_flow_rates.name = flow_rates.name
     interp_flow_rates.index.name = flow_rates.index.name
     return interp_flow_rates
@@ -358,32 +364,46 @@ def volume_conservative(
     """
     if volumes.empty:
         raise CTEmptySourceError(
-            "Resampling an empty volumes series to new instants is an invalid operation.")
+            "Resampling an empty volumes series to new instants is an invalid operation."
+        )
     elif target_instants.empty:
         raise CTEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled.")
+            "Target instants must be provided for the series to be resampled."
+        )
     elif last_step_duration is not None and last_step_duration <= 0:
-        raise ETInvalidTimestepDurationError("Last step duration cannot be zero.")
-    elif last_target_step_duration is not None and last_target_step_duration <= 0:
-        raise ETInvalidTimestepDurationError("Last step duration cannot be zero.")
+        raise ETInvalidTimestepDurationError(
+            "Last step duration cannot be zero."
+        )
+    elif (
+        last_target_step_duration is not None and last_target_step_duration <= 0
+    ):
+        raise ETInvalidTimestepDurationError(
+            "Last step duration cannot be zero."
+        )
     else:
         pass
-    vol_index = volumes.cumsum() # [1.]
+    vol_index = volumes.cumsum()  # [1.]
     # the function deals with None last_step_duration values
-    durations = timestep_durations(volumes.iloc[-2:], last_step=last_step_duration)
-    ghost_right = vol_index.index[-1] + pd.Timedelta(seconds=durations.iloc[-1]) # [2.]
-    vol_index.loc[ghost_right] = np.nan # np.nan to not break dtype
-    vol_index = vol_index.shift(1, fill_value=0.) # [3.]
+    durations = timestep_durations(
+        volumes.iloc[-2:], last_step=last_step_duration
+    )
+    ghost_right = vol_index.index[-1] + pd.Timedelta(
+        seconds=durations.iloc[-1]
+    )  # [2.]
+    vol_index.loc[ghost_right] = np.nan  # np.nan to not break dtype
+    vol_index = vol_index.shift(1, fill_value=0.0)  # [3.]
     # the function deals with None last_target_step_duration
-    target_durations = index_to_timesteps(target_instants[-2:],
-                                          last_target_step_duration
-                                          )
+    target_durations = index_to_timesteps(
+        target_instants[-2:], last_target_step_duration
+    )
     target_instants = target_instants.insert(
-        target_instants.size, # at the end
+        target_instants.size,  # at the end
         target_instants[-1] + pd.Timedelta(seconds=target_durations[-1]),
-        ) # [4.1]
-    interp_vol_index = piecewise_affine(vol_index, target_instants) # [4.2]
-    interp_volumes = interp_vol_index.diff().shift(-1).dropna() # [5.] [6.] [7.]
+    )  # [4.1]
+    interp_vol_index = piecewise_affine(vol_index, target_instants)  # [4.2]
+    interp_volumes = (
+        interp_vol_index.diff().shift(-1).dropna()
+    )  # [5.] [6.] [7.]
     interp_volumes.name = volumes.name
     interp_volumes.index.name = volumes.index.name
     return interp_volumes
@@ -432,13 +452,15 @@ def volume_to_freq(
         * :py:func:`flow_rate_to_freq` which resamples the volume on the giver frequency.
 
     """
-    target_instants = index_to_freq(series.index, freq, origin, last_step_duration)
+    target_instants = index_to_freq(
+        series.index, freq, origin, last_step_duration
+    )
     resampled_series = volume_conservative(
         series,
         target_instants,
         last_step_duration=last_step_duration,
         last_target_step_duration=pd.Timedelta(freq).total_seconds(),
-        )
+    )
     return resampled_series
 
 
@@ -486,11 +508,13 @@ def flow_rate_to_freq(
         * :py:func:`volume_to_freq` which resamples the volume on the giver frequency.
 
     """
-    target_instants = index_to_freq(series.index, freq, origin, last_step_duration)
+    target_instants = index_to_freq(
+        series.index, freq, origin, last_step_duration
+    )
     resampled_series = flow_rate_conservative(
         series,
         target_instants,
         last_step_duration=last_step_duration,
         last_target_step_duration=pd.Timedelta(freq).total_seconds(),
-        )
+    )
     return resampled_series

@@ -85,6 +85,7 @@ The heating (resp. cooling) base temperature is calibrated by minimizing the mea
 The optimization is done with the `scipy.optimize.minimize_scalar` function with the `bounded` method.
 
 """
+
 import pandas as pd
 from scipy.optimize import minimize_scalar
 from scipy.stats import spearmanr
@@ -191,7 +192,7 @@ class ThermoSensitivity:
         degree_days_type="heating",
         degree_days_base_temperature: dict = {},
         degree_days_computation_method="integral",
-        interseason_mean_temperature = 20,
+        interseason_mean_temperature=20,
     ):
         self._energy_data = energy_data
         self._temperature_data = temperature_data
@@ -206,7 +207,6 @@ class ThermoSensitivity:
         self._validate_data()
         self._post_init()
 
-
     @property
     def frequency(
         self,
@@ -216,7 +216,6 @@ class ThermoSensitivity:
         The property is unmutable. To change the frequency, create a new object.
         """
         return self._frequency
-
 
     @property
     def energy_data(
@@ -228,7 +227,6 @@ class ThermoSensitivity:
         """
         return self._energy_data
 
-
     @property
     def temperature_data(
         self,
@@ -238,7 +236,6 @@ class ThermoSensitivity:
         The property is unmutable. To change the temperature data, create a new object.
         """
         return self._temperature_data
-
 
     @cached_property
     def resampled_energy(
@@ -254,12 +251,12 @@ class ThermoSensitivity:
         energy = self.energy_data.copy()
         last_period = energy.index[-1] - energy.index[-2]
         energy[energy.index[-1] + last_period] = 0
-        new_energy = energy_to_freq(energy,
-                                    self.frequency,
-                                    # origin=energy.index[0].floor(self.frequency),
-                                    ).rename(self.target_name)
+        new_energy = energy_to_freq(
+            energy,
+            self.frequency,
+            # origin=energy.index[0].floor(self.frequency),
+        ).rename(self.target_name)
         return new_energy
-
 
     @cached_property
     def resampled_temperature(
@@ -271,8 +268,11 @@ class ThermoSensitivity:
 
         This property is cached to avoid recomputing it multiple times.
         """
-        return self.temperature_data.resample(self.frequency).mean().rename(self.temperature_name)
-
+        return (
+            self.temperature_data.resample(self.frequency)
+            .mean()
+            .rename(self.temperature_name)
+        )
 
     @cached_property
     def resampled_energy_temperature(
@@ -283,10 +283,10 @@ class ThermoSensitivity:
         The DataFrame contains the resampled energy and temperature data.
         Periods with missing values are removed.
         """
-        return pd.concat([self.resampled_energy, self.resampled_temperature],
-                         axis=1,
-                ).dropna(how="any", axis=0)
-
+        return pd.concat(
+            [self.resampled_energy, self.resampled_temperature],
+            axis=1,
+        ).dropna(how="any", axis=0)
 
     @property
     def model(
@@ -303,7 +303,6 @@ class ThermoSensitivity:
         if self._model is None:
             raise ValueError("Model not fitted. Please run the `fit` method.")
         return self._model
-
 
     @property
     def aggregated_data(
@@ -323,9 +322,10 @@ class ThermoSensitivity:
             If the data is not aggregated. Use the `fit` method to aggregate the data.
         """
         if self._aggregated_data is None:
-            raise ValueError("Data not aggregated. Please run the `fit` method.")
+            raise ValueError(
+                "Data not aggregated. Please run the `fit` method."
+            )
         return self._aggregated_data
-
 
     @aggregated_data.setter
     def aggregated_data(
@@ -335,7 +335,6 @@ class ThermoSensitivity:
         """Set the aggregated data, and reset the model."""
         self._aggregated_data = value
         self._model = None
-
 
     def _validate_data(
         self,
@@ -351,19 +350,24 @@ class ThermoSensitivity:
             While not empty.
         """
         if self.degree_days_type not in ["heating", "cooling", "both", "auto"]:
-            raise ValueError("Invalid degree days type. Must be one of 'heating', 'cooling', 'both' or 'auto'.")
-        if self.degree_days_base_temperature != {} :
+            raise ValueError(
+                "Invalid degree days type. Must be one of 'heating', 'cooling', 'both' or 'auto'."
+            )
+        if self.degree_days_base_temperature != {}:
             if self.degree_days_type in ["heating", "both"]:
-                try :
+                try:
                     self.degree_days_base_temperature["heating"]
                 except KeyError:
-                    raise ValueError("Base temperature for heating degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}")
+                    raise ValueError(
+                        "Base temperature for heating degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}"
+                    )
             elif self.degree_days_type in ["cooling", "both"]:
                 try:
                     self.degree_days_base_temperature["cooling"]
                 except KeyError:
-                    raise ValueError("Base temperature for cooling degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}")
-
+                    raise ValueError(
+                        "Base temperature for cooling degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}"
+                    )
 
     def _post_init(
         self,
@@ -380,7 +384,6 @@ class ThermoSensitivity:
         elif self.degree_days_type in ["heating", "cooling"]:
             self.predictors = [f"{self.degree_days_type}_degree_days"]
 
-
     def _aggregate_data(
         self,
         degree_days_base_temperature: dict | None = None,
@@ -389,10 +392,13 @@ class ThermoSensitivity:
         Store the aggregated data in the `aggregated_data` property.
         """
         degree_days = self._calculate_degree_days(degree_days_base_temperature)
-        self.aggregated_data = pd.concat([self.resampled_energy_temperature,
-                                          degree_days,
-                                          ], axis=1)
-
+        self.aggregated_data = pd.concat(
+            [
+                self.resampled_energy_temperature,
+                degree_days,
+            ],
+            axis=1,
+        )
 
     def _detect_degree_days_type(
         self,
@@ -421,24 +427,42 @@ class ThermoSensitivity:
             References: `wikipedia <https://fr.wikipedia.org/wiki/Paradoxe_de_Simpson>`_
         """
         if self.degree_days_type == "auto":
-            heating_mask = self.resampled_energy_temperature[self.temperature_name] < self.interseason_mean_temperature
+            heating_mask = (
+                self.resampled_energy_temperature[self.temperature_name]
+                < self.interseason_mean_temperature
+            )
             if sum(heating_mask) <= 10:
                 print("Not enough data for the heating period.")
                 print(f"Number of data points: {sum(heating_mask)}")
                 # too few point to do any test
                 heating_sp = 1
             else:
-                heating_sp = spearmanr(self.resampled_energy_temperature.loc[heating_mask, [self.target_name, self.temperature_name]], alternative='less').pvalue
-            cooling_mask = self.resampled_energy_temperature[self.temperature_name] > self.interseason_mean_temperature
+                heating_sp = spearmanr(
+                    self.resampled_energy_temperature.loc[
+                        heating_mask, [self.target_name, self.temperature_name]
+                    ],
+                    alternative="less",
+                ).pvalue
+            cooling_mask = (
+                self.resampled_energy_temperature[self.temperature_name]
+                > self.interseason_mean_temperature
+            )
             if sum(cooling_mask) <= 10:
                 print("Not enough data for the heating period.")
                 print(f"Number of data points: {sum(heating_mask)}")
                 # too few point to do any test
                 cooling_sp = 1
             else:
-                data_to_test = self.resampled_energy_temperature.loc[cooling_mask, [self.target_name, self.temperature_name]]
-                cooling_sp = spearmanr(data_to_test, alternative='greater').pvalue
-            if heating_sp < significance_level and cooling_sp < significance_level:
+                data_to_test = self.resampled_energy_temperature.loc[
+                    cooling_mask, [self.target_name, self.temperature_name]
+                ]
+                cooling_sp = spearmanr(
+                    data_to_test, alternative="greater"
+                ).pvalue
+            if (
+                heating_sp < significance_level
+                and cooling_sp < significance_level
+            ):
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
                 self.degree_days_type = "heating"
@@ -449,8 +473,9 @@ class ThermoSensitivity:
                 print(self.resampled_energy_temperature)
                 print(self.resampled_energy)
                 print(self.resampled_temperature)
-                raise ValueError("Cannot detect the degree days type. Please specify it manually.")
-
+                raise ValueError(
+                    "Cannot detect the degree days type. Please specify it manually."
+                )
 
     def _calculate_degree_days(
         self,
@@ -474,15 +499,17 @@ class ThermoSensitivity:
         degree_days = []
         for dd_type in degree_days_base_temperature.keys():
             if self.degree_days_type in [dd_type, "both"]:
-
                 degree_days.append(
-                    dd_compute(self.temperature_data,
-                               degree_days_base_temperature[dd_type],
-                               type=dd_type,
-                               method=self.degree_days_computation_method).resample(self.frequency).sum()
+                    dd_compute(
+                        self.temperature_data,
+                        degree_days_base_temperature[dd_type],
+                        type=dd_type,
+                        method=self.degree_days_computation_method,
+                    )
+                    .resample(self.frequency)
+                    .sum()
                 )
         return pd.concat(degree_days, axis=1)
-
 
     def calibrate_base_temperature(
         self,
@@ -493,17 +520,27 @@ class ThermoSensitivity:
     ):
         """Fit the base temperature to the data."""
         if dd_type not in ["heating", "cooling"]:
-            raise ValueError("Invalid degree days type. Must be one of 'heating' or 'cooling'.")
+            raise ValueError(
+                "Invalid degree days type. Must be one of 'heating' or 'cooling'."
+            )
         if t0 is None:
             t0 = 16 if dd_type == "heating" else 24
         if dd_type == "heating":
-            mask = self.resampled_energy_temperature[self.temperature_name] < self.interseason_mean_temperature
+            mask = (
+                self.resampled_energy_temperature[self.temperature_name]
+                < self.interseason_mean_temperature
+            )
             bounds = (10, self.interseason_mean_temperature)
         elif dd_type == "cooling":
-            mask = self.resampled_energy_temperature[self.temperature_name] > self.interseason_mean_temperature
+            mask = (
+                self.resampled_energy_temperature[self.temperature_name]
+                > self.interseason_mean_temperature
+            )
             bounds = (self.interseason_mean_temperature, 30)
         else:
-            raise ValueError("Invalid degree days type. Must be one of 'heating' or 'cooling'.")
+            raise ValueError(
+                "Invalid degree days type. Must be one of 'heating' or 'cooling'."
+            )
         res = minimize_scalar(
             loss_function,
             args=(
@@ -513,7 +550,7 @@ class ThermoSensitivity:
                 self.frequency,
                 mask,
                 self.degree_days_computation_method,
-                disp
+                disp,
             ),
             bounds=bounds,
             method="bounded",
@@ -523,7 +560,6 @@ class ThermoSensitivity:
             },
         )
         return res.x
-
 
     def calibrate_base_temperatures(
         self,
@@ -545,7 +581,6 @@ class ThermoSensitivity:
             topt = self.calibrate_base_temperature(dd_type, t0, xatol, disp)
             self.degree_days_base_temperature[dd_type] = topt
 
-
     def _fit_thermosensitivity(
         self,
     ):
@@ -554,7 +589,6 @@ class ThermoSensitivity:
         X = data[self.predictors].copy()
         X["Intercept"] = 1  # add constant
         self._model = OLS(Y, X).fit()
-
 
     def fit(
         self,
@@ -576,7 +610,6 @@ class ThermoSensitivity:
         self._fit_thermosensitivity()
         return self
 
-
     def __repr__(
         self,
     ):
@@ -588,7 +621,7 @@ class ThermoSensitivity:
         degree_days_computation_method={self.degree_days_computation_method},
         interseason_mean_temperature={self.interseason_mean_temperature})"""
         if self._model is not None:
-            message =  f"{header}\n\n{self.model.summary(slim=True)}"
+            message = f"{header}\n\n{self.model.summary(slim=True)}"
         else:
             message = header
         return message
@@ -596,11 +629,11 @@ class ThermoSensitivity:
 
 def loss_function(
     t0: float,
-    dd_type:str,
-    resampled_energy:pd.Series,
-    raw_temperature:pd.Series,
-    frequency:str,
-    mask:pd.Series = None,
+    dd_type: str,
+    resampled_energy: pd.Series,
+    raw_temperature: pd.Series,
+    frequency: str,
+    mask: pd.Series = None,
     dd_computation_method="integral",
     verbose=False,
 ) -> float:
@@ -628,12 +661,18 @@ def loss_function(
         type=dd_type,
         method=dd_computation_method,
     )
-    degree_days_resampled = degree_days.resample(frequency).sum().rename("degree_days")
-    data = pd.concat([resampled_energy, degree_days_resampled], axis=1).dropna(how="any", axis=0)
+    degree_days_resampled = (
+        degree_days.resample(frequency).sum().rename("degree_days")
+    )
+    data = pd.concat([resampled_energy, degree_days_resampled], axis=1).dropna(
+        how="any", axis=0
+    )
     data["Intercept"] = 1
     if mask is not None:
         data = data[mask]
-    model = OLS(data[resampled_energy.name], data[["degree_days", "Intercept"]]).fit()
+    model = OLS(
+        data[resampled_energy.name], data[["degree_days", "Intercept"]]
+    ).fit()
     if verbose:
         print(f"{t0=:.4f}, {model.mse_resid:.2f}, {model.mse_total:.2f}")
     return model.mse_resid
@@ -686,6 +725,7 @@ class CategoricalThermoSensitivity(
         - to estimate the base temperature. See the `calibrate_base_temperature` method.
 
     """
+
     categories_name = "category"
 
     def __init__(
@@ -697,7 +737,7 @@ class CategoricalThermoSensitivity(
         degree_days_type="heating",
         degree_days_base_temperature: dict = {},
         degree_days_computation_method="integral",
-        interseason_mean_temperature = 20,
+        interseason_mean_temperature=20,
     ):
         self._categories = categories
         super().__init__(
@@ -710,7 +750,6 @@ class CategoricalThermoSensitivity(
             interseason_mean_temperature=interseason_mean_temperature,
         )
 
-
     @cached_property
     def resampled_categories(
         self,
@@ -721,14 +760,19 @@ class CategoricalThermoSensitivity(
 
         This property is cached to avoid recomputing it multiple times.
         """
+
         def category_resampler(series: pd.Series):
             """Return the most common category in the series"""
             try:
                 return series.value_counts().idxmax()
             except ValueError:
                 return None
-        return self.categories.resample(self.frequency).apply(category_resampler).rename(self.categories_name)
 
+        return (
+            self.categories.resample(self.frequency)
+            .apply(category_resampler)
+            .rename(self.categories_name)
+        )
 
     @property
     def categories(
@@ -736,7 +780,6 @@ class CategoricalThermoSensitivity(
     ):
         """The categories of the periods."""
         return self._categories
-
 
     @cached_property
     def resampled_energy_temperature_category(
@@ -747,8 +790,14 @@ class CategoricalThermoSensitivity(
         The DataFrame contains the resampled energy and temperature data.
         Periods with missing values are removed.
         """
-        return pd.concat([self.resampled_energy, self.resampled_temperature, self.resampled_categories], axis=1).dropna(how="any", axis=0)
-
+        return pd.concat(
+            [
+                self.resampled_energy,
+                self.resampled_temperature,
+                self.resampled_categories,
+            ],
+            axis=1,
+        ).dropna(how="any", axis=0)
 
     def _aggregate_data(
         self,
@@ -758,10 +807,13 @@ class CategoricalThermoSensitivity(
         Store the aggregated data in the `aggregated_data` property.
         """
         degree_days = self._calculate_degree_days(degree_days_base_temperature)
-        self.aggregated_data = pd.concat([self.resampled_energy_temperature_category,
-                                          degree_days,
-                                          ], axis=1)
-
+        self.aggregated_data = pd.concat(
+            [
+                self.resampled_energy_temperature_category,
+                degree_days,
+            ],
+            axis=1,
+        )
 
     def _detect_degree_days_type(
         self,
@@ -783,23 +835,47 @@ class CategoricalThermoSensitivity(
             for cat in list(self.resampled_categories.unique()):
                 if verbose:
                     print("f{cat=}")
-                heating_mask = self.resampled_energy_temperature_category[self.temperature_name] < self.interseason_mean_temperature
-                cat_mask = self.resampled_energy_temperature_category[self.categories_name] == cat
-                tmp_heating_sp = spearmanr(self.resampled_energy_temperature_category.loc[heating_mask & cat_mask, [self.target_name, self.temperature_name]],
-                                           alternative='less'
-                                           )
+                heating_mask = (
+                    self.resampled_energy_temperature_category[
+                        self.temperature_name
+                    ]
+                    < self.interseason_mean_temperature
+                )
+                cat_mask = (
+                    self.resampled_energy_temperature_category[
+                        self.categories_name
+                    ]
+                    == cat
+                )
+                tmp_heating_sp = spearmanr(
+                    self.resampled_energy_temperature_category.loc[
+                        heating_mask & cat_mask,
+                        [self.target_name, self.temperature_name],
+                    ],
+                    alternative="less",
+                )
 
                 if tmp_heating_sp.pvalue < heating_sp:
                     heating_sp = tmp_heating_sp.pvalue
-                cooling_mask = self.resampled_temperature > self.interseason_mean_temperature
-                tmp_cooling_sp = spearmanr(self.resampled_energy_temperature_category.loc[cooling_mask & cat_mask, [self.target_name, self.temperature_name]],
-                                           alternative='greater'
-                                           )
+                cooling_mask = (
+                    self.resampled_temperature
+                    > self.interseason_mean_temperature
+                )
+                tmp_cooling_sp = spearmanr(
+                    self.resampled_energy_temperature_category.loc[
+                        cooling_mask & cat_mask,
+                        [self.target_name, self.temperature_name],
+                    ],
+                    alternative="greater",
+                )
                 if verbose:
                     print(f"{tmp_cooling_sp}")
                 if tmp_cooling_sp.pvalue < cooling_sp:
                     cooling_sp = tmp_cooling_sp.pvalue
-            if heating_sp < significance_level and cooling_sp < significance_level:
+            if (
+                heating_sp < significance_level
+                and cooling_sp < significance_level
+            ):
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
                 self.degree_days_type = "heating"
@@ -808,8 +884,9 @@ class CategoricalThermoSensitivity(
             else:
                 if verbose:
                     print(f"{cooling_sp=}, {heating_sp=}")
-                raise ValueError("Cannot detect the degree days type. Please specify it manually.")
-
+                raise ValueError(
+                    "Cannot detect the degree days type. Please specify it manually."
+                )
 
     def _fit_thermosensitivity(
         self,

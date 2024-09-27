@@ -16,6 +16,7 @@ be questioned VS a well-chosen aggregation.
     :py:mod:`energy_toolbox.timeseries.power.conservative`
 
 """
+
 import numpy as np
 import pandas as pd
 
@@ -58,13 +59,15 @@ def piecewise_affine(
     try:
         ref_time = target_instants[0]
     except IndexError:
-        return pd.Series([], dtype=timeseries.dtype,
-                         index=target_instants.copy())
+        return pd.Series(
+            [], dtype=timeseries.dtype, index=target_instants.copy()
+        )
     target_offsets = (target_instants - ref_time).total_seconds()
     sample_dts = (timeseries.index - ref_time).total_seconds()
     new_values = np.interp(target_offsets, sample_dts, timeseries.values)
     new_series = pd.Series(
-        new_values, index=target_instants.copy(), name=timeseries.name)
+        new_values, index=target_instants.copy(), name=timeseries.name
+    )
     new_series.index.name = timeseries.index.name
     return new_series
 
@@ -104,18 +107,20 @@ def piecewise_constant(
     try:
         ref_time = target_instants[0]
     except IndexError:
-        return pd.Series([], dtype=timeseries.dtype,
-                         index=target_instants.copy())
+        return pd.Series(
+            [], dtype=timeseries.dtype, index=target_instants.copy()
+        )
     target_offsets = (target_instants - ref_time).total_seconds()
     sample_dts = (timeseries.index - ref_time).total_seconds()
     ix_select = np.digitize(target_offsets, sample_dts, right=False) - 1
     if left_pad is None:
-        ix_select[ix_select < 0] = 0 # index 0
+        ix_select[ix_select < 0] = 0  # index 0
         new_values = timeseries.iloc[ix_select].values
     else:
         new_values = timeseries.iloc[ix_select].values
         new_values[ix_select < 0] = left_pad
     new_series = pd.Series(
-        new_values, index=target_instants, name=timeseries.name)
+        new_values, index=target_instants, name=timeseries.name
+    )
     new_series.index.name = timeseries.index.name
     return new_series

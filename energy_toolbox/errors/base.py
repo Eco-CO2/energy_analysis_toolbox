@@ -1,5 +1,6 @@
 """This module defines custom errors."""
 
+
 class ETExcept(Exception):
     """The base class for all except in |et|.
 
@@ -7,6 +8,6 @@ class ETExcept(Exception):
     specific to this lib can easily be caught/identified.
     """
 
+
 class ETEmptyDataError(ETExcept):
-    """An empty data container is passed, but this case cannot be managed.
-    """
+    """An empty data container is passed, but this case cannot be managed."""

@@ -44,6 +44,7 @@ Freq: D, Name: heating_degree_days, dtype: float64
 Freq: D, Name: cooling_degree_days, dtype: float64
 
 """
+
 import energy_toolbox as et
 import pandas as pd
 from typing import Literal, Callable
@@ -55,8 +56,8 @@ literal_method = Literal["min_max", "mean", "integral", "pro"]
 def dd_min_max(
     temperature: pd.Series,
     reference: float,
-    clip_tshd: float=0,
-    type: literal_type="heating",
+    clip_tshd: float = 0,
+    type: literal_type = "heating",
 ) -> pd.Series:
     """Return daily degree-days with min-max method.
 
@@ -106,19 +107,23 @@ def dd_min_max(
 
     """
     _assert_dd_type(type)
-    min_max = temperature.resample('D').apply(['min', 'max'])
-    degree_days = (reference - min_max.sum(axis=1, min_count=2) / 2 )
+    min_max = temperature.resample("D").apply(["min", "max"])
+    degree_days = reference - min_max.sum(axis=1, min_count=2) / 2
     if type == "cooling":
         degree_days = -degree_days
-    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
+    degree_days.name = (
+        et.keywords.heating_dd_f
+        if type == "heating"
+        else et.keywords.cooling_dd_f
+    )
     return degree_days.clip(lower=clip_tshd)
 
 
 def dd_pro(
     temperature: pd.Series,
     reference: float,
-    clip_tshd: float=0,
-    type: literal_type="heating",
+    clip_tshd: float = 0,
+    type: literal_type = "heating",
 ):
     """Return daily degree-days with pro method.
 
@@ -134,29 +139,41 @@ def dd_pro(
     instead of the min and max temperature mean.
     """
     _assert_dd_type(type)
-    min_max_mean = temperature.resample('D').apply(['min', 'max', "mean"])
+    min_max_mean = temperature.resample("D").apply(["min", "max", "mean"])
     if type == "cooling":
         # Invert all the signs to compute cooling degree days
         min_max_mean = -min_max_mean
-        min_max_mean['min'], min_max_mean['max'] = min_max_mean['max'], min_max_mean['min']
+        min_max_mean["min"], min_max_mean["max"] = (
+            min_max_mean["max"],
+            min_max_mean["min"],
+        )
         reference = -reference
         clip_tshd = -clip_tshd
-    mask_tmin_over_tref = min_max_mean['min'] > reference
-    mask_between_tmin_tmax = (min_max_mean['min'] <= reference) & (min_max_mean['max'] >= reference)
-    degree_days = reference - min_max_mean['mean']
-    degree_days[mask_tmin_over_tref] = clip_tshd
-    degree_days[mask_between_tmin_tmax] = (reference - min_max_mean['min']) * (
-        0.08 + 0.42 * (reference - min_max_mean['min']) / (min_max_mean['max'] - min_max_mean['min'])
+    mask_tmin_over_tref = min_max_mean["min"] > reference
+    mask_between_tmin_tmax = (min_max_mean["min"] <= reference) & (
+        min_max_mean["max"] >= reference
     )
-    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
+    degree_days = reference - min_max_mean["mean"]
+    degree_days[mask_tmin_over_tref] = clip_tshd
+    degree_days[mask_between_tmin_tmax] = (reference - min_max_mean["min"]) * (
+        0.08
+        + 0.42
+        * (reference - min_max_mean["min"])
+        / (min_max_mean["max"] - min_max_mean["min"])
+    )
+    degree_days.name = (
+        et.keywords.heating_dd_f
+        if type == "heating"
+        else et.keywords.cooling_dd_f
+    )
     return degree_days
 
 
 def dd_mean(
     temperature: pd.Series,
     reference: float,
-    clip_tshd: float=0,
-    type: literal_type="heating",
+    clip_tshd: float = 0,
+    type: literal_type = "heating",
 ) -> pd.Series:
     """Return daily degree-days with mean method.
 
@@ -202,19 +219,23 @@ def dd_mean(
 
     """
     _assert_dd_type(type)
-    degree_days = (reference - temperature.resample('D').mean())
+    degree_days = reference - temperature.resample("D").mean()
     if type == "cooling":
         degree_days = -degree_days
-    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
+    degree_days.name = (
+        et.keywords.heating_dd_f
+        if type == "heating"
+        else et.keywords.cooling_dd_f
+    )
     return degree_days.clip(lower=clip_tshd)
 
 
 def dd_integral(
     temperature: pd.Series,
     reference: float,
-    clip_tshd: float=0,
-    type: literal_type="heating",
-    intraday_clip_tshd: float=0,
+    clip_tshd: float = 0,
+    type: literal_type = "heating",
+    intraday_clip_tshd: float = 0,
 ) -> pd.Series:
     """Return daily degree-days with integral method.
 
@@ -281,22 +302,24 @@ def dd_integral(
     _assert_dd_type(type)
     timesteps = et.timeseries.extract_features.timestep_durations(temperature)
     sign = 1 if type == "heating" else -1
-    degree_days = ((
-        (sign*(reference - temperature)).clip(lower=intraday_clip_tshd) * timesteps)
-        .resample('D')
-        .sum()
-        / timesteps.resample('D').sum()
-        )
-    degree_days.name = et.keywords.heating_dd_f if type == "heating" else et.keywords.cooling_dd_f
+    degree_days = (
+        (sign * (reference - temperature)).clip(lower=intraday_clip_tshd)
+        * timesteps
+    ).resample("D").sum() / timesteps.resample("D").sum()
+    degree_days.name = (
+        et.keywords.heating_dd_f
+        if type == "heating"
+        else et.keywords.cooling_dd_f
+    )
     return degree_days.clip(lower=clip_tshd)
 
 
 def dd_compute(
     temperature: pd.Series,
     reference: float,
-    clip_tshd: float=0,
-    type: literal_type="heating",
-    method: literal_method="integral",
+    clip_tshd: float = 0,
+    type: literal_type = "heating",
+    method: literal_method = "integral",
     **kwargs,
 ) -> pd.Series:
     """Return daily degree-days with the specified method.
