@@ -7,13 +7,13 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   watt_df.thermosensitivity.daily_analysis
-   watt_df.thermosensitivity.thermosensitivity
+   wattdf.thermosensitivity.daily_analysis
+   wattdf.thermosensitivity.thermosensitivity
 
 Module contents
 ---------------
 
-.. automodule:: watt_df.thermosensitivity
+.. automodule:: wattdf.thermosensitivity
    :members:
    :undoc-members:
    :show-inheritance:

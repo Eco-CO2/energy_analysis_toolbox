@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-from watt_df.timeseries.profiles.localization import (
+from wattdf.timeseries.profiles.localization import (
     LocalizedMeanProfile,
     LocalizedRollingProfile,
     LocalizedRollingQuantileProfile,

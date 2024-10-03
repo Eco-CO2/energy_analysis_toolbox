@@ -1,7 +1,7 @@
-"""Function to resample a energy series."""
+"""Function to resample a power series."""
 
 import pandas as pd
-from ..timeseries.resample.conservative import volume_to_freq
+from ..timeseries.resample.conservative import flow_rate_to_freq
 
 
 def to_freq(
@@ -10,14 +10,18 @@ def to_freq(
     origin=None,
     last_step_duration=None,
 ) -> "pd.Series[float]":
-    """Resample an energy series to a given frequency.
+    """Resample a power series to a given frequency.
 
     The last step duration of the resampled series is set to the frequency ``freq``.
+
+    .. note::
+        Experimental: This function may change or be removed in a future release without warning.
+
 
     Parameters
     ----------
     series : pd.Series[float]
-        a series of energy.
+        a series of power.
     freq : str
         the frequency to resample to.
     origin : {"floor", "ceil", pd.Timestamp}, optional
@@ -32,15 +36,15 @@ def to_freq(
     Returns
     -------
     pd.Series[float]
-        the resampled energy series.
+        the resampled power series.
 
 
     .. seealso::
 
-        * :py:func:`watt_df.timeseries.resample.conservative.volume_to_freq`
-        * :py:func:`watt_df.timeseries.resample.conservative.volume_conservative`
+        * :py:func:`wattdf.timeseries.resample.conservative.flow_rate_to_freq`
+        * :py:func:`wattdf.timeseries.resample.conservative.flow_rate_conservative`
 
     """
     if series.empty:
         return series
-    return volume_to_freq(series, freq, origin, last_step_duration)
+    return flow_rate_to_freq(series, freq, origin, last_step_duration)

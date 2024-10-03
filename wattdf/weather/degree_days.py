@@ -45,7 +45,7 @@ Freq: D, Name: cooling_degree_days, dtype: float64
 
 """
 
-import watt_df as et
+import wattdf as et
 import pandas as pd
 from typing import Literal, Callable
 

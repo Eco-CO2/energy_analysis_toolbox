@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-from watt_df.weather.degree_days import (
+from wattdf.weather.degree_days import (
     dd_mean,
     dd_min_max,
     dd_integral,

@@ -6,7 +6,7 @@ test suite from a python interpreter.
 
 Using this function rather than launching using ``pytest`` enables you to be sure
 that the tested code is the one from your ``PYTHONPATH`` i.e., the code which
-you use when you type ``import watt_df`` in the calling interpreter.
+you use when you type ``import wattdf`` in the calling interpreter.
 """
 
 import pytest
@@ -34,7 +34,7 @@ def run():
             "--junitxml",
             test_report_filename,
             "--cov",
-            "watt_df",
+            "wattdf",
             "--cov-config",
             coverage_config_filename,
             "--cov-report",

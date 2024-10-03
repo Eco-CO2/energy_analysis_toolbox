@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.resample.\_facade module
 ===================================================
 
-.. automodule:: watt_df.timeseries.resample._facade
+.. automodule:: wattdf.timeseries.resample._facade
    :members:
    :undoc-members:
    :show-inheritance:

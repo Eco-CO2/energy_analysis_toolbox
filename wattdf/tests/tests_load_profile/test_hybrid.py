@@ -5,7 +5,7 @@ Tests for the ``HybridThreshold``.
 
 import pandas as pd
 
-from watt_df.timeseries.profiles.thresholds.hybrid_rel_std import (
+from wattdf.timeseries.profiles.thresholds.hybrid_rel_std import (
     HybridThreshold,
 )
 from .fake_data import sinusoid_history

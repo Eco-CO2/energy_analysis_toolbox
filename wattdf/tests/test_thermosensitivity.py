@@ -3,14 +3,14 @@
 import pandas as pd
 import numpy as np
 import pytest
-from watt_df.thermosensitivity import (
+from wattdf.thermosensitivity import (
     ThermoSensitivity,
     CategoricalThermoSensitivity,
     DailyCategoricalThermoSensitivity,
     DayOfWeekCategoricalThermoSensitivity,
     AutoCategoricalThermoSensitivity,
 )
-from watt_df.synthetic.thermosensitive_consumption import (
+from wattdf.synthetic.thermosensitive_consumption import (
     DateSynthTSConsumption,
     CategorySynthTSConsumption,
 )

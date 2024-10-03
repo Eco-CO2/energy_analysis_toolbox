@@ -5,7 +5,7 @@ Tests for the ``RelativeSTDThreshold``.
 
 import pandas as pd
 
-from watt_df.timeseries.profiles.thresholds.relative_std import (
+from wattdf.timeseries.profiles.thresholds.relative_std import (
     RelativeSTDThreshold,
 )
 from .fake_data import sinusoid_history

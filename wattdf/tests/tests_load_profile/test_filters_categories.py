@@ -6,7 +6,7 @@ import numpy as np
 import scipy.constants as SK
 import pandas as pd
 from .fake_data import sinusoid_history_df
-from watt_df.timeseries.profiles.preprocessing.history_filters.categories import (
+from wattdf.timeseries.profiles.preprocessing.history_filters.categories import (
     same_category,
     keep_categories,
     remove_categories,

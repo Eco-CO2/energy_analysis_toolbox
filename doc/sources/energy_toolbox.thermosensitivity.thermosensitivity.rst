@@ -1,7 +1,7 @@
 energy\_toolbox.thermosensitivity.thermosensitivity module
 ==========================================================
 
-.. automodule:: watt_df.thermosensitivity.thermosensitivity
+.. automodule:: wattdf.thermosensitivity.thermosensitivity
    :members:
    :undoc-members:
    :show-inheritance:

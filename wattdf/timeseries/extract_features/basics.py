@@ -159,7 +159,7 @@ def timestep_durations(
 
     .. seealso::
 
-        :py:func:`watt_df.timeseries.extract_features.basics.index_to_timesteps`
+        :py:func:`wattdf.timeseries.extract_features.basics.index_to_timesteps`
         which works directly from the series index.
 
     """
@@ -216,7 +216,7 @@ def index_to_timesteps(
 
     .. seealso::
 
-        :py:func:`watt_df.timeseries.extract_features.basics.timestep_durations`
+        :py:func:`wattdf.timeseries.extract_features.basics.timestep_durations`
         which works on timeseries by applying this function to its index.
 
     """

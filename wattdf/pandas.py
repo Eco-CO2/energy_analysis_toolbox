@@ -3,8 +3,8 @@
 **In order for the accessors to be accessible, this module must be imported.**
 The module is not imported by default when importing |et|::
 
-    import watt_df as et
-    import watt_df.pandas
+    import wattdf as et
+    import wattdf.pandas
 
 
 Series
@@ -68,7 +68,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Convert a power series to an energy series.
-        See :func:`watt_df.power.to_energy` for details.
+        See :func:`wattdf.power.to_energy` for details.
 
         Returns
         -------
@@ -84,7 +84,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Convert an energy series to a power series.
-        See :func:`watt_df.energy.to_power` for details.
+        See :func:`wattdf.energy.to_power` for details.
 
         Returns
         -------
@@ -100,7 +100,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Resample a power series to a fixed frequency.
-        See :func:`watt_df.power.to_freq` for details.
+        See :func:`wattdf.power.to_freq` for details.
 
         Returns
         -------
@@ -116,7 +116,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Resample an energy series to a fixed frequency.
-        See :func:`watt_df.energy.to_freq` for details.
+        See :func:`wattdf.energy.to_freq` for details.
 
         Returns
         -------
@@ -136,7 +136,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Resample a series to a fixed frequency with various strategies.
-        See :func:`watt_df.timeseries.resample.to_freq` for details.
+        See :func:`wattdf.timeseries.resample.to_freq` for details.
 
         
 
@@ -165,7 +165,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Detect intervals over a threshold.
-        See :func:`watt_df.timeseries.extract_features.intervals_over` for details.
+        See :func:`wattdf.timeseries.extract_features.intervals_over` for details.
 
         Returns
         -------
@@ -181,7 +181,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Return the series of timestep durations of a timeseries.
-        See :func:`watt_df.timeseries.timestep_durations` for details.
+        See :func:`wattdf.timeseries.timestep_durations` for details.
 
         Returns
         -------
@@ -197,7 +197,7 @@ class ETAccessorSeries:
         **kwargs,
     ):
         """Fill the holes in a timeseries.
-        See :func:`watt_df.timeseries.fill_data_holes` for details.
+        See :func:`wattdf.timeseries.fill_data_holes` for details.
 
         Returns
         -------

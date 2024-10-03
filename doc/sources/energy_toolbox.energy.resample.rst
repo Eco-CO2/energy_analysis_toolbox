@@ -1,7 +1,7 @@
 energy\_toolbox.energy.resample
 ===============================
 
-.. automodule:: watt_df.energy.resample
+.. automodule:: wattdf.energy.resample
    :members:
    :undoc-members:
    :show-inheritance:

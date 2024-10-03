@@ -7,7 +7,7 @@ from  .. import pandas # noqa F401
 
 def test_series_to_energy():
     # Test the to_energy method of CTAccessorSeries
-    from watt_df.power import to_energy
+    from wattdf.power import to_energy
     series = pd.Series([1, 2, 3], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     ct_series = series.wdf.to_energy()
     assert isinstance(ct_series, pd.Series)
@@ -21,7 +21,7 @@ def test_series_to_power():
 
 def test_series_power_to_freq():
     # Test the power_to_freq method of CTAccessorSeries
-    from watt_df.power import to_freq
+    from wattdf.power import to_freq
     series = pd.Series([1, 2, 3], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     ct_series = series.wdf.power_to_freq("2D", last_step_duration=3600)
     assert isinstance(ct_series, pd.Series)
@@ -29,7 +29,7 @@ def test_series_power_to_freq():
 
 def test_series_energy_to_freq():
     # Test the energy_to_freq method of CTAccessorSeries
-    from watt_df.energy import to_freq
+    from wattdf.energy import to_freq
     series = pd.Series([1, 2, 3], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     ct_series = series.wdf.energy_to_freq("2D", last_step_duration=3600)
     assert isinstance(ct_series, pd.Series)
@@ -37,7 +37,7 @@ def test_series_energy_to_freq():
 
 def test_series_intervals_over():
     # Test the intervals_over method of CTAccessorSeries
-    from watt_df.timeseries.extract_features import intervals_over
+    from wattdf.timeseries.extract_features import intervals_over
     series = pd.Series([1, 2, 3], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     ct_series = series.wdf.intervals_over(2)
     assert isinstance(ct_series, pd.DataFrame)
@@ -45,7 +45,7 @@ def test_series_intervals_over():
 
 def test_series_timestep_durations():
     # Test the timestep_durations method of CTAccessorSeries
-    from watt_df.timeseries.extract_features import timestep_durations
+    from wattdf.timeseries.extract_features import timestep_durations
     series = pd.Series([1, 2, 3], index=pd.date_range('2022-01-01', periods=3, freq='D'))
     ct_series = series.wdf.timestep_durations()
     assert isinstance(ct_series, pd.Series)
@@ -53,7 +53,7 @@ def test_series_timestep_durations():
 
 def test_series_fill_missing_entries():
     # Test the fill_missing_entries method of CTAccessorSeries
-    from watt_df.timeseries.resample import fill_data_holes
+    from wattdf.timeseries.resample import fill_data_holes
     series = pd.Series([1, 2, 3, 4, 5],
                        index=pd.date_range('2022-01-01 01:00:00',
                                            periods=5,

@@ -1,4 +1,4 @@
-"""Tests for :py:mod:`watt_df.timeseries.resample._facade` module."""
+"""Tests for :py:mod:`wattdf.timeseries.resample._facade` module."""
 
 import pandas as pd
 

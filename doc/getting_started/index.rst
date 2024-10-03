@@ -15,7 +15,7 @@ The installation is described using ``pip``:
 * Run ``pip install ./``. This can be combined with other ``pip``
   options such as ``--prefix`` to chose the target installation directory.
 
-.. _Gitlab: https://gitlab.ecoco2.com/recherche/watt_df
+.. _Gitlab: https://gitlab.ecoco2.com/recherche/wattdf
 
 Examples of use
 ===============

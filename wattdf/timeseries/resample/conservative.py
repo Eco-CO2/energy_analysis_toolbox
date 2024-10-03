@@ -144,7 +144,7 @@ def flow_rate_conservative(
       series assuming the ``flow_rates`` series defines a piecewise constant
       function. [2.]
     - The volumes are resampled in a conservative way using
-      :py:func:`watt_df.timeseries.power.volume_conservative` function. [3.]
+      :py:func:`wattdf.timeseries.power.volume_conservative` function. [3.]
     - The resulting flow-rates are deduced as the ratio between these volumes
       and the interval durations of the target series. The duration of the
       last interval is defined by ``last_target_step_duration``. [4.]

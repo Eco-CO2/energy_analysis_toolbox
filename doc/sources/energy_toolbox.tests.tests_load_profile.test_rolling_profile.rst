@@ -1,7 +1,7 @@
 energy\_toolbox.tests.tests\_load\_profile.test\_rolling\_profile
 =================================================================
 
-.. automodule:: watt_df.tests.tests_load_profile.test_rolling_profile
+.. automodule:: wattdf.tests.tests_load_profile.test_rolling_profile
    :members:
    :undoc-members:
    :show-inheritance:

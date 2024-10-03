@@ -13,7 +13,7 @@ be questioned VS a well-chosen aggregation.
 
 .. seealso:: In case the series to be resampled must satisfy conservation laws
 
-    :py:mod:`watt_df.timeseries.power.conservative`
+    :py:mod:`wattdf.timeseries.power.conservative`
 
 """
 

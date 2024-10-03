@@ -4,7 +4,7 @@ from itertools import product
 import pytest
 import pandas as pd
 import numpy as np
-from watt_df.timeseries.profiles.rolling_profile import (
+from wattdf.timeseries.profiles.rolling_profile import (
     RollingProfile,
     RollingQuantileProfile,
 )

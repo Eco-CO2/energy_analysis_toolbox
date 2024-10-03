@@ -1,9 +1,9 @@
-# watt_df
+# wattdf
 
 `wdf` is a library dedicated to data manipulation and processing for common tasks
 encountered in the daily life of energy/data engineers here at Eco CO2.
 
-See the [documentation](http://recherche.gitlab-pages.ecoco2.com/watt_df/html/)
+See the [documentation](http://recherche.gitlab-pages.ecoco2.com/wattdf/html/)
 for information about how to get started with the lib, the API reference, user-guide
 and contributing guidelines.
 

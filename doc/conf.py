@@ -5,12 +5,12 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import watt_df
+import wattdf
 
-project = "watt_df"
-copyright = "2024, watt_df developers"
-author = "watt_df developers"
-version = watt_df.__version__
+project = "wattdf"
+copyright = "2024, wattdf developers"
+author = "wattdf developers"
+version = wattdf.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -30,16 +30,16 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # define code executed for each file as if included in it
 rst_prolog = """
-.. |et| replace:: ``watt_df``
+.. |et| replace:: ``wattdf``
 .. |None| replace:: ``None``
 .. |NaN| replace:: ``NaN``
 
-.. |flow_rate_conservative| replace:: :py:func:`flow_rate_conservative <cwatt_df.timeseries.power.conservative.flow_rate_conservative`
-.. |volume_conservative| replace:: :py:func:`volume_conservative <watt_df.timeseries.power.conservative.volume_conservative`
+.. |flow_rate_conservative| replace:: :py:func:`flow_rate_conservative <cwattdf.timeseries.power.conservative.flow_rate_conservative`
+.. |volume_conservative| replace:: :py:func:`volume_conservative <wattdf.timeseries.power.conservative.volume_conservative`
 
-.. |ETK.start_f| replace:: :py:const:`ETK.start_f <watt_df.keywords.start_f>`
-.. |ETK.end_f| replace:: :py:const:`ETK.end_f <watt_df.keywords.end_f>`
-.. |ETK.time_f| replace:: :py:const:`ETK.time_f <watt_df.keywords.time_f>`
+.. |ETK.start_f| replace:: :py:const:`ETK.start_f <wattdf.keywords.start_f>`
+.. |ETK.end_f| replace:: :py:const:`ETK.end_f <wattdf.keywords.end_f>`
+.. |ETK.time_f| replace:: :py:const:`ETK.time_f <wattdf.keywords.time_f>`
 
 """
 

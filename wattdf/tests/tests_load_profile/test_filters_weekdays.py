@@ -4,7 +4,7 @@
 import scipy.constants as SK
 import pandas as pd
 from .fake_data import sinusoid_history_df
-from watt_df.timeseries.profiles.preprocessing.history_filters.weekdays import (
+from wattdf.timeseries.profiles.preprocessing.history_filters.weekdays import (
     weekdays_only,
     weekends_only,
     same_day_only,

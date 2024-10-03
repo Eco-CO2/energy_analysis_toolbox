@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.resample.conservative module
 =======================================================
 
-.. automodule:: watt_df.timeseries.resample.conservative
+.. automodule:: wattdf.timeseries.resample.conservative
    :members:
    :undoc-members:
    :show-inheritance:

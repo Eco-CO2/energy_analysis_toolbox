@@ -1,7 +1,7 @@
 energy\_toolbox.tests.tests\_load\_profile.test\_filters\_categories module
 ===========================================================================
 
-.. automodule:: watt_df.tests.tests_load_profile.test_filters_categories
+.. automodule:: wattdf.tests.tests_load_profile.test_filters_categories
    :members:
    :undoc-members:
    :show-inheritance:

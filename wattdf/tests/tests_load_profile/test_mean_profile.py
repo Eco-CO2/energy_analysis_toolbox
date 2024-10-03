@@ -5,7 +5,7 @@ Tests for the ``MeanProfile`` base class.
 
 import pandas as pd
 
-from watt_df.timeseries.profiles.mean_profile import MeanProfile
+from wattdf.timeseries.profiles.mean_profile import MeanProfile
 from .fake_data import sinusoid_history
 from .check import compare_profiles
 

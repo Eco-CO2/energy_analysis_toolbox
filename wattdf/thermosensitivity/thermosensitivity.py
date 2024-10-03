@@ -50,7 +50,7 @@ Different methods are available to compute the degree days:
     .. math::
         DegreeDays = max(0, BaseTemperature - \\frac{T_{min} + T_{max}}{2} )
 
-See the `dd_compute` function in the `watt_df.weather.degree_days` module.
+See the `dd_compute` function in the `wattdf.weather.degree_days` module.
 
 Over a long period, the data can present a thermosensitivity with different types of degree days:
 
@@ -89,10 +89,10 @@ The optimization is done with the `scipy.optimize.minimize_scalar` function with
 import pandas as pd
 from scipy.optimize import minimize_scalar
 from scipy.stats import spearmanr
-from watt_df.weather.degree_days import dd_compute
+from wattdf.weather.degree_days import dd_compute
 from statsmodels.api import OLS
 from functools import cached_property
-from watt_df.energy.resample import to_freq as energy_to_freq
+from wattdf.energy.resample import to_freq as energy_to_freq
 
 
 class ThermoSensitivity:
@@ -140,7 +140,7 @@ class ThermoSensitivity:
 
     Examples
     --------
-    >>> from watt_df.thermosensitivity import ThermoSensitivity
+    >>> from wattdf.thermosensitivity import ThermoSensitivity
     >>> import pandas as pd
     >>> import numpy as np
     >>> np.random.seed(0)
@@ -243,7 +243,7 @@ class ThermoSensitivity:
     ) -> pd.Series:
         """The energy data resampled at the given frequency.
 
-        Uses the `to_freq` function from the `watt_df.energy.resample` module
+        Uses the `to_freq` function from the `wattdf.energy.resample` module
         to convert the energy data to the desired frequency.
 
         This property is cached to avoid recomputing it multiple times.
