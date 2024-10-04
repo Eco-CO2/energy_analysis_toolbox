@@ -1,7 +1,7 @@
 energy\_toolbox.tests.test\_exists module
 =========================================
 
-.. automodule:: wattdf.tests.test_exists
+.. automodule:: energy_analysis_toolbox.tests.test_exists
    :members:
    :undoc-members:
    :show-inheritance:

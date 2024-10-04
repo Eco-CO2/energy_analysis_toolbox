@@ -1,9 +1,9 @@
-# wattdf
+# energy_analysis_toolbox
 
-`wdf` is a library dedicated to data manipulation and processing for common tasks
+`eat` is a library dedicated to data manipulation and processing for common tasks
 encountered in the daily life of energy/data engineers here at Eco CO2.
 
-See the [documentation](http://recherche.gitlab-pages.ecoco2.com/wattdf/html/)
+See the [documentation](http://recherche.gitlab-pages.ecoco2.com/energy_analysis_toolbox/html/)
 for information about how to get started with the lib, the API reference, user-guide
 and contributing guidelines.
 

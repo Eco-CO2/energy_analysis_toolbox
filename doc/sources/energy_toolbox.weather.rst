@@ -9,9 +9,9 @@ The package is structured as follows:
 .. toctree::
     :maxdepth: 2
 
-    wattdf.weather.degree_days
+    energy_analysis_toolbox.weather.degree_days
 
-.. automodule:: wattdf.weather
+.. automodule:: energy_analysis_toolbox.weather
    :members:
    :undoc-members:
    :show-inheritance:

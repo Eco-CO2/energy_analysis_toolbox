@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.extract\_features.basics module
 ==========================================================
 
-.. automodule:: wattdf.timeseries.extract_features.basics
+.. automodule:: energy_analysis_toolbox.timeseries.extract_features.basics
    :members:
    :undoc-members:
    :show-inheritance:

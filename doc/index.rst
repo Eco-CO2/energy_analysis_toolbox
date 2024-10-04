@@ -1,11 +1,11 @@
-wattdf documentation
+energy_analysis_toolbox documentation
 ============================
 
 **Date**: |today|
 
 **Version**: |version|
 
-``wattdf`` is an open source library providing a set of tools to process energy and power pandas time-series for the Python programming language.
+``energy_analysis_toolbox`` is an open source library providing a set of tools to process energy and power pandas time-series for the Python programming language.
 
 Originally developed by the R&D team of `Eco CO2 <https://www.ecoco2.com>`_, it was released in open source in October, 2024.
 

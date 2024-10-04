@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.create.from\_intervals module
 ========================================================
 
-.. automodule:: wattdf.timeseries.create.from_intervals
+.. automodule:: energy_analysis_toolbox.timeseries.create.from_intervals
    :members:
    :undoc-members:
    :show-inheritance:

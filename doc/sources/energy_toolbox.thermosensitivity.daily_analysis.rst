@@ -1,7 +1,7 @@
 energy\_toolbox.thermosensitivity.daily\_analysis module
 ========================================================
 
-.. automodule:: wattdf.thermosensitivity.daily_analysis
+.. automodule:: energy_analysis_toolbox.thermosensitivity.daily_analysis
    :members:
    :undoc-members:
    :show-inheritance:

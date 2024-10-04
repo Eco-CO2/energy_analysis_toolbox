@@ -1,11 +1,11 @@
 energy\_toolbox.keywords module
 ===============================
 
-.. automodule:: wattdf.keywords
+.. automodule:: energy_analysis_toolbox.keywords
 
 
 Usual timeseries field names
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autodata:: wattdf.keywords.start_f
-.. autodata:: wattdf.keywords.end_f
-.. autodata:: wattdf.keywords.time_f
+.. autodata:: energy_analysis_toolbox.keywords.start_f
+.. autodata:: energy_analysis_toolbox.keywords.end_f
+.. autodata:: energy_analysis_toolbox.keywords.time_f

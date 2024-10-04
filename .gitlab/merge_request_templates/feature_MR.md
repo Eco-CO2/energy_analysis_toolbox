@@ -24,9 +24,9 @@
 - [ ] Run the tests in the following way :
   - **Install** the module (in the development environment)
   - Open a new terminal and load the production environment
-  - Run the tests in the production environment using the command in the [documentation](http://epicee.gitlab-pages.ecoco2.com/wattdf)
+  - Run the tests in the production environment using the command in the [documentation](http://epicee.gitlab-pages.ecoco2.com/energy_analysis_toolbox)
 - [ ] Update the [CHANGELOG](CHANGELOG.md) according to the work done in this MR
-- [ ] Update the version in [`__init__`](/wattdf/__init__.py) according to the modifications
+- [ ] Update the version in [`__init__`](/energy_analysis_toolbox/__init__.py) according to the modifications
 
 
 

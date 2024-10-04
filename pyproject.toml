@@ -3,7 +3,7 @@ requires = ["setuptools>=46.4.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "wattdf"
+name = "energy_analysis_toolbox"
 description = "A set of tools to manipulate and transform power, energy, and related timeseries data."
 authors = [
   { name="R&D team, Eco CO2 company", email="research@ecoco2.com" },
@@ -24,12 +24,12 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-"Homepage" = "https://gitlab.ecoco2.com/recherche/wattdf"
-"Bug Tracker" = "https://gitlab.ecoco2.com/recherche/wattdf-/issues"
+"Homepage" = "https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox"
+"Bug Tracker" = "https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox-/issues"
 
 [project.optional-dependencies]
 doc = [
-    "wattdf[examples]",
+    "energy_analysis_toolbox[examples]",
     "sphinx",
     "pydata-sphinx-theme",
     "sphinx-gallery",
@@ -46,17 +46,17 @@ examples = [
     "pyarrow",
 ]
 all = [
-    "wattdf[test,doc,examples]",
+    "energy_analysis_toolbox[test,doc,examples]",
 ]
 
 [tool.setuptools]
 zip-safe = false
 [tool.setuptools.packages.find]
 where = ["./"]
-include = ["wattdf*"]
+include = ["energy_analysis_toolbox*"]
 
 [tool.setuptools.dynamic]
-version = {attr = "wattdf.__version__"}
+version = {attr = "energy_analysis_toolbox.__version__"}
 
 [tool.ruff]
 line-length = 80
@@ -75,5 +75,5 @@ max-complexity = 5
             ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=wattdf --cov-report term --cov-report xml:cov.xml"  # --lf --last-failed-no-failures none"
-testpaths = ["wattdf/tests"]
+addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml"  # --lf --last-failed-no-failures none"
+testpaths = ["energy_analysis_toolbox/tests"]

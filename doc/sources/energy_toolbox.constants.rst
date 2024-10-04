@@ -1,7 +1,7 @@
 energy\_toolbox.constants module
 ================================
 
-.. automodule:: wattdf.constants
+.. automodule:: energy_analysis_toolbox.constants
 
-.. autodata:: wattdf.constants.Wh_to_J
-.. autodata:: wattdf.constants.kWh_to_J
+.. autodata:: energy_analysis_toolbox.constants.Wh_to_J
+.. autodata:: energy_analysis_toolbox.constants.kWh_to_J

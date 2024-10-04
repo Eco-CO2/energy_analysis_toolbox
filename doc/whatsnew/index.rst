@@ -3,7 +3,7 @@
 Release notes
 =============
 
-This is the list of changes to ``wattdf`` between each release.
+This is the list of changes to ``energy_analysis_toolbox`` between each release.
 
 Version 0.1
 -----------

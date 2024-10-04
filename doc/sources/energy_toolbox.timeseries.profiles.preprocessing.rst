@@ -1,7 +1,7 @@
 energy\_toolbox.load\_profiles.preprocessing package
 ====================================================
 
-.. automodule:: wattdf.timeseries.profiles.preprocessing
+.. automodule:: energy_analysis_toolbox.timeseries.profiles.preprocessing
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,4 +12,4 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   wattdf.timeseries.profiles.preprocessing.history_filters
+   energy_analysis_toolbox.timeseries.profiles.preprocessing.history_filters

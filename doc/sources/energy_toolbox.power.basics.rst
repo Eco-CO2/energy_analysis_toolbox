@@ -1,7 +1,7 @@
 energy\_toolbox.power.basics
 ============================
 
-.. automodule:: wattdf.power.basics
+.. automodule:: energy_analysis_toolbox.power.basics
    :members:
    :undoc-members:
    :show-inheritance:

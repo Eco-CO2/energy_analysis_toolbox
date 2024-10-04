@@ -1,7 +1,7 @@
 energy\_toolbox.timeseries.math package
 =======================================
 
-.. automodule:: wattdf.timeseries.math
+.. automodule:: energy_analysis_toolbox.timeseries.math
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,4 +12,4 @@ The package contains for now only the following module:
 .. toctree::
    :maxdepth: 4
 
-   wattdf.timeseries.math.derivatives
+   energy_analysis_toolbox.timeseries.math.derivatives
