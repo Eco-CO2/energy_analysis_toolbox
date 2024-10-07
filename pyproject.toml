@@ -21,8 +21,6 @@ dependencies = [
     "scipy>=1.13.0",
     "statsmodels>=0.13.0",
 ]
-
-[project.dynamic]
 dynamic = ["version"]
 
 [project.urls]
