@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import gaussian_kde, mode
-from ...errors import ETUndefinedTimestepError
+from ...errors import EATUndefinedTimestepError
 from ..extract_features.basics import (
     index_to_timesteps,
     timestep_durations,
@@ -115,7 +115,7 @@ def index_to_freq(
         try:
             last_step_duration = (index[-1] - index[-2]).seconds
         except IndexError:
-            raise ETUndefinedTimestepError(
+            raise EATUndefinedTimestepError(
                 "The last step duration could not be determined from the index."
                 " Please provide it explicitly."
             )

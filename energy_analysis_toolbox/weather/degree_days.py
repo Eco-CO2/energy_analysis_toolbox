@@ -45,7 +45,7 @@ Freq: D, Name: cooling_degree_days, dtype: float64
 
 """
 
-import energy_analysis_toolbox as et
+import energy_analysis_toolbox as eat
 import pandas as pd
 from typing import Literal, Callable
 
@@ -112,9 +112,9 @@ def dd_min_max(
     if type == "cooling":
         degree_days = -degree_days
     degree_days.name = (
-        et.keywords.heating_dd_f
+        eat.keywords.heating_dd_f
         if type == "heating"
-        else et.keywords.cooling_dd_f
+        else eat.keywords.cooling_dd_f
     )
     return degree_days.clip(lower=clip_tshd)
 
@@ -162,9 +162,9 @@ def dd_pro(
         / (min_max_mean["max"] - min_max_mean["min"])
     )
     degree_days.name = (
-        et.keywords.heating_dd_f
+        eat.keywords.heating_dd_f
         if type == "heating"
-        else et.keywords.cooling_dd_f
+        else eat.keywords.cooling_dd_f
     )
     return degree_days
 
@@ -223,9 +223,9 @@ def dd_mean(
     if type == "cooling":
         degree_days = -degree_days
     degree_days.name = (
-        et.keywords.heating_dd_f
+        eat.keywords.heating_dd_f
         if type == "heating"
-        else et.keywords.cooling_dd_f
+        else eat.keywords.cooling_dd_f
     )
     return degree_days.clip(lower=clip_tshd)
 
@@ -300,16 +300,16 @@ def dd_integral(
     Freq: D, Name: heating_degree_days, dtype: float64
     """
     _assert_dd_type(type)
-    timesteps = et.timeseries.extract_features.timestep_durations(temperature)
+    timesteps = eat.timeseries.extract_features.timestep_durations(temperature)
     sign = 1 if type == "heating" else -1
     degree_days = (
         (sign * (reference - temperature)).clip(lower=intraday_clip_tshd)
         * timesteps
     ).resample("D").sum() / timesteps.resample("D").sum()
     degree_days.name = (
-        et.keywords.heating_dd_f
+        eat.keywords.heating_dd_f
         if type == "heating"
-        else et.keywords.cooling_dd_f
+        else eat.keywords.cooling_dd_f
     )
     return degree_days.clip(lower=clip_tshd)
 

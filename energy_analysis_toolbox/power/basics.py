@@ -55,7 +55,7 @@ def integrate_over(
                            start                        end
     A  2023-10-29 00:00:00+02:00  2023-10-29 01:00:00+02:00
     B  2023-10-30 02:00:00+02:00  2023-10-30 02:00:00+01:00
-    >>> et.power.integrate_over(overconsumption, power)
+    >>> eat.power.integrate_over(overconsumption, power)
     A    3600.0
     B    3600.0
     dtype: float64
@@ -64,7 +64,7 @@ def integrate_over(
     end). Accordingly, an interval is completely accounted for in the integration
     as soon as it falls with the slice :
     >>> overconsumption['end'] += pd.Timedelta('10min')
-    >>> et.power.integrate_over(overconsumption, power)
+    >>> eat.power.integrate_over(overconsumption, power)
     A    7200.0
     B    7200.0
     dtype: float64

@@ -1,13 +1,13 @@
 """This module defines custom errors."""
 
 
-class ETExcept(Exception):
-    """The base class for all except in |et|.
+class EATExcept(Exception):
+    """The base class for all except in |eat|.
 
-    All exceptions of |et| library should inherit this class, such that exceptions
+    All exceptions of |eat| library should inherit this class, such that exceptions
     specific to this lib can easily be caught/identified.
     """
 
 
-class ETEmptyDataError(ETExcept):
+class EATEmptyDataError(EATExcept):
     """An empty data container is passed, but this case cannot be managed."""

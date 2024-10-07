@@ -1,4 +1,4 @@
-"""Test the et.timeseries.resample.index_transformation module"""
+"""Test the eat.timeseries.resample.index_transformation module"""
 
 import pandas as pd
 import numpy as np

@@ -8,6 +8,7 @@ description = "A set of tools to manipulate and transform power, energy, and rel
 authors = [
   { name="energy_analysis_toolbox contributors", email="research@ecoco2.com" },
 ]
+license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.8"
 keywords = ["profile"]

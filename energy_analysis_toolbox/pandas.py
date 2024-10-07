@@ -1,7 +1,7 @@
 """Add an accessor to pandas.DataFrame and pandas.Series for the computation toolbox.
 
 **In order for the accessors to be accessible, this module must be imported.**
-The module is not imported by default when importing |et|::
+The module is not imported by default when importing |eat|::
 
     import energy_analysis_toolbox as et
     import energy_analysis_toolbox.pandas
@@ -52,7 +52,7 @@ from . import (
 
 
 @pd.api.extensions.register_series_accessor("eat")
-class ETAccessorSeries:
+class EATAccessorSeries:
     """Define a new namespace for the computation toolbox on pandas.Series."""
 
     def __init__(
@@ -208,8 +208,8 @@ class ETAccessorSeries:
 
 
 @pd.api.extensions.register_dataframe_accessor("eat")
-class ETAccessorDataFrame:
+class EATAccessorDataFrame:
     """Define a new namespace for the computation toolbox on pandas.Series."""
 
     def __init__(self, pandas_obj):
-        raise NotImplementedError("""ET accessor for DataFrame is not implemented yet.""")
+        raise NotImplementedError("""EAT accessor for DataFrame is not implemented yet.""")

@@ -1,16 +1,16 @@
-"""This namespace defines the custom except for |et|."""
+"""This namespace defines the custom except for |eat|."""
 
 from .base import (
-    ETExcept,
-    ETEmptyDataError,
+    EATExcept,
+    EATEmptyDataError,
 )
 from .invalid_timeseries import (
-    ETInvalidTimeseriesError,
-    ETUndefinedTimestepError,
-    ETInvalidTimestepDurationError,
+    EATInvalidTimeseriesError,
+    EATUndefinedTimestepError,
+    EATInvalidTimestepDurationError,
 )
 from .resampling import (
-    CTResamplingError,
-    CTEmptySourceError,
-    CTEmptyTargetsError,
+    EATResamplingError,
+    EATEmptySourceError,
+    EATEmptyTargetsError,
 )

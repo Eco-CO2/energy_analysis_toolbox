@@ -9,9 +9,9 @@ from .index_transformation import index_to_freq
 from .interpolate import piecewise_affine
 from ..extract_features.basics import timestep_durations, index_to_timesteps
 from ...errors import (
-    CTEmptySourceError,
-    CTEmptyTargetsError,
-    ETInvalidTimestepDurationError,
+    EATEmptySourceError,
+    EATEmptyTargetsError,
+    EATInvalidTimestepDurationError,
 )
 
 
@@ -106,13 +106,13 @@ def flow_rate_conservative(
 
     Raises
     ------
-    CTEmptySourceError :
+    EATEmptySourceError :
         In case ``flow_rates`` is empty.
-    CTEmptyTargetsError :
+    EATEmptyTargetsError :
         In case ``target_instants`` is empty.
-    ETInvalidTimestepDurationError :
+    EATInvalidTimestepDurationError :
         In case ``last_step_duration <= 0``
-    ETInvalidTimestepDurationError :
+    EATInvalidTimestepDurationError :
         In case ``last_target_step_duration <= 0``
 
 
@@ -151,12 +151,12 @@ def flow_rate_conservative(
 
     """
     if flow_rates.empty:
-        raise CTEmptySourceError(
+        raise EATEmptySourceError(
             "Resampling an empty flow-rates series to new instants is an invalid"
             " (undefined) operation."
         )
     elif target_instants.empty:
-        raise CTEmptyTargetsError(
+        raise EATEmptyTargetsError(
             "Target instants must be provided for the series to be resampled."
         )
     else:
@@ -235,13 +235,13 @@ def volume_conservative(
 
     Raises
     ------
-    CTEmptySourceError :
+    EATEmptySourceError :
         In case ``volumes`` is empty.
-    CTEmptyTargetsError :
+    EATEmptyTargetsError :
         In case ``target_instants`` is empty.
-    ETInvalidTimestepDurationError :
+    EATInvalidTimestepDurationError :
         In case ``last_step_duration <= 0``.
-    ETInvalidTimestepDurationError :
+    EATInvalidTimestepDurationError :
         In case ``last_target_step_duration <= 0``.
 
     Example
@@ -362,21 +362,21 @@ def volume_conservative(
 
     """
     if volumes.empty:
-        raise CTEmptySourceError(
+        raise EATEmptySourceError(
             "Resampling an empty volumes series to new instants is an invalid operation."
         )
     elif target_instants.empty:
-        raise CTEmptyTargetsError(
+        raise EATEmptyTargetsError(
             "Target instants must be provided for the series to be resampled."
         )
     elif last_step_duration is not None and last_step_duration <= 0:
-        raise ETInvalidTimestepDurationError(
+        raise EATInvalidTimestepDurationError(
             "Last step duration cannot be zero."
         )
     elif (
         last_target_step_duration is not None and last_target_step_duration <= 0
     ):
-        raise ETInvalidTimestepDurationError(
+        raise EATInvalidTimestepDurationError(
             "Last step duration cannot be zero."
         )
     else:

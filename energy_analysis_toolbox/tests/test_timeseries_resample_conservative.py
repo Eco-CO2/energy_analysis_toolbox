@@ -9,9 +9,9 @@ from pandas.testing import assert_index_equal, assert_series_equal
 import pytest
 
 from ..errors import (
-    CTEmptySourceError,
-    CTEmptyTargetsError,
-    ETInvalidTimestepDurationError,
+    EATEmptySourceError,
+    EATEmptyTargetsError,
+    EATInvalidTimestepDurationError,
 )
 from ..constants import MINUTE, DAY
 from ..timeseries.resample.conservative import (
@@ -67,9 +67,9 @@ def test_flow_rate_errors():
         np.arange(0, 10),
         pd.date_range(pd.Timestamp("2021-12-15"), periods=10, freq="45min"),
     )
-    with pytest.raises(CTEmptySourceError):
+    with pytest.raises(EATEmptySourceError):
         flow_rate_conservative(pd.Series([], dtype="float64"), example.index)
-    with pytest.raises(CTEmptyTargetsError):
+    with pytest.raises(EATEmptyTargetsError):
         flow_rate_conservative(example, pd.DatetimeIndex([]))
 
 
@@ -159,24 +159,24 @@ def test_flow_rate_limit_last_steps():
         np.arange(0, 10),
         pd.date_range(pd.Timestamp("2021-12-15"), periods=10, freq="45min"),
     )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(
             sources.iloc[:8], sources.index, last_step_duration=0.0
         )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(
             sources, sources.index, last_target_step_duration=0.0
         )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(
             sources,
             sources.index,
             last_step_duration=0.0,
             last_target_step_duration=0.0,
         )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(sources, sources.index, last_step_duration=-42.0)
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(
             sources, sources.index, last_target_step_duration=-42.0
         )
@@ -257,9 +257,9 @@ def test_volume_conservative_errors():
         np.arange(0, 10),
         pd.date_range(pd.Timestamp("2021-12-15"), periods=10, freq="45min"),
     )
-    with pytest.raises(CTEmptySourceError):
+    with pytest.raises(EATEmptySourceError):
         volume_conservative(pd.Series([], dtype="float64"), example.index)
-    with pytest.raises(CTEmptyTargetsError):
+    with pytest.raises(EATEmptyTargetsError):
         volume_conservative(example, pd.DatetimeIndex([]))
 
 
@@ -323,15 +323,15 @@ def test_volume_conservative_limit_last_steps():
     volumes = pd.Series(
         [0.0, 0.050, 0.05], index=pd.DatetimeIndex([t0, t0 + dt, t0 + 2 * dt])
     )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(
             volumes, volumes.index, last_target_step_duration=0.0
         )
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(volumes, volumes.index, last_step_duration=0.0)
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(volumes, volumes.index, last_step_duration=-1.0)
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(
             volumes, volumes.index, last_target_step_duration=-1.0
         )

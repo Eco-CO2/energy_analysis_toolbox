@@ -8,4 +8,4 @@ from . import keywords
 from . import synthetic
 from . import thermosensitivity
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"

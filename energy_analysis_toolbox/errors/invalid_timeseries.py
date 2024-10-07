@@ -1,7 +1,7 @@
-from .base import ETExcept
+from .base import EATExcept
 
 
-class ETInvalidTimeseriesError(ETExcept):
+class EATInvalidTimeseriesError(EATExcept):
     """A timeseries is inconsistent.
 
     This exception is used to notify a problem regarding the consistency of
@@ -13,7 +13,7 @@ class ETInvalidTimeseriesError(ETExcept):
     pass
 
 
-class ETUndefinedTimestepError(ETInvalidTimeseriesError):
+class EATUndefinedTimestepError(EATInvalidTimeseriesError):
     """A timestep is undefined in an interval-sampled timeseries.
 
     A timestep duration is undefined, either explicitly or implicitly in a
@@ -24,7 +24,7 @@ class ETUndefinedTimestepError(ETInvalidTimeseriesError):
     pass
 
 
-class ETInvalidTimestepDurationError(ETInvalidTimeseriesError):
+class EATInvalidTimestepDurationError(EATInvalidTimeseriesError):
     """An invalid timestep duration has been passed for a timeseries.
 
     This exception is used when a timestep duration is encountered which does

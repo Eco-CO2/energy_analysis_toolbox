@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from ..energy import to_freq
-from ..errors import ETUndefinedTimestepError
+from ..errors import EATUndefinedTimestepError
 
 
 def test_to_freq_no_data():
@@ -24,7 +24,7 @@ def test_to_freq_one_to_many():
     energy_series = pd.Series([1.0], index=[pd.Timestamp("2020-01-01")])
     freq = "30min"
     new_freq = "1min"
-    with pytest.raises(ETUndefinedTimestepError):
+    with pytest.raises(EATUndefinedTimestepError):
         new_energy_series = to_freq(energy_series, new_freq)
     new_energy_series = to_freq(
         energy_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds

@@ -1,17 +1,17 @@
-from .base import ETExcept, ETEmptyDataError
+from .base import EATExcept, EATEmptyDataError
 
 
-class CTResamplingError(ETExcept):
+class EATResamplingError(EATExcept):
     """A resampling operation is impossible.
 
-    This base class is used when an invalid resampling operation is attempted in |et|.
+    This base class is used when an invalid resampling operation is attempted in |eat|.
     Derived classed may be used for more specific resampling errors.
     """
 
     pass
 
 
-class CTEmptySourceError(CTResamplingError, ETEmptyDataError):
+class EATEmptySourceError(EATResamplingError, EATEmptyDataError):
     """Resampling an empty timeseries to specific instants is impossible.
 
     This exception is used when :
@@ -24,7 +24,7 @@ class CTEmptySourceError(CTResamplingError, ETEmptyDataError):
     pass
 
 
-class CTEmptyTargetsError(CTResamplingError, ETEmptyDataError):
+class EATEmptyTargetsError(EATResamplingError, EATEmptyDataError):
     """Resampling a timeseries to empty targets is meaningless in this situation.
 
     This exception is used when :

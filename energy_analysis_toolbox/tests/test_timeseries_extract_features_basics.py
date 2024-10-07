@@ -6,11 +6,11 @@ import pandas as pd
 import pytest
 
 from ..errors import (
-    ETInvalidTimestepDurationError,
-    ETUndefinedTimestepError,
-    ETEmptyDataError,
+    EATInvalidTimestepDurationError,
+    EATUndefinedTimestepError,
+    EATEmptyDataError,
 )
-from .. import keywords as ETK
+from .. import keywords as EATK
 from ..timeseries.extract_features.basics import (
     timestep_durations,
     intervals_over,
@@ -67,11 +67,11 @@ def test_durations_limit_cases():
         np.ones(1),
         index=pd.date_range(start="2021-01-06", freq="10s", periods=1),
     )
-    with pytest.raises(ETEmptyDataError):
+    with pytest.raises(EATEmptyDataError):
         timestep_durations(series.iloc[:0])
-    with pytest.raises(ETUndefinedTimestepError):
+    with pytest.raises(EATUndefinedTimestepError):
         timestep_durations(series.iloc[:1], last_step=None)
-    with pytest.raises(ETInvalidTimestepDurationError):
+    with pytest.raises(EATInvalidTimestepDurationError):
         timestep_durations(series.iloc[:1], last_step=-42.0)
     durs = timestep_durations(series.iloc[:1], last_step=42.0)
     assert durs.size == 1
@@ -158,10 +158,10 @@ def test_intervals_over_2_timesteps():
     )
     power = pd.Series(np.array([0, 1, 1, 0, 0]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:05:00")
-    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
+    assert up_loc[EATK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
 
 
 def test_intervals_over_one_slot_only():
@@ -175,10 +175,10 @@ def test_intervals_over_one_slot_only():
     )
     power = pd.Series(np.array([0, 0, 1, 0, 0]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:10:00")
-    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
+    assert up_loc[EATK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:15:00")
 
 
 def test_intervals_over_last_step_front():
@@ -192,10 +192,10 @@ def test_intervals_over_last_step_front():
     )
     power = pd.Series(np.array([0, 1, 1, 1, 0]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:05:00")
-    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[EATK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
 
 
 def test_intervals_over_left_overlap():
@@ -209,7 +209,7 @@ def test_intervals_over_left_overlap():
     )
     power = pd.Series(np.array([1, 1, 1, 0, 0]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:00:00")
 
@@ -225,10 +225,10 @@ def test_intervals_over_right_overlap():
     )
     power = pd.Series(np.array([0, 0, 1, 1, 1]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:10:00")
-    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[EATK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
 
 
 def test_intervals_over_always_over():
@@ -242,7 +242,7 @@ def test_intervals_over_always_over():
     )
     power = pd.Series(np.array([1, 1, 1, 1, 1]) * 1000, index=time_range)
     up_loc = intervals_over(power, low_tshd=0.0)
-    start = up_loc[ETK.start_f].iloc[0]
+    start = up_loc[EATK.start_f].iloc[0]
     assert up_loc.shape[0] == 1
     assert start == pd.Timestamp("2018-07-06 05:00:00")
-    assert up_loc[ETK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")
+    assert up_loc[EATK.end_f].iloc[0] == pd.Timestamp("2018-07-06 05:20:00")

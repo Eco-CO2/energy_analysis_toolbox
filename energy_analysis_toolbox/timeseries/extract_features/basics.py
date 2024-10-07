@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-from ... import keywords as ETK
+from ... import keywords as EATK
 from ...errors import (
-    ETEmptyDataError,
-    ETUndefinedTimestepError,
-    ETInvalidTimestepDurationError,
+    EATEmptyDataError,
+    EATUndefinedTimestepError,
+    EATInvalidTimestepDurationError,
 )
 
 
@@ -32,12 +32,12 @@ def intervals_over(
     Returns
     -------
     overconsumption : pd.DataFrame
-        The dataframe of overconsumption, with two columns: |ETK.start_f| and |ETK.end_f|.
+        The dataframe of overconsumption, with two columns: |EATK.start_f| and |EATK.end_f|.
         Each row contains :
 
-        - in |ETK.start_f| the label of the first instant of an interval when
+        - in |EATK.start_f| the label of the first instant of an interval when
           the values in the series are > `low_tshd`.
-        - in |ETK.end_f| the label of the first instant after this interval
+        - in |EATK.end_f| the label of the first instant after this interval
 
         such that the row describes interval as ``[start, end[``.
     iloc_bounds : pd.Dataframe, optional
@@ -91,7 +91,7 @@ def intervals_over(
 
     """
     if series.empty:
-        return pd.DataFrame([], columns=[ETK.start_f, ETK.end_f])
+        return pd.DataFrame([], columns=[EATK.start_f, EATK.end_f])
     # [1] diffs in a Bool series -> True if element differs from previous
     over_status_shift = (series > low_tshd).diff()
     # [2]
@@ -111,11 +111,11 @@ def intervals_over(
         [over_status_shift.index[s], over_status_shift.index[e]]
         for s, e in bound_indexes
     ]
-    intervals = pd.DataFrame(bound_labels, columns=[ETK.start_f, ETK.end_f])
+    intervals = pd.DataFrame(bound_labels, columns=[EATK.start_f, EATK.end_f])
     # [4]
     if return_positions:
         iloc_bounds = pd.DataFrame(
-            bound_indexes, columns=[ETK.start_f, ETK.end_f]
+            bound_indexes, columns=[EATK.start_f, EATK.end_f]
         )
         return intervals, iloc_bounds
     else:
@@ -139,9 +139,9 @@ def timestep_durations(
 
     Raises
     ------
-    ETEmptyDataError :
+    EATEmptyDataError :
         If the series is empty.
-    ETUndefinedTimestepError :
+    EATUndefinedTimestepError :
         If the series contains only one element and ``last_step``
         is |None|.
 
@@ -164,11 +164,11 @@ def timestep_durations(
 
     """
     if timeseries.empty:
-        raise ETEmptyDataError(
+        raise EATEmptyDataError(
             "Interval durations cannot be inferred for empty series."
         )
     elif timeseries.size < 2 and last_step is None:
-        raise ETUndefinedTimestepError(
+        raise EATUndefinedTimestepError(
             "One element is not enough to infer a duration when last_step value is None."
         )
     durations = pd.Series(
@@ -194,12 +194,12 @@ def index_to_timesteps(
 
     Raises
     ------
-    ETEmptyDataError :
+    EATEmptyDataError :
         If ``time_indexes`` is empty.
-    ETUndefinedTimestepError :
+    EATUndefinedTimestepError :
         If ``time_indexes``  contains only one element and ``last_step``
         is |None|.
-    ETInvalidTimestepDurationError :
+    EATInvalidTimestepDurationError :
         If ``last_step < 0``.
 
     Returns
@@ -221,15 +221,15 @@ def index_to_timesteps(
 
     """
     if time_indexes.empty:
-        raise ETEmptyDataError(
+        raise EATEmptyDataError(
             "Interval durations cannot be inferred for empty time-sequences."
         )
     elif time_indexes.size < 2 and last_step is None:
-        raise ETUndefinedTimestepError(
+        raise EATUndefinedTimestepError(
             "One element is not enough to infer a duration when last_step value is None."
         )
     elif last_step is not None and last_step < 0:
-        raise ETInvalidTimestepDurationError(
+        raise EATInvalidTimestepDurationError(
             f"Last step duration must be >=0. Received {last_step} s."
         )
     else:
