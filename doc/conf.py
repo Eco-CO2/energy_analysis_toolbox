@@ -30,16 +30,16 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # define code executed for each file as if included in it
 rst_prolog = """
-.. |et| replace:: ``energy_analysis_toolbox``
+.. |eat| replace:: ``energy_analysis_toolbox``
 .. |None| replace:: ``None``
 .. |NaN| replace:: ``NaN``
 
 .. |flow_rate_conservative| replace:: :py:func:`flow_rate_conservative <cenergy_analysis_toolbox.timeseries.power.conservative.flow_rate_conservative`
 .. |volume_conservative| replace:: :py:func:`volume_conservative <energy_analysis_toolbox.timeseries.power.conservative.volume_conservative`
 
-.. |ETK.start_f| replace:: :py:const:`ETK.start_f <energy_analysis_toolbox.keywords.start_f>`
-.. |ETK.end_f| replace:: :py:const:`ETK.end_f <energy_analysis_toolbox.keywords.end_f>`
-.. |ETK.time_f| replace:: :py:const:`ETK.time_f <energy_analysis_toolbox.keywords.time_f>`
+.. |EATK.start_f| replace:: :py:const:`EATK.start_f <energy_analysis_toolbox.keywords.start_f>`
+.. |EATK.end_f| replace:: :py:const:`EATK.end_f <energy_analysis_toolbox.keywords.end_f>`
+.. |EATK.time_f| replace:: :py:const:`EATK.time_f <energy_analysis_toolbox.keywords.time_f>`
 
 """
 

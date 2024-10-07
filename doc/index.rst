@@ -1,5 +1,5 @@
 energy_analysis_toolbox documentation
-============================
+=====================================
 
 **Date**: |today|
 
@@ -16,7 +16,7 @@ Originally developed by the R&D team of `Eco CO2 <https://www.ecoco2.com>`_, it 
     .. grid-item-card:: Getting started
         :img-top: ./_static/index_getting_started.svg
 
-        New to |et|? Check out the getting started guides.
+        New to |eat|? Check out the getting started guides.
 
         .. button-ref:: getting_started/index
             :expand:
@@ -45,7 +45,7 @@ Originally developed by the R&D team of `Eco CO2 <https://www.ecoco2.com>`_, it 
 
 
         The reference guide contains a detailed description of
-        the |et| API. The reference describes how the methods work and which parameters can
+        the |eat| API. The reference describes how the methods work and which parameters can
         be used. It assumes that you have an understanding of the key concepts.
 
         .. button-ref:: sources/index
@@ -62,7 +62,7 @@ Originally developed by the R&D team of `Eco CO2 <https://www.ecoco2.com>`_, it 
 
         Saw a typo in the documentation? Want to improve
         existing functionalities? The contributing guidelines will guide
-        you through the process of improving |et|.
+        you through the process of improving |eat|.
 
         .. button-ref:: developer_guide/index
             :expand:

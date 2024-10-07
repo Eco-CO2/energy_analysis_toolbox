@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-So you're new to |et| ? Here is what you need to get started quickly!
+So you're new to |eat| ? Here is what you need to get started quickly!
 
 Installing from the sources
 ---------------------------
@@ -20,5 +20,5 @@ The installation is described using ``pip``:
 Examples of use
 ===============
 
-Want to learn more about how to use |et| ? See the tutorials in the
+Want to learn more about how to use |eat| ? See the tutorials in the
 :doc:`../user_guide/index` !

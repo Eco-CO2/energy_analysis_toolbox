@@ -6,4 +6,4 @@ Version 0.1.0 (September 25, 2024)
 {{ header }}
 
 
-First public release.
+First public release. All developments done so far were performed by Eco CO2 employees.

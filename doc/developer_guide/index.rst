@@ -6,7 +6,7 @@ Want to contribute ? Have an idea or special need ? Head to the
 to explain what you want or need to do.
 
 Your are greatly encouraged to use the issues template to help us understand your
-needs so that we can assist you in your use of improvement of |et| !
+needs so that we can assist you in your use of improvement of |eat| !
 
 .. _issue tracker: https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox/-/issues
 .. _open a new issue: https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox/-/issues/new

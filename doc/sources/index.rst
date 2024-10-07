@@ -1,7 +1,7 @@
 API reference
 =============
 
-|et| library is structured as follows.
+|eat| library is structured as follows.
 The main subpackages in `ct` are the following :
 
 - :py:mod:`energy_analysis_toolbox.timeseries` is a subpackage containing generic
