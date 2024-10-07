@@ -1,4 +1,4 @@
-![Logo](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png)
+![Logo](doc/_static/logo.png)
 
 # energy_analysis_toolbox
 
