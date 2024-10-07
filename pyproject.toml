@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "energy_analysis_toolbox"
 description = "A set of tools to manipulate and transform power, energy, and related timeseries data."
 authors = [
-  { name="R&D team, Eco CO2 company", email="research@ecoco2.com" },
+  { name="energy_analysis_toolbox contributors", email="research@ecoco2.com" },
 ]
 readme = "README.md"
 requires-python = ">=3.8"
@@ -18,7 +18,6 @@ dependencies = [
     "pandas>=2.2.2",
     "numpy>=1.26.0",
     "scipy>=1.13.0",
-    "pyarrow>=13",
     "statsmodels>=0.13.0",
 ]
 dynamic = ["version"]
@@ -35,18 +34,13 @@ doc = [
     "sphinx-gallery",
     "sphinx_design",
     "nbsphinx",
-    "pillow",
 ]
 test = [
     "pytest",
     "pytest-cov",
 ]
-examples = [
-    "matplotlib",
-    "pyarrow",
-]
 all = [
-    "energy_analysis_toolbox[test,doc,examples]",
+    "energy_analysis_toolbox[test,doc]",
 ]
 
 [tool.setuptools]
@@ -70,10 +64,11 @@ max-complexity = 5
 
 [tool.ruff.lint.extend-per-file-ignores]
 "__init__.py" = ["F401"]
-"*.ipynb" = ["E402",  # module-import-not-at-top-of-file
-             "F401",  # unused-import
-            ]
+"*.ipynb" = [
+    "E402", # module-import-not-at-top-of-file
+    "F401", # unused-import
+]
 
 [tool.pytest.ini_options]
-addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml"  # --lf --last-failed-no-failures none"
+addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml"
 testpaths = ["energy_analysis_toolbox/tests"]
