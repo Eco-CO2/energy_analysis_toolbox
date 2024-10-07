@@ -1,4 +1,4 @@
-![Project Logo]([https://github.com/USERNAME/REPOSITORY/blob/branch-name/path-to-logo/logo.png](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png))
+![Project Logo]([https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png))
 
 # energy_analysis_toolbox
 
