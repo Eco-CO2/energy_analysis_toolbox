@@ -21,7 +21,7 @@ dependencies = [
     "scipy>=1.13.0",
     "statsmodels>=0.13.0",
 ]
-dynamic = ["version", "description"]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/Eco-CO2/energy_analysis_toolbox"
