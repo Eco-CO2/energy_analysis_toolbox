@@ -1,7 +1,4 @@
-<picture align="center">
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png">
-  <img alt="Pandas Logo" src="https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png">
-</picture>
+![Logo](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/doc/_static/logo.png)
 
 # energy_analysis_toolbox
 
