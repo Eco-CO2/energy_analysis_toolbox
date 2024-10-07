@@ -24,8 +24,8 @@ dependencies = [
 dynamic = ["version", "description"]
 
 [project.urls]
-"Homepage" = "https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox"
-"Bug Tracker" = "https://gitlab.ecoco2.com/recherche/energy_analysis_toolbox-/issues"
+"Homepage" = "https://github.com/Eco-CO2/energy_analysis_toolbox"
+"Bug Tracker" = "https://github.com/Eco-CO2/energy_analysis_toolbox/issues"
 
 [project.optional-dependencies]
 doc = [
