@@ -20,18 +20,25 @@ jobs:
             "3.12",
             "3.13",
         ]
+        pandas-version: [
+             "2.0.0",
+             "2.1.0",
+             "2.2.0",
+             "2.3.0",
+        ]
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}  # Use the Python version from the matrix
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ".[test]"
-      - name: Run unit tests
-        run: |
-          python energy_analysis_toolbox/tests/main.py
+        - name: Check out repository
+          uses: actions/checkout@v2
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+           python-version: ${{ matrix.python-version }}
+        - name: Install dependencies
+          run: |
+                python -m pip install --upgrade pip
+                pip install pandas==${{ matrix.pandas-version }}
+                pip install ".[test]"  # This includes other dependencies needed for testing
+        - name: Run unit tests
+          run: |
+                python energy_analysis_toolbox/tests/main.py
