@@ -18,8 +18,7 @@ def run():
     Preferred way to test the library's installation used by the calling python process
     """
     TEST_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-
-    test_report_filename = os.getcwd() + "/pytest_report.xml"
+    test_report_filename = os.getcwd() + "/junit.xml"
     coverage_config_filename = (
         os.path.dirname(os.path.dirname(TEST_DIRECTORY)) + "/.coveragerc"
     )
@@ -33,8 +32,7 @@ def run():
             "--junitxml", test_report_filename,
             "--cov", "energy_analysis_toolbox",
             "--cov-config", coverage_config_filename,
-            "--cov-report", "xml:coverage.xml",  # Specify XML output for Codecov
-            "--cov-report", "term",
+            "--cov-report", "xml:coverage.xml",
         ]
     )
 
