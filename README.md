@@ -42,7 +42,7 @@ pip install .
 
 The toolbox is structured into several modules, each handling a different aspect of energy data processing. Below is a quick example to get started.
 
-### Example: Resampling Time Series
+### Example: Resampling a time series and computing energy
 
 ```python
 import numpy as np
@@ -56,25 +56,12 @@ power = pd.Series(
 )
 energy_resampled = power.eat.to_energy().eat.to_freq("1W")/3600000
 
-fig, axes = plt.subplots(1, 2, figsize=(8, 4))
-power.plot(ax=axes[0], xlabel="Time", ylabel="Power (W)", title="Power")
-energy_resampled.plot(ax=axes[1], xlabel="Time", ylabel="Energy (kWh)", title="Weekly Resampled Resampled)")
+fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+power.plot(ax=axes[0], ylabel="Power (W)", title="Power")
+energy_resampled.plot(ax=axes[1], ylabel="Energy (kWh)", title="Weekly resampled energy")
 ```
 
-<object data="doc/_static/demo_energy_resampling.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="doc/_static/demo_energy_resampling.pdf">
-        <p>Your browser does not support PDFs. Please download the PDF to view it: <a href="doc/_static/demo_energy_resampling.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
-
-### Example: Degree Days Calculation
-
-```python
-from energy_analysis_toolbox.weather import calculate_degree_days
-
-degree_days = calculate_degree_days(temperatures=[15, 18, 12, 20], base_temperature=18)
-print(f"Degree Days: {degree_days}")
-```
+![demo_energy_resampling](doc/_static/demo_energy_resampling.png)
 
 ## Documentation
 
@@ -100,7 +87,7 @@ We use `pytest` for unit testing, which helps ensure that our code is reliable a
 
 ## Contributing
 
-Contributions are welcome! Whether it is a bug fix, a new feature, or improving documentation, we appreciate your help. To contribute:
+This toolbox was originally developed by the R&D team of Eco CO2. It is now open to anyone who wants to contribute: whether it is a bug fix, a new feature, or improving documentation, we appreciate your help! To contribute:
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature-branch`)
@@ -117,12 +104,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 For questions, feature requests, or to report issues, please open an issue on the [GitHub issue tracker](https://github.com/username/energy_analysis_toolbox/issues).
-
-## Acknowledgements
-
-This toolbox is developed and maintained by a dedicated group of energy data scientists and engineers. We would like to thank everyone who contributed, directly or indirectly, to make this project possible.
-
----
-
-With these tools at your disposal, you should be able to tackle a variety of energy analysis challenges efficiently and accurately. If you have questions or suggestions, we are always eager to collaborate and improve the toolbox together.
-
