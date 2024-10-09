@@ -1,8 +1,20 @@
-![Logo](doc/_static/logo.png)
+[![CI - Test](https://github.com/pandas-dev/pandas/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/pandas-dev/pandas/actions/workflows/unit-tests.yml)
+[![Coverage](https://codecov.io/github/pandas-dev/pandas/coverage.svg?branch=main)](https://codecov.io/gh/pandas-dev/pandas)
+[![PyPI Latest Release](https://img.shields.io/pypi/v/pandas.svg)](https://pypi.org/project/energy-analysis-toolbox/)
+[![License - MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/LICENSE)
 
 # Energy Analysis Toolbox
 
-The **Energy Analysis Toolbox** is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, simulating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
+**energy_analysis_toolbox** is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
+
+<div align="center">
+  <a href="https://github.com/Eco-CO2/energy_analysis_toolbox">
+    <img height="150px"
+         src="doc/_static/logo.png"
+         align="center">
+  </a>
+</div>
+<br>
 
 ## Features
 

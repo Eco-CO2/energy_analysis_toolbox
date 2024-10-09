@@ -58,7 +58,7 @@ language = "en"
 
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-    "gitlab_url": "https://gitlab.ecoco2.com/recherche/fret21_indicators",
+    "github_url": "https://github.com/Eco-CO2/energy_analysis_toolbox",
     "logo": {"image_dark": "./_static/logo.png"},
 }
 html_static_path = ["_static"]
