@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Run tests and coverages.
 
 This module implements a ``run`` function which can be used to run the library's
@@ -31,16 +30,11 @@ def run():
     code = pytest.main(
         [
             TEST_DIRECTORY,
-            "--junitxml",
-            test_report_filename,
-            "--cov",
-            "energy_analysis_toolbox",
-            "--cov-config",
-            coverage_config_filename,
-            "--cov-report",
-            "xml",
-            "--cov-report",
-            "term",
+            "--junitxml", test_report_filename,
+            "--cov", "energy_analysis_toolbox",
+            "--cov-config", coverage_config_filename,
+            "--cov-report", "xml:coverage.xml",  # Specify XML output for Codecov
+            "--cov-report", "term",
         ]
     )
 

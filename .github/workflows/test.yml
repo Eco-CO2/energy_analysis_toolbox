@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Unit tests
 
 on:
   push:
@@ -37,5 +37,10 @@ jobs:
                 pip install pandas==${{ matrix.pandas-version }}
                 pip install ".[test]"
         - name: Run unit tests
-          run: |
-                python energy_analysis_toolbox/tests/main.py
+          run: python energy_analysis_toolbox/tests/main.py
+        - name: Upload coverage to Codecov
+          uses: codecov/codecov-action@v3
+          with:
+            files: ./coverage.xml  # Path to your coverage report
+            flags: unittests
+            fail_ci_if_error: true

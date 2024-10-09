@@ -5,7 +5,7 @@
 
 # Energy Analysis Toolbox
 
-**energy_analysis_toolbox** is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
+``energy_analysis_toolbox`` is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
 
 <div align="center">
   <a href="https://github.com/Eco-CO2/energy_analysis_toolbox">
