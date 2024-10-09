@@ -1,18 +1,17 @@
 [build-system]
-requires = ["setuptools>=61.0.0"]
+requires = [
+    "setuptools>=61.0.0",
+]
 
 [project]
 name = "energy_analysis_toolbox"
 description = "A set of tools to manipulate and transform power, energy, and related timeseries data."
-authors = [
-  { name="energy_analysis_toolbox contributors", email="research@ecoco2.com" },
-]
+authors = [{name="energy_analysis_toolbox contributors",email="research@ecoco2.com"},]
 license = {file = "LICENSE"}
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["profile"]
 classifiers = [
-    'Development Status :: 4 - Beta',
+    'Development Status :: 3 - Alpha',
     'Environment :: Console',
     'Intended Audience :: Science/Research',
     'License :: OSI Approved :: MIT License',
@@ -26,14 +25,15 @@ classifiers = [
     'Programming Language :: Python :: 3.13',
     'Topic :: Scientific/Engineering',
 ]
-
 dependencies = [
-    "pandas>=2.0.0",
-    "numpy>=1.21.0",
-    "scipy>=1.13.0",
-    "statsmodels>=0.13.0",
+    "pandas>=2.0.0,<3",
+    "numpy",
+    "scipy>=1.7.1",
+    "statsmodels<1",
 ]
-dynamic = ["version"]
+dynamic = [
+    "version",
+]
 
 [project.urls]
 homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox/issues'
@@ -86,4 +86,6 @@ max-complexity = 5
 
 [tool.pytest.ini_options]
 addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml"
-testpaths = ["energy_analysis_toolbox/tests"]
+testpaths = [
+    "energy_analysis_toolbox/tests",
+]
