@@ -24,7 +24,6 @@ jobs:
              "2.0.0",
              "2.1.0",
              "2.2.0",
-             "2.3.0",
         ]
 
     steps:
@@ -38,7 +37,7 @@ jobs:
           run: |
                 python -m pip install --upgrade pip
                 pip install pandas==${{ matrix.pandas-version }}
-                pip install ".[test]"  # This includes other dependencies needed for testing
+                pip install ".[test]"
         - name: Run unit tests
           run: |
                 python energy_analysis_toolbox/tests/main.py
