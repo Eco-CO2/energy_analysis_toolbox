@@ -1,4 +1,3 @@
-
 [![tests](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml/badge.svg)](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox/graph/badge.svg?token=XWWPB8E4SD)](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox)
 [![PyPI latest release](https://img.shields.io/pypi/v/energy_analysis_toolbox.svg)](https://pypi.org/project/energy-analysis-toolbox/)
@@ -7,14 +6,13 @@
 ![Pandas Versions](https://img.shields.io/badge/pandas-2.1.2%20|%202.1.3%20|%202.1.4%20|%202.2-blue)
 [![License - MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/LICENSE)
 
-# Energy Analysis Toolbox
-
-``energy_analysis_toolbox`` is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
-
 <picture align="center">
   <source media="(prefers-color-scheme: dark)" srcset="doc/_static/energy_analysis_toolbox_logo_horizontal_white.svg">
   <img alt="Pandas Logo" src="doc/_static/energy_analysis_toolbox_logo_horizontal.svg">
+&nbsp;
 </picture>
+
+``energy_analysis_toolbox`` is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
 
 ## Features
 
@@ -37,7 +35,7 @@ Alternatively, you can clone this repository and install the dependencies direct
 ```sh
 git clone https://github.com/username/energy_analysis_toolbox.git
 cd energy_analysis_toolbox
-pip install -r requirements.txt
+pip install .
 ```
 
 ## Usage
