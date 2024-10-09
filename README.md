@@ -1,6 +1,7 @@
 [![tests](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml/badge.svg)](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox/graph/badge.svg?token=XWWPB8E4SD)](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox)
 [![PyPI latest release](https://img.shields.io/pypi/v/energy_analysis_toolbox.svg)](https://pypi.org/project/energy-analysis-toolbox/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/energy_analysis_toolbox)
 [![License - MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/LICENSE)
 
 # Energy Analysis Toolbox
