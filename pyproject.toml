@@ -1,6 +1,5 @@
 [build-system]
-requires = ["setuptools>=46.4.0"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0.0"]
 
 [project]
 name = "energy_analysis_toolbox"
@@ -10,7 +9,7 @@ authors = [
 ]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 keywords = ["profile"]
 classifiers = [
     'Development Status :: 4 - Beta',
@@ -21,16 +20,12 @@ classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.8',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Topic :: Scientific/Engineering',
 ]
-
-[project.urls]
-homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox/issues'
-documentation = 'https://readthedocs.org/projects/energy-analysis-toolbox'
-repository = 'https://github.com/Eco-CO2/energy_analysis_toolbox'
 
 dependencies = [
     "pandas>=2.0.0",
@@ -41,8 +36,9 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-"Homepage" = "https://github.com/Eco-CO2/energy_analysis_toolbox"
-"Bug Tracker" = "https://github.com/Eco-CO2/energy_analysis_toolbox/issues"
+homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox/issues'
+documentation = 'https://readthedocs.org/projects/energy-analysis-toolbox'
+repository = 'https://github.com/Eco-CO2/energy_analysis_toolbox'
 
 [project.optional-dependencies]
 doc = [
@@ -62,10 +58,11 @@ all = [
 ]
 
 [tool.setuptools]
-zip-safe = false
+include-package-data = true
+
 [tool.setuptools.packages.find]
-where = ["./"]
-include = ["energy_analysis_toolbox*"]
+include = ["energy_analysis_toolbox"]
+namespaces = false
 
 [tool.setuptools.dynamic]
 version = {attr = "energy_analysis_toolbox.__version__"}
