@@ -12,19 +12,19 @@
 &nbsp;
 </picture>
 
-``energy_analysis_toolbox`` is a Python library designed to facilitate the analysis and modeling of energy data. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity, and assessing power consumption. The toolbox aims to make energy analytics straightforward and reproducible for researchers, engineers, and data scientists working with energy data.
+``energy_analysis_toolbox`` is a Python library designed to analyze and model power and energy time series. It provides a wide range of tools for processing time series, generating synthetic datasets, analyzing weather and thermosensitivity.
 
 ## Features
 
 - **Time Series Resampling and Feature Extraction**: Includes utilities for manipulating and resampling energy-related time series data, making it easy to work with data from different sources.
-- **Weather and Thermosensitivity Analysis**: Tools for calculating degree days and assessing thermosensitivity of energy consumption.
-- **Power Consumption Analysis**: Detect power overconsumption, analyze load profiles, and evaluate overconsumption risks.
-- **Synthetic Data Generation**: Simulate synthetic energy datasets for experimentation and modeling purposes.
-- **Integration with Pandas**: Many utilities integrate seamlessly with `pandas` DataFrames, allowing for easy data manipulation.
+- **Weather and Thermosensitivity Analysis**: Tools for calculating degree days and assessing thermosensitivity.
+- **Power Consumption Analysis**: Detection of unusual power consumption patterns, and analyze load profiles.
+- **Synthetic Data**: Generation of synthetic time series energy datasets.
+- **Integration with Pandas**: Many utilities integrate seamlessly with `pandas` DataFrames, allowing to extend `pandas` with energy and power-specific tools through an accessor.
 
 ## Installation
 
-You can install the Energy Analysis Toolbox from the repository or via `pip`. Ensure that Python 3.6 or above is installed.
+``energy_analysis_toolbox`` can be installed from the repository or via `pip`. Ensure that you use Python 3.10 or above.
 
 ```sh
 pip install energy-analysis-toolbox
@@ -45,20 +45,27 @@ The toolbox is structured into several modules, each handling a different aspect
 ### Example: Resampling Time Series
 
 ```python
+import numpy as np
 import pandas as pd
-from energy_analysis_toolbox.timeseries import resample_conservative
+import energy_analysis_toolbox.pandas
+import matplotlib.pyplot as plt
 
-# Load some sample energy data
-data = {
-    'timestamp': pd.date_range(start='2023-01-01', periods=24, freq='H'),
-    'energy': [5.2, 5.5, 5.0, 4.8, 6.1, 6.5, 6.0, 6.8, 5.9, 6.2, 7.1, 7.3,
-               8.0, 7.5, 7.8, 7.9, 8.2, 8.3, 8.1, 7.6, 6.9, 6.5, 6.0, 5.8]
-}
+power = pd.Series(
+    data=5*np.sin(np.linspace(0, 6, 100)) + np.random.randn(100) + 7,
+    index=pd.date_range(start='2023-01-01', periods=100, freq='d'),
+)
+energy_resampled = power.eat.to_energy().eat.to_freq("1W")/3600000
 
-df = pd.DataFrame(data)
-resampled_df = resample_conservative(df, freq='2H')
-print(resampled_df)
+fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+power.plot(ax=axes[0], xlabel="Time", ylabel="Power (W)", title="Power")
+energy_resampled.plot(ax=axes[1], xlabel="Time", ylabel="Energy (kWh)", title="Weekly Resampled Resampled)")
 ```
+
+<object data="doc/_static/demo_energy_resampling.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="doc/_static/demo_energy_resampling.pdf">
+        <p>Your browser does not support PDFs. Please download the PDF to view it: <a href="doc/_static/demo_energy_resampling.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
 
 ### Example: Degree Days Calculation
 

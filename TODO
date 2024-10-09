@@ -1,0 +1,4 @@
+Add pre-commit hooks
+Finish ruff linting (from a import b,c split to multi lines)
+Add linting for all functions
+Check final looking for all doc
