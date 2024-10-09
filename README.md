@@ -1,5 +1,5 @@
 [![Tests](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml/badge.svg)](https://github.com/Eco-CO2/energy_analysis_toolbox/actions/workflows/test.yml)
-[![Coverage](https://codecov.io/github/pandas-dev/pandas/coverage.svg?branch=main)](https://codecov.io/gh/pandas-dev/pandas)
+[![Coverage](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox/branch/main/graph/badge.svg)](https://codecov.io/gh/Eco-CO2/energy_analysis_toolbox)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/energy_analysis_toolbox.svg)](https://pypi.org/project/energy-analysis-toolbox/)
 [![License - MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/Eco-CO2/energy_analysis_toolbox/blob/main/LICENSE)
 
