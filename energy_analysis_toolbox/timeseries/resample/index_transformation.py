@@ -1,9 +1,11 @@
 """Transforms indices of a time series to a new index according to a given function."""
 
-from typing import Union
+
+from contextlib import suppress
+
 import numpy as np
 import pandas as pd
-import pytz
+from pytz import BaseTzInfo
 from scipy.stats import gaussian_kde, mode
 
 from energy_analysis_toolbox.errors import EATUndefinedTimestepError
@@ -15,7 +17,7 @@ from energy_analysis_toolbox.timeseries.extract_features.basics import (
 
 def tz_convert_or_localize(
     timeseries: pd.Series | pd.DataFrame,
-    tz: Union[str, pytz.timezone, None],
+    tz: str | BaseTzInfo | None,
 ) -> pd.Series | pd.DataFrame:
     """Assign the requested timezone to the index of a timeseries.
 
@@ -53,9 +55,9 @@ def tz_convert_or_localize(
 
 def index_to_freq(
     index: pd.DatetimeIndex,
-    freq: Union[str, pd.Timedelta, None],
-    origin: Union[str, pd.Timestamp, None] = None,
-    last_step_duration: Union[float, None] = None,
+    freq: str | pd.Timedelta | None,
+    origin: str | pd.Timestamp | None = None,
+    last_step_duration: float | None = None,
 ) -> pd.DatetimeIndex:
     """Return the expected index from resampling a time series to a given frequency.
 
@@ -111,34 +113,36 @@ def index_to_freq(
             try:
                 start = start.tz_convert(index.tz)
             except TypeError:
-                raise Warning(
-                    "The passed origin could not be localized or converted to the"
-                    " timezone of the original index. It is processed as if it were time-naive.",
-                ) from None
+                warn = (
+                    "The passed origin could not be localized or converted to the "
+                    "timezone of the original index. It is processed as if it were "
+                    "time-naive."
+                )
+                raise Warning(warn) from None
     if last_step_duration is None:
         try:
             last_step_duration = (index[-1] - index[-2]).seconds
         except IndexError:
-            raise EATUndefinedTimestepError(
+            err = (
                 "The last step duration could not be determined from the index."
-                " Please provide it explicitly.",
-            ) from None
+                " Please provide it explicitly."
+            )
+            raise EATUndefinedTimestepError(err) from None
     actual_end = index[-1] + pd.Timedelta(seconds=last_step_duration)
-    target_instants = pd.date_range(
+    return pd.date_range(
         start=start,
         end=actual_end,
         freq=freq,
         inclusive="left",
         name=index.name,
     )
-    return target_instants
 
 
 def estimate_timestep(
     data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
     method: str = "median",
 ) -> float:
-    """Returns an estimation of the sampling period of a time series.
+    """Return an estimation of the sampling period of a time series.
 
     .. note::
         Each method has its own advantages and drawbacks. The best method
@@ -183,13 +187,14 @@ def estimate_timestep(
         return mode_time_step(data)
     if method == "kde":
         return max_kde_time_step(data)
-    raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
+    err = "method must be one of {'mean', 'median', 'mode', 'kde'}"
+    raise ValueError(err)
 
 
 def median_time_step(
     data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
 ) -> float:
-    """Returns the median timestep of a time series.
+    """Return the median timestep of a time series.
 
     Parameters
     ----------
@@ -215,7 +220,7 @@ def median_time_step(
 def mean_time_step(
     data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
 ) -> float:
-    """Returns the mean timestep of a time series.
+    """Return the mean timestep of a time series.
 
     Parameters
     ----------
@@ -241,7 +246,7 @@ def mean_time_step(
 def mode_time_step(
     data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
 ) -> float:
-    """Returns the mode timestep of a time series.
+    """Return the mode timestep of a time series.
 
     .. warning:: The mode is the most frequent value. If there are several
         values with the same frequency, the first one is returned.
@@ -272,7 +277,7 @@ def mode_time_step(
 def max_kde_time_step(
     data: pd.Series | pd.DataFrame | pd.DatetimeIndex,
 ) -> float:
-    """Returns the maximum probable timestep of a time series.
+    """Return the maximum probable timestep of a time series.
 
     .. note:: It differs from the Mode as the distribution is first
        estimated using a KDE. Then, the max of this distribution is
@@ -305,8 +310,7 @@ def max_kde_time_step(
     samples = np.linspace(min(timesteps), max(timesteps), no_samples)
     probs = kde.evaluate(samples)
     maxima_index = probs.argmax()
-    maxima = samples[maxima_index]
-    return maxima
+    return samples[maxima_index]
 
 
 def data_to_datetimeindex(
@@ -333,21 +337,20 @@ def data_to_datetimeindex(
         If the data cannot be converted to pandas.DateTimeIndex
 
     """
-    try:
+    with suppress(AttributeError):
         data = data.index
-    except AttributeError:
-        pass
     if not isinstance(data, pd.DatetimeIndex):
-        raise ValueError("The data cannot be converted to pandas.DateTimeIndex")
+        err = "The data cannot be converted to pandas.DateTimeIndex"
+        raise TypeError(err)
     return data
 
 
 def fill_missing_entries(
     data: pd.Series | pd.DataFrame,
-    sampling_period,
-    security_factor=2,
-    fill_value=pd.NA,
-):
+    sampling_period: float,
+    security_factor: float = 2,
+    fill_value: float = pd.NA,
+) -> pd.Series | pd.DataFrame:
     """Fill the data with new entries where the interval is too long.
 
     .. note:: The duration between the last new entry of a hole and the next
@@ -392,18 +395,17 @@ def fill_missing_entries(
         ]
         new_indexes += tmp_indexes
     missing_index = pd.DatetimeIndex(new_indexes)
-    new_data = data.reindex(
+    return data.reindex(
         data.index.append(missing_index).sort_values(), fill_value=fill_value,
     )
-    return new_data
 
 
 def fill_data_holes(
     data: pd.Series | pd.DataFrame,
-    method="mode",
-    security_factor=2,
-    fill_value=pd.NA,
-):
+    method: str = "mode",
+    security_factor: float = 2,
+    fill_value: float = pd.NA,
+) -> pd.Series | pd.DataFrame:
     """Return the data with new entries where the interval is too long.
 
     .. note:: the new indexes are created using the expected timestep determined
