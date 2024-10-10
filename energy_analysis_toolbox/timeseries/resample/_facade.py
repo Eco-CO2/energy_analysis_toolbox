@@ -144,12 +144,8 @@ def trim_out_of_bounds(
     """
     if resampled_data.index[0] < data.index[0]:
         for col, value in fill_value.items():
-            resampled_data.loc[resampled_data.index < data.index[0], col] = (
-                value
-            )
+            resampled_data.loc[resampled_data.index < data.index[0], col] = value
     if resampled_data.index[-1] > data.index[-1]:
         for col, value in fill_value.items():
-            resampled_data.loc[resampled_data.index > data.index[-1], col] = (
-                value
-            )
+            resampled_data.loc[resampled_data.index > data.index[-1], col] = value
     return resampled_data

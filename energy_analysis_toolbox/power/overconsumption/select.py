@@ -50,13 +50,9 @@ def by_individual_proportion(
     if energy_reference is None:
         energy_reference = intervals_overshoot["energy"].sum()
     # Select overconsumption with prominent overconsumption
-    intervals_overshoot["proportion"] = (
-        intervals_overshoot["energy"] / energy_reference
-    )
+    intervals_overshoot["proportion"] = intervals_overshoot["energy"] / energy_reference
     intervals_overshoot.sort_values(by="energy", ascending=False, inplace=True)
-    return intervals_overshoot[
-        intervals_overshoot["proportion"] >= proportion_tshd
-    ]
+    return intervals_overshoot[intervals_overshoot["proportion"] >= proportion_tshd]
 
 
 def by_cumulated_proportion(
@@ -92,14 +88,10 @@ def by_cumulated_proportion(
         The returned overconsumption are sorted by decreasing order of overshoot energy.
 
     """
-    intervals_overshoot = intervals_overshoot.sort_values(
-        by="energy", ascending=False
-    )
+    intervals_overshoot = intervals_overshoot.sort_values(by="energy", ascending=False)
     if energy_reference is None:
         energy_reference = intervals_overshoot["energy"].sum()
-    intervals_overshoot["cum_energy_prop"] = intervals_overshoot[
-        "energy"
-    ].cumsum()
+    intervals_overshoot["cum_energy_prop"] = intervals_overshoot["energy"].cumsum()
     intervals_overshoot["cum_energy_prop"] /= energy_reference
     # ensure at least one value
     last_selected = (
@@ -148,16 +140,10 @@ def by_combined_proportions(
     """
     if energy_reference is None:
         energy_reference = intervals_overshoot["energy"].sum()
-    intervals_overshoot = intervals_overshoot.sort_values(
-        by="energy", ascending=False
-    )
-    intervals_overshoot["cum_energy_prop"] = intervals_overshoot[
-        "energy"
-    ].cumsum()
+    intervals_overshoot = intervals_overshoot.sort_values(by="energy", ascending=False)
+    intervals_overshoot["cum_energy_prop"] = intervals_overshoot["energy"].cumsum()
     intervals_overshoot["cum_energy_prop"] /= energy_reference
-    intervals_overshoot["proportion"] = (
-        intervals_overshoot["energy"] / energy_reference
-    )
+    intervals_overshoot["proportion"] = intervals_overshoot["energy"] / energy_reference
     # ensure at least one value
     last_selected = (
         intervals_overshoot["cum_energy_prop"] < proportion_tshd

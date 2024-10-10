@@ -64,18 +64,14 @@ def merge_by_proximity(
     if intervals_overshoot.empty:
         return intervals_overshoot
     # [1]
-    flat_intervals = flatten_and_fill(intervals_overshoot.sort_index()).fillna(
-        0
-    )
+    flat_intervals = flatten_and_fill(intervals_overshoot.sort_index()).fillna(0)
     # [2]
     flat_intervals["duration"] = timestep_durations(
         flat_intervals["duration"],
         last_step=flat_intervals["duration"].iloc[-1],
     )
     # Adjacent overconsumption create duplicates
-    flat_intervals = flat_intervals.loc[
-        ~flat_intervals.index.duplicated(keep="first")
-    ]
+    flat_intervals = flat_intervals.loc[~flat_intervals.index.duplicated(keep="first")]
     # [3]
     dropped = flat_intervals.iloc[:-1, :].query(
         f"energy == 0 and duration < {min_interval}"
@@ -85,9 +81,7 @@ def merge_by_proximity(
     # [4]
     intervals = intervals_over(flat_intervals["energy"], 0.0)
     # [5]
-    intervals["duration"] = (
-        intervals["end"] - intervals["start"]
-    ).dt.total_seconds()
+    intervals["duration"] = (intervals["end"] - intervals["start"]).dt.total_seconds()
     # [5] inclusive loc but energy filled with 0 between the overshoots.
     intervals["energy"] = intervals.apply(
         lambda x: (flat_intervals.loc[x["start"] : x["end"], "energy"].sum()),

@@ -166,9 +166,7 @@ class EATAccessorSeries:
         pd.DataFrame
             The intervals over the threshold.
         """
-        return timeseries.extract_features.intervals_over(
-            self._obj, *args, **kwargs
-        )
+        return timeseries.extract_features.intervals_over(self._obj, *args, **kwargs)
 
     def timestep_durations(
         self,

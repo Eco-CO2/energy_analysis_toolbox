@@ -68,15 +68,11 @@ def test_localized_rolling_profile():
     time = pd.Timestamp("2022-10-23 00:00")
     agg = np.std
     expected = RollingProfile(window, agg).compute(history=history, time=time)
-    result = LocalizedRollingProfile(window, agg).compute(
-        history=history, time=time
-    )
+    result = LocalizedRollingProfile(window, agg).compute(history=history, time=time)
     # 1.
     pd.testing.assert_frame_equal(expected, result)
     history.index = index.tz_localize("Europe/Paris")
-    result = LocalizedRollingProfile(window, agg).compute(
-        history=history, time=time
-    )
+    result = LocalizedRollingProfile(window, agg).compute(history=history, time=time)
     expected.index = expected.index.tz_localize("Europe/Paris")
     # 2.
     pd.testing.assert_frame_equal(expected, result)
@@ -103,9 +99,7 @@ def test_localized_rolling_quantile_profile():
         index=index,
     )
     time = pd.Timestamp("2022-10-23 00:00")
-    expected = RollingQuantileProfile(window, q).compute(
-        history=history, time=time
-    )
+    expected = RollingQuantileProfile(window, q).compute(history=history, time=time)
     result = LocalizedRollingQuantileProfile(window, q).compute(
         history=history, time=time
     )

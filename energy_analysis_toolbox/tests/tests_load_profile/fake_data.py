@@ -22,16 +22,14 @@ def sinusoid_history(
     if start is None:
         start = pd.Timestamp.now().floor("D") - duration
     end = start + duration
-    index_dates = pd.date_range(
-        start=start, freq=freq, end=end, inclusive="left"
-    )
+    index_dates = pd.date_range(start=start, freq=freq, end=end, inclusive="left")
     # TODO : factorize using cerebro utils (extracted)
     durations = (index_dates - index_dates[0]).total_seconds()
     omega = (2 * np.pi) / period_variation
     data = (np.sin(durations * omega) + 1 + min_value) / 2 * max_value
-    data += np.random.uniform(
-        low=-1 * noise, high=noise, size=data.shape[0]
-    ) * (max_value - min_value)
+    data += np.random.uniform(low=-1 * noise, high=noise, size=data.shape[0]) * (
+        max_value - min_value
+    )
     history = pd.Series(data, index=index_dates, name="example")
     return history
 

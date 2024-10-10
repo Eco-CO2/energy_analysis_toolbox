@@ -131,9 +131,7 @@ class RollingProfile:
         profile.index.name = history.index.name
         if self.as_mean_offset:
             ref = self.reference.compute(history, time, **kwargs)
-            profile = (
-                ref.loc[:, [self.column_name]] + self.offset_factor * profile
-            )
+            profile = ref.loc[:, [self.column_name]] + self.offset_factor * profile
         return profile
 
     def daily_pivot(
@@ -171,9 +169,7 @@ class RollingProfile:
             )
         # Deal with winter DST and time-localized data
         df_day_by_time = df_day_by_time.drop(
-            labels=df_day_by_time.index[
-                df_day_by_time.index >= pd.Timedelta("1D")
-            ]
+            labels=df_day_by_time.index[df_day_by_time.index >= pd.Timedelta("1D")]
         )
         return df_day_by_time[self.column_name]
 
@@ -217,9 +213,7 @@ class RollingProfile:
             return res
 
         aggregated = (
-            pivoted_history.iloc[
-                :, 0
-            ]  # select the first column, as we only roll once.
+            pivoted_history.iloc[:, 0]  # select the first column, as we only roll once.
             .rolling(self.window, center=True)
             .apply(custom_agg, raw=False)  # we need the index passed.
         )

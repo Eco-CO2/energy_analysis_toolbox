@@ -78,9 +78,7 @@ html_css_files = [
     "css/custom.css",
 ]
 # -- nbsphinx extension configuration ------------------------------------------
-nbsphinx_execute = (
-    "never"  # never, always, or auto (only run if no output available)
-)
+nbsphinx_execute = "never"  # never, always, or auto (only run if no output available)
 
 # -- Extension configuration -------------------------------------------------
 napoleon_use_rtype = False  # move return type inline

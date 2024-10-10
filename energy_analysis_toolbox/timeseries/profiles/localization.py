@@ -58,9 +58,7 @@ class LocalizedProfileMixin:
         else:
             profile_ref = (
                 super()
-                .compute(
-                    history.tz_localize(None), time.tz_localize(None), **kwargs
-                )
+                .compute(history.tz_localize(None), time.tz_localize(None), **kwargs)
                 .tz_localize(source_tz, ambiguous=True, nonexistent="NaT")
             )
         return profile_ref

@@ -81,8 +81,8 @@ def from_power_threshold(
         ).dt.total_seconds()
         # Compute energy criterion associated to overshoots
         if isinstance(reference_energy_tshd, pd.Series):
-            power_series_aligned, reference_energy_tshd_aligned = (
-                power_series.align(reference_energy_tshd)
+            power_series_aligned, reference_energy_tshd_aligned = power_series.align(
+                reference_energy_tshd
             )
         else:
             power_series_aligned, reference_energy_tshd_aligned = (

@@ -175,9 +175,7 @@ class AutoCategoricalThermoSensitivity(
                     contrast_matrix[
                         0, self.model.params.index.get_loc(interaction_term2)
                     ] = -1
-                    wald_test = self.model.wald_test(
-                        contrast_matrix, scalar=True
-                    )
+                    wald_test = self.model.wald_test(contrast_matrix, scalar=True)
                     if wald_test.pvalue < signicant_level:
                         is_same_group &= False
                 if is_same_group:

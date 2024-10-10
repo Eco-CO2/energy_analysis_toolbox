@@ -31,14 +31,10 @@ def test_weekends():
     )
     # on df
     filtered = weekends_only(history)
-    pd.testing.assert_frame_equal(
-        filtered, history.iloc[[5, 6, 12, 13, 19, 20], :]
-    )
+    pd.testing.assert_frame_equal(filtered, history.iloc[[5, 6, 12, 13, 19, 20], :])
     # on series
     filtered_s = weekends_only(history.iloc[:, 0])
-    pd.testing.assert_series_equal(
-        filtered_s, history.iloc[[5, 6, 12, 13, 19, 20], 0]
-    )
+    pd.testing.assert_series_equal(filtered_s, history.iloc[[5, 6, 12, 13, 19, 20], 0])
 
 
 def test_weekdays():
@@ -70,8 +66,6 @@ def test_pipelining():
         start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
     )
     filtered = history.pipe(same_day_only).pipe(weekdays_only)
-    pd.testing.assert_frame_equal(
-        filtered, history.iloc[[0, 7], :], check_freq=False
-    )
+    pd.testing.assert_frame_equal(filtered, history.iloc[[0, 7], :], check_freq=False)
     filtered = history.pipe(same_day_only).pipe(weekends_only)
     filtered.empty

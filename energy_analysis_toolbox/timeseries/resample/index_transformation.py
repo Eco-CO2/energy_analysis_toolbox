@@ -180,9 +180,7 @@ def estimate_timestep(
     if method == "kde":
         return max_kde_time_step(data)
     else:
-        raise ValueError(
-            "method must be one of {'mean', 'median', 'mode', 'kde'}"
-        )
+        raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
 
 
 def median_time_step(
@@ -379,9 +377,7 @@ def fill_missing_entries(
 
     """
     durations = timestep_durations(data)
-    intervals_to_fill = durations[
-        durations >= sampling_period * security_factor
-    ]
+    intervals_to_fill = durations[durations >= sampling_period * security_factor]
     if intervals_to_fill.empty:
         return data
     new_indexes = []

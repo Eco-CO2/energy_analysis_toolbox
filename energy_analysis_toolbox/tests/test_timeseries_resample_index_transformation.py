@@ -118,14 +118,10 @@ def test_estimate_timestep_two_frequency():
     freq1 = "1min"
     freq2 = "2min"
     timestamp_1 = list(
-        pd.date_range(
-            start=pd.Timestamp("2022-06-15 12:03"), periods=10, freq=freq1
-        )
+        pd.date_range(start=pd.Timestamp("2022-06-15 12:03"), periods=10, freq=freq1)
     )
     timestamp_2 = list(
-        pd.date_range(
-            start=timestamp_1[-1], periods=10, freq=freq2, inclusive="right"
-        )
+        pd.date_range(start=timestamp_1[-1], periods=10, freq=freq2, inclusive="right")
     )
     index = pd.DatetimeIndex(timestamp_1 + timestamp_2)
     timestep = pd.Timedelta(freq2).total_seconds()
@@ -147,15 +143,11 @@ def test_estimate_timestep_random_frequency():
     assert np.isclose(
         estimate_timestep(index, "median"), timestep, rtol=rtol, atol=atol
     )
-    assert np.isclose(
-        estimate_timestep(index, "kde"), timestep, rtol=rtol, atol=atol
-    )
+    assert np.isclose(estimate_timestep(index, "kde"), timestep, rtol=rtol, atol=atol)
     assert np.isclose(
         estimate_timestep(index, "mode"), timestep, rtol=rtol, atol=atol
     )  # I'm quite surprised that this works !
-    assert np.isclose(
-        estimate_timestep(index, "mean"), timestep, rtol=rtol, atol=atol
-    )
+    assert np.isclose(estimate_timestep(index, "mean"), timestep, rtol=rtol, atol=atol)
 
 
 def test_fill_missing_entry_series():
@@ -177,9 +169,7 @@ def test_fill_missing_entry_series():
     fixed_series = fill_missing_entries(
         missing_series, sampling_period=60, security_factor=2, fill_value=42
     )
-    pd.testing.assert_series_equal(
-        expected_series, fixed_series, check_freq=False
-    )
+    pd.testing.assert_series_equal(expected_series, fixed_series, check_freq=False)
 
 
 def test_fill_missing_entry_frame():
@@ -223,6 +213,4 @@ def test_fill_data_holes():
     fixed_series = fill_data_holes(
         missing_series, method="median", security_factor=2, fill_value=42
     )
-    pd.testing.assert_series_equal(
-        expected_series, fixed_series, check_freq=False
-    )
+    pd.testing.assert_series_equal(expected_series, fixed_series, check_freq=False)

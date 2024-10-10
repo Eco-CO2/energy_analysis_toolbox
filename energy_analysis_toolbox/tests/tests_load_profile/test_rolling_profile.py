@@ -96,9 +96,7 @@ def expected_constant_df(value, index, window_size):
         [0, 1],  # DDoF in the STD computation
     ),
 )
-def test_windowed_rolling_agg_many_combinations(
-    n_rows, step, window_size, ddof
-):
+def test_windowed_rolling_agg_many_combinations(n_rows, step, window_size, ddof):
     """Test the computation of the standard deviation on a rolling window.
     The dataframe generated as several number of columns (1 to 4),
     with data a np.arange with several step values,
@@ -117,9 +115,7 @@ def test_windowed_rolling_agg_many_combinations(
     pd.testing.assert_frame_equal(extected_df, results)
 
 
-@pytest.mark.parametrize(
-    "n_days, step, window_size, freq_minutes", [[3, 2, 5, 6]]
-)
+@pytest.mark.parametrize("n_days, step, window_size, freq_minutes", [[3, 2, 5, 6]])
 def test_mean_offset(n_days, step, window_size, freq_minutes):
     """Check that the option to add the mean profile to the results is effective when toggled"""
     n_rows = int(24 * 60 / freq_minutes)
@@ -138,9 +134,7 @@ def test_mean_offset(n_days, step, window_size, freq_minutes):
         end="2022-09-23 23:59",
         freq=f"{freq_minutes}min",
     )
-    expected_df = expected_constant_df(
-        expected_value, expected_time, window_size
-    )
+    expected_df = expected_constant_df(expected_value, expected_time, window_size)
     rolling_profiler = RollingProfile(
         window=window_size, aggregation=np.std, as_mean_offset=True
     )
@@ -171,9 +165,7 @@ def test_RollingQuantileProfile_many_combinations(n_days, step, window_size, q):
     freq_minutes = 6
     r_rows = int(n_days * 24 * 60 / freq_minutes)
     data = (
-        np.array(
-            np.arange(0, n_days * step, step).tolist() * (r_rows // n_days)
-        )
+        np.array(np.arange(0, n_days * step, step).tolist() * (r_rows // n_days))
         .reshape(-1, n_days)
         .T.ravel()
     )
@@ -199,9 +191,7 @@ def test_RollingQuantileProfile_many_combinations(n_days, step, window_size, q):
         freq=f"{freq_minutes}min",
         name=index_name,
     )
-    expected_df = expected_constant_df(
-        expected_value, expected_time, window_size
-    )
+    expected_df = expected_constant_df(expected_value, expected_time, window_size)
     pd.testing.assert_frame_equal(expected_df, results, check_freq=False)
 
 
@@ -218,9 +208,7 @@ def test_daily_pivot_many_combinations(n_days, freq, tz):
     start = pd.Timestamp("2023-06-21 00:00:00", tz=tz)
     end = start + pd.DateOffset(days=n_days, milliseconds=-1)
     index = pd.date_range(start=start, end=end, freq=freq)
-    history = pd.DataFrame(
-        data=np.ones(len(index)), index=index, columns=["value"]
-    )
+    history = pd.DataFrame(data=np.ones(len(index)), index=index, columns=["value"])
     result = RollingProfile(None, None).daily_pivot(history)
     assert result.shape[1] == n_days
     pd.testing.assert_index_equal(
@@ -238,9 +226,7 @@ def test_daily_pivot_duplicated_index():
     end = start + pd.DateOffset(days=n_days, milliseconds=-1)
     index = pd.date_range(start=start, end=end, freq=freq)
     index = index.append(index[5:7])
-    history = pd.DataFrame(
-        data=np.ones(len(index)), index=index, columns=["value"]
-    )
+    history = pd.DataFrame(data=np.ones(len(index)), index=index, columns=["value"])
     result = RollingProfile(None, None).daily_pivot(history)
     assert result.shape[1] == n_days
     pd.testing.assert_index_equal(

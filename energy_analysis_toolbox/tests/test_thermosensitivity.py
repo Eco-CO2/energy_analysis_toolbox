@@ -65,15 +65,11 @@ class TestThermoSensitivity:
             ts_cool=self.ts_cooling,
             noise_std=self.noise_std,
         )
-        self.expected_intercept = (
-            self.base_energy * self.expected_intercept_factor
-        )
+        self.expected_intercept = self.base_energy * self.expected_intercept_factor
 
     def test_fit_only_heating_no_noise(self):
         """Test the ThermoSensitivity class."""
-        data = self.synth_heating_only.random_consumption(
-            size=self.data_generated_size
-        )
+        data = self.synth_heating_only.random_consumption(size=self.data_generated_size)
 
         ts = ThermoSensitivity(
             energy_data=data["energy"],
@@ -148,9 +144,7 @@ class TestThermoSensitivity:
 
     def test_only_heating_no_noise_tref_calibration(self):
         """Test the ThermoSensitivity class."""
-        data = self.synth_heating_only.random_consumption(
-            size=self.data_generated_size
-        )
+        data = self.synth_heating_only.random_consumption(size=self.data_generated_size)
 
         ts = ThermoSensitivity(
             energy_data=data["energy"],
@@ -247,9 +241,7 @@ class TestThermoSensitivity:
         }
 
         ts.degree_days_type = "both"
-        ts._aggregate_data(
-            {"heating": self.tref_heating, "cooling": self.tref_cooling}
-        )
+        ts._aggregate_data({"heating": self.tref_heating, "cooling": self.tref_cooling})
         agg_data = ts.aggregated_data
         assert set(agg_data.columns) == {
             "energy",
@@ -259,9 +251,7 @@ class TestThermoSensitivity:
         }
 
     def test_model(self):
-        data = self.synth_heating_only.random_consumption(
-            size=self.data_generated_size
-        )
+        data = self.synth_heating_only.random_consumption(size=self.data_generated_size)
         ts = ThermoSensitivity(
             energy_data=data["energy"],
             temperature_data=data["T"],
@@ -277,9 +267,7 @@ class TestThermoSensitivity:
         assert ts.model is not None
 
     def test_init(self):
-        data = self.synth_heating_only.random_consumption(
-            size=self.data_generated_size
-        )
+        data = self.synth_heating_only.random_consumption(size=self.data_generated_size)
 
         with pytest.raises(ValueError):
             ThermoSensitivity(
@@ -315,9 +303,7 @@ class TestThermoSensitivity:
             )
 
     def test_post_init(self):
-        data = self.synth_heating_only.random_consumption(
-            size=self.data_generated_size
-        )
+        data = self.synth_heating_only.random_consumption(size=self.data_generated_size)
         ts = ThermoSensitivity(
             energy_data=data["energy"],
             temperature_data=data["T"],

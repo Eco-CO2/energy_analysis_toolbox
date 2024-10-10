@@ -135,9 +135,7 @@ def test_keep_categories_constant():
     # on df
     filtered = keep_categories(history, keep=[1], classificator=single_category)
     pd.testing.assert_frame_equal(filtered, history)
-    filtered_out = keep_categories(
-        history, keep=[0], classificator=single_category
-    )
+    filtered_out = keep_categories(history, keep=[0], classificator=single_category)
     assert filtered_out.empty
     # on series
     filtered_s = keep_categories(
@@ -157,13 +155,9 @@ def test_remove_categories_constant():
         start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
     )
     # on df
-    filtered = remove_categories(
-        history, remove=[0], classificator=single_category
-    )
+    filtered = remove_categories(history, remove=[0], classificator=single_category)
     pd.testing.assert_frame_equal(filtered, history)
-    filtered_out = remove_categories(
-        history, remove=[1], classificator=single_category
-    )
+    filtered_out = remove_categories(history, remove=[1], classificator=single_category)
     assert filtered_out.empty
     # on series
     filtered_s = remove_categories(
@@ -203,15 +197,11 @@ def test_keep_categories_working_days():
     assert keep_categories(history, classificator=casa_randazzo).empty
     # on df keep everything
     pd.testing.assert_frame_equal(
-        keep_categories(
-            history, classificator=casa_randazzo, keep=[True, False]
-        ),
+        keep_categories(history, classificator=casa_randazzo, keep=[True, False]),
         history,
     )
     # keep working days
-    filtered = keep_categories(
-        history, keep=[True], classificator=casa_randazzo
-    )
+    filtered = keep_categories(history, keep=[True], classificator=casa_randazzo)
     pd.testing.assert_frame_equal(
         filtered, history.drop(labels=history.index[[0, 1, 7, 8]])
     )
@@ -237,9 +227,7 @@ def test_keep_categories_arbitrary():
         return categories.loc[date]
 
     # on df
-    filtered = keep_categories(
-        history, keep=["yes"], classificator=classificator
-    )
+    filtered = keep_categories(history, keep=["yes"], classificator=classificator)
     pd.testing.assert_frame_equal(filtered, history.iloc[1::2])
     # on series
     filtered_s = keep_categories(
@@ -281,9 +269,7 @@ def test_remove_categories_working_days():
         history,
     )
     # remove working days
-    filtered = remove_categories(
-        history, remove=[False], classificator=casa_randazzo
-    )
+    filtered = remove_categories(history, remove=[False], classificator=casa_randazzo)
     pd.testing.assert_frame_equal(
         filtered, history.drop(labels=history.index[[0, 1, 7, 8]])
     )
@@ -309,9 +295,7 @@ def test_remove_categories_arbitrary():
         return categories.loc[date]
 
     # on df
-    filtered = remove_categories(
-        history, remove=["no"], classificator=classificator
-    )
+    filtered = remove_categories(history, remove=["no"], classificator=classificator)
     pd.testing.assert_frame_equal(filtered, history.iloc[1::2])
     # on series
     filtered_s = remove_categories(

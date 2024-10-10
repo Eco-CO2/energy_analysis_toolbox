@@ -71,9 +71,7 @@ def test_to_freq_piecewise_constant():
         ),
     )
     pd.testing.assert_series_equal(
-        to_freq(
-            example_series, "2h", origin="floor", method="piecewise_constant"
-        ),
+        to_freq(example_series, "2h", origin="floor", method="piecewise_constant"),
         pd.Series(
             [
                 0.0,
@@ -84,9 +82,7 @@ def test_to_freq_piecewise_constant():
         ),
     )
     pd.testing.assert_series_equal(
-        to_freq(
-            example_series, "3h", origin="ceil", method="piecewise_constant"
-        ),
+        to_freq(example_series, "3h", origin="ceil", method="piecewise_constant"),
         pd.Series(
             [1.0],
             index=pd.date_range("2020-01-01 03:00", periods=1, freq="3h"),

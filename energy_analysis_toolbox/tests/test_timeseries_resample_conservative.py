@@ -102,9 +102,7 @@ def test_flow_rate_right_bound_overlap():
         [3.0],
         pd.date_range(pd.Timestamp("2021-12-15"), periods=1, freq="20min"),
     )
-    target_instants = pd.date_range(
-        pd.Timestamp("2021-12-15"), periods=2, freq="15min"
-    )
+    target_instants = pd.date_range(pd.Timestamp("2021-12-15"), periods=2, freq="15min")
     # implicit last target instant
     interp = flow_rate_conservative(
         sources, target_instants, last_step_duration=20 * MINUTE
@@ -160,13 +158,9 @@ def test_flow_rate_limit_last_steps():
         pd.date_range(pd.Timestamp("2021-12-15"), periods=10, freq="45min"),
     )
     with pytest.raises(EATInvalidTimestepDurationError):
-        flow_rate_conservative(
-            sources.iloc[:8], sources.index, last_step_duration=0.0
-        )
+        flow_rate_conservative(sources.iloc[:8], sources.index, last_step_duration=0.0)
     with pytest.raises(EATInvalidTimestepDurationError):
-        flow_rate_conservative(
-            sources, sources.index, last_target_step_duration=0.0
-        )
+        flow_rate_conservative(sources, sources.index, last_target_step_duration=0.0)
     with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(
             sources,
@@ -177,9 +171,7 @@ def test_flow_rate_limit_last_steps():
     with pytest.raises(EATInvalidTimestepDurationError):
         flow_rate_conservative(sources, sources.index, last_step_duration=-42.0)
     with pytest.raises(EATInvalidTimestepDurationError):
-        flow_rate_conservative(
-            sources, sources.index, last_target_step_duration=-42.0
-        )
+        flow_rate_conservative(sources, sources.index, last_target_step_duration=-42.0)
 
 
 def test_flow_rate_conservative():
@@ -206,9 +198,7 @@ def test_flow_rate_conservative():
     t3 = t2 + dur_2 * one_s
     t4 = t3 + dur_3 * one_s
     t5 = t4 + dur_4 * one_s
-    flow_rates = pd.Series(
-        np.arange(1, 5) * 1e-3, pd.DatetimeIndex([t0, t1, t2, t3])
-    )
+    flow_rates = pd.Series(np.arange(1, 5) * 1e-3, pd.DatetimeIndex([t0, t1, t2, t3]))
     target_instants = pd.DatetimeIndex(
         [
             t0 - 3600 * one_s,
@@ -235,9 +225,7 @@ def test_flow_rate_conservative():
         ]
     )
     fr_interp = flow_rate_conservative(flow_rates, target_instants)
-    compare_flow_rates(
-        fr_interp, pd.Series(expected_fr_values, target_instants)
-    )
+    compare_flow_rates(fr_interp, pd.Series(expected_fr_values, target_instants))
 
 
 # =============================================================================
@@ -324,17 +312,13 @@ def test_volume_conservative_limit_last_steps():
         [0.0, 0.050, 0.05], index=pd.DatetimeIndex([t0, t0 + dt, t0 + 2 * dt])
     )
     with pytest.raises(EATInvalidTimestepDurationError):
-        volume_conservative(
-            volumes, volumes.index, last_target_step_duration=0.0
-        )
+        volume_conservative(volumes, volumes.index, last_target_step_duration=0.0)
     with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(volumes, volumes.index, last_step_duration=0.0)
     with pytest.raises(EATInvalidTimestepDurationError):
         volume_conservative(volumes, volumes.index, last_step_duration=-1.0)
     with pytest.raises(EATInvalidTimestepDurationError):
-        volume_conservative(
-            volumes, volumes.index, last_target_step_duration=-1.0
-        )
+        volume_conservative(volumes, volumes.index, last_target_step_duration=-1.0)
 
 
 def test_volume_conservative_1():
@@ -356,9 +340,7 @@ def test_volume_conservative_1():
     volumes_expect = pd.Series(
         [0.025, 0.025], index=pd.DatetimeIndex([t0 + dt / 2, t0 + 3 * dt / 2])
     )
-    compare_volumes(
-        volumes_expect, volume_conservative(volumes, volumes_expect.index)
-    )
+    compare_volumes(volumes_expect, volume_conservative(volumes, volumes_expect.index))
 
 
 def test_volume_conservative_2():
@@ -380,9 +362,7 @@ def test_volume_conservative_2():
         [0.020, 0.020],
         index=pd.DatetimeIndex([t0 + 4 * dt / 3, t0 + 5 * dt / 3]),
     )
-    compare_volumes(
-        volumes_expect, volume_conservative(volumes, volumes_expect.index)
-    )
+    compare_volumes(volumes_expect, volume_conservative(volumes, volumes_expect.index))
 
 
 def test_volume_conservative_finer():
@@ -418,9 +398,7 @@ def test_volume_conservative_finer_2():
         [0.020, 0.020, 0.030, 0.030, 0.025, 0.025],
         index=pd.date_range(t0, t0 + 3 * dt, inclusive="left", freq="150s"),
     )
-    compare_volumes(
-        volumes_expect, volume_conservative(volumes, volumes_expect.index)
-    )
+    compare_volumes(volumes_expect, volume_conservative(volumes, volumes_expect.index))
 
 
 def test_volume_conservative_ordinary():
@@ -460,9 +438,7 @@ def test_volume_conservative_ordinary():
                 # 0 m3 here
                 pd.Timestamp("2022-02-22 22:29:52"),
                 # 0.030 m3 here
-                pd.Timestamp(
-                    "2022-02-22 22:30:52"
-                ),  # 1 min later, 30s with "draw"
+                pd.Timestamp("2022-02-22 22:30:52"),  # 1 min later, 30s with "draw"
                 # 0.600 m3 here
                 pd.Timestamp("2022-02-22 22:40:52"),  # 600s later
                 # 2.970 m3 here, the rest of the 3.6 m3
@@ -501,9 +477,7 @@ def test_volume_conservative_ordinary():
 def test_volume_conservative_coarser():
     """Resample volume with a coarser resolution"""
     volumes = example_volume_one_day("2020-01-06")
-    coarse_ixs = pd.date_range(
-        start="2020-01-06", end="2020-01-06 12:00", periods=2
-    )
+    coarse_ixs = pd.date_range(start="2020-01-06", end="2020-01-06 12:00", periods=2)
     coarse_volumes = volume_conservative(volumes, coarse_ixs)
     assert coarse_volumes.sum() == pytest.approx(volumes.sum())
     assert coarse_volumes.loc["2020-01-06 12:00":].sum() == pytest.approx(

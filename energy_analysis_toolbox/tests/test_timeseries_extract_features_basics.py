@@ -92,9 +92,7 @@ def test_intervals_over():
         inclusive="left",
         freq=pd.DateOffset(seconds=300),
     )
-    power = pd.Series(
-        np.array([0, 1, 1.5, 2.0, 2.0, 3.0, 1.5, 0.0]), index=time_range
-    )
+    power = pd.Series(np.array([0, 1, 1.5, 2.0, 2.0, 3.0, 1.5, 0.0]), index=time_range)
     start_f = "start"
     end_f = "end"
     up_loc, up_iloc = intervals_over(power, low_tshd=1.5, return_positions=True)
@@ -122,9 +120,7 @@ def test_intervals_over_no_interval(timestep):
         inclusive="left",
         freq=pd.DateOffset(seconds=timestep),
     )
-    power = pd.Series(
-        np.zeros((time_range.size), dtype=np.float64), index=time_range
-    )
+    power = pd.Series(np.zeros((time_range.size), dtype=np.float64), index=time_range)
     assert intervals_over(power, low_tshd=0.0).empty
 
 

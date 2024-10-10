@@ -59,9 +59,7 @@ def piecewise_affine(
     try:
         ref_time = target_instants[0]
     except IndexError:
-        return pd.Series(
-            [], dtype=timeseries.dtype, index=target_instants.copy()
-        )
+        return pd.Series([], dtype=timeseries.dtype, index=target_instants.copy())
     target_offsets = (target_instants - ref_time).total_seconds()
     sample_dts = (timeseries.index - ref_time).total_seconds()
     new_values = np.interp(target_offsets, sample_dts, timeseries.values)
@@ -107,9 +105,7 @@ def piecewise_constant(
     try:
         ref_time = target_instants[0]
     except IndexError:
-        return pd.Series(
-            [], dtype=timeseries.dtype, index=target_instants.copy()
-        )
+        return pd.Series([], dtype=timeseries.dtype, index=target_instants.copy())
     target_offsets = (target_instants - ref_time).total_seconds()
     sample_dts = (timeseries.index - ref_time).total_seconds()
     ix_select = np.digitize(target_offsets, sample_dts, right=False) - 1
@@ -119,8 +115,6 @@ def piecewise_constant(
     else:
         new_values = timeseries.iloc[ix_select].values
         new_values[ix_select < 0] = left_pad
-    new_series = pd.Series(
-        new_values, index=target_instants, name=timeseries.name
-    )
+    new_series = pd.Series(new_values, index=target_instants, name=timeseries.name)
     new_series.index.name = timeseries.index.name
     return new_series

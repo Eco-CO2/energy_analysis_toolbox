@@ -5,7 +5,7 @@ requires = [
 
 [project]
 name = "energy_analysis_toolbox"
-description = "A set of tools to manipulate and transform power, energy, and related timeseries data."
+description = "A set of tools to manipulate and transform power, and energ timeseries data."
 authors = [{name="energy_analysis_toolbox contributors",email="research@ecoco2.com"},]
 license = {file = "LICENSE"}
 readme = "README.md"
@@ -66,22 +66,8 @@ namespaces = false
 [tool.setuptools.dynamic]
 version = {attr = "energy_analysis_toolbox.__version__"}
 
-[tool.ruff]
-line-length = 80
-
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
-
-[tool.ruff.lint.mccabe]
-# Flag errors (`C901`) whenever the complexity level exceeds 5.
-max-complexity = 5
-
-[tool.ruff.lint.extend-per-file-ignores]
-"__init__.py" = ["F401"]
-"*.ipynb" = [
-    "E402", # module-import-not-at-top-of-file
-    "F401", # unused-import
-]
+[tool.ruff.lint]
+select = ["ALL"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml"

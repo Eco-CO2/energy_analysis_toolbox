@@ -114,9 +114,7 @@ def intervals_over(
     intervals = pd.DataFrame(bound_labels, columns=[EATK.start_f, EATK.end_f])
     # [4]
     if return_positions:
-        iloc_bounds = pd.DataFrame(
-            bound_indexes, columns=[EATK.start_f, EATK.end_f]
-        )
+        iloc_bounds = pd.DataFrame(bound_indexes, columns=[EATK.start_f, EATK.end_f])
         return intervals, iloc_bounds
     else:
         return intervals

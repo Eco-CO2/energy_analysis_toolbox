@@ -86,28 +86,20 @@ def test_by_cumulated_proportions():
     """
     intervals = example_intervals()
     # all of them
-    case_1 = by_cumulated_proportion(
-        intervals_overshoot=intervals, proportion_tshd=1.0
-    )
+    case_1 = by_cumulated_proportion(intervals_overshoot=intervals, proportion_tshd=1.0)
     case_1_expect = intervals.copy().sort_values(by="energy", ascending=False)
     case_1_expect["cum_energy_prop"] = [0.5, 0.8, 0.95, 1.0]
     pd.testing.assert_frame_equal(case_1, case_1_expect)
     # only some
-    case_2 = by_cumulated_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0.6
-    )
+    case_2 = by_cumulated_proportion(intervals_overshoot=intervals, proportion_tshd=0.6)
     case_2_expect = case_1.copy().iloc[0:2]
     pd.testing.assert_frame_equal(case_2, case_2_expect)
     # only one
-    case_3 = by_cumulated_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0.4
-    )
+    case_3 = by_cumulated_proportion(intervals_overshoot=intervals, proportion_tshd=0.4)
     case_3_expect = case_1.copy().iloc[0:1]
     pd.testing.assert_frame_equal(case_3, case_3_expect)
     # 0 proportion : always at least one value (same as case 3)
-    case_4 = by_cumulated_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0
-    )
+    case_4 = by_cumulated_proportion(intervals_overshoot=intervals, proportion_tshd=0)
     pd.testing.assert_frame_equal(case_4, case_3_expect)
     # custom reference
     case_5 = by_cumulated_proportion(

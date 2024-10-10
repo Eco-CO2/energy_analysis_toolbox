@@ -60,9 +60,7 @@ class TestSynthDDConsumption:
         synth_dd_consumption = setup
         size = 45
         start = "2024-04-18"
-        consumption = synth_dd_consumption.random_consumption(
-            size=size, start=start
-        )
+        consumption = synth_dd_consumption.random_consumption(size=size, start=start)
         assert isinstance(consumption, pd.DataFrame)
         assert len(consumption) == size
 
@@ -73,9 +71,7 @@ class TestSynthDDConsumption:
         assert all(consumption["base"] == self.base_energry)
         # generate a large sample to test the noise std
         consumption = synth_dd_consumption.random_consumption(size=10_000)
-        assert (
-            abs(consumption["residual"].std() - self.noise_std) < 0.05
-        )  # 1% error
+        assert abs(consumption["residual"].std() - self.noise_std) < 0.05  # 1% error
 
     def test_measures(self, setup: SynthDDConsumption):
         synth_dd_consumption = setup

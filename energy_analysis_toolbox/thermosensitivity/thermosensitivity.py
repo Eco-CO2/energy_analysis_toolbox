@@ -322,9 +322,7 @@ class ThermoSensitivity:
             If the data is not aggregated. Use the `fit` method to aggregate the data.
         """
         if self._aggregated_data is None:
-            raise ValueError(
-                "Data not aggregated. Please run the `fit` method."
-            )
+            raise ValueError("Data not aggregated. Please run the `fit` method.")
         return self._aggregated_data
 
     @aggregated_data.setter
@@ -456,13 +454,8 @@ class ThermoSensitivity:
                 data_to_test = self.resampled_energy_temperature.loc[
                     cooling_mask, [self.target_name, self.temperature_name]
                 ]
-                cooling_sp = spearmanr(
-                    data_to_test, alternative="greater"
-                ).pvalue
-            if (
-                heating_sp < significance_level
-                and cooling_sp < significance_level
-            ):
+                cooling_sp = spearmanr(data_to_test, alternative="greater").pvalue
+            if heating_sp < significance_level and cooling_sp < significance_level:
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
                 self.degree_days_type = "heating"
@@ -661,18 +654,14 @@ def loss_function(
         type=dd_type,
         method=dd_computation_method,
     )
-    degree_days_resampled = (
-        degree_days.resample(frequency).sum().rename("degree_days")
-    )
+    degree_days_resampled = degree_days.resample(frequency).sum().rename("degree_days")
     data = pd.concat([resampled_energy, degree_days_resampled], axis=1).dropna(
         how="any", axis=0
     )
     data["Intercept"] = 1
     if mask is not None:
         data = data[mask]
-    model = OLS(
-        data[resampled_energy.name], data[["degree_days", "Intercept"]]
-    ).fit()
+    model = OLS(data[resampled_energy.name], data[["degree_days", "Intercept"]]).fit()
     if verbose:
         print(f"{t0=:.4f}, {model.mse_resid:.2f}, {model.mse_total:.2f}")
     return model.mse_resid
@@ -836,15 +825,11 @@ class CategoricalThermoSensitivity(
                 if verbose:
                     print("f{cat=}")
                 heating_mask = (
-                    self.resampled_energy_temperature_category[
-                        self.temperature_name
-                    ]
+                    self.resampled_energy_temperature_category[self.temperature_name]
                     < self.interseason_mean_temperature
                 )
                 cat_mask = (
-                    self.resampled_energy_temperature_category[
-                        self.categories_name
-                    ]
+                    self.resampled_energy_temperature_category[self.categories_name]
                     == cat
                 )
                 tmp_heating_sp = spearmanr(
@@ -858,8 +843,7 @@ class CategoricalThermoSensitivity(
                 if tmp_heating_sp.pvalue < heating_sp:
                     heating_sp = tmp_heating_sp.pvalue
                 cooling_mask = (
-                    self.resampled_temperature
-                    > self.interseason_mean_temperature
+                    self.resampled_temperature > self.interseason_mean_temperature
                 )
                 tmp_cooling_sp = spearmanr(
                     self.resampled_energy_temperature_category.loc[
@@ -872,10 +856,7 @@ class CategoricalThermoSensitivity(
                     print(f"{tmp_cooling_sp}")
                 if tmp_cooling_sp.pvalue < cooling_sp:
                     cooling_sp = tmp_cooling_sp.pvalue
-            if (
-                heating_sp < significance_level
-                and cooling_sp < significance_level
-            ):
+            if heating_sp < significance_level and cooling_sp < significance_level:
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
                 self.degree_days_type = "heating"

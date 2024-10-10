@@ -180,10 +180,7 @@ def test_piecewise_constant_padding():
     )
     bc = pd.Series(sample_values, instants)
     target_instants = pd.DatetimeIndex(
-        [
-            start_time + pd.Timedelta(seconds=dt)
-            for dt in np.array([-2, -1, 12.0])
-        ]
+        [start_time + pd.Timedelta(seconds=dt) for dt in np.array([-2, -1, 12.0])]
     )
     stair_interp = piecewise_constant(bc, target_instants)
     assert np.allclose(stair_interp.to_numpy(), np.array([0.0, 0.0, -1.0]))

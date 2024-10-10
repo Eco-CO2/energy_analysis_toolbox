@@ -675,9 +675,7 @@ class DateSynthTSConsumption(SynthTSConsumption):
             )
         )
         t_samples = pd.Series(
-            self._rng.normal(
-                loc=temperature_base, scale=t_std, size=len(index)
-            ),
+            self._rng.normal(loc=temperature_base, scale=t_std, size=len(index)),
             index=index,
             name="T(°C)",
         )

@@ -83,9 +83,7 @@ def test_from_power_threshold_under_power():
             "energy": 1800 * 45 + intervals["energy"].sum(),
         }
     )
-    pd.testing.assert_frame_equal(
-        found_intervals, intervals_expect, check_dtype=False
-    )
+    pd.testing.assert_frame_equal(found_intervals, intervals_expect, check_dtype=False)
 
 
 def test_from_power_threshold_series():

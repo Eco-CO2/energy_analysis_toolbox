@@ -154,9 +154,7 @@ def test_computation_realistic_data_integral(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(
-            temperature, reference=ref, method="integral"
-        ).mean()
+        computed_dd = dd_compute(temperature, reference=ref, method="integral").mean()
         # putting the reference computation in the assert to better debug the test
         assert np.isclose(
             computed_dd,
@@ -174,9 +172,7 @@ def test_computation_realistic_data_pro(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(
-            temperature, reference=ref, method="pro"
-        ).mean()
+        computed_dd = dd_compute(temperature, reference=ref, method="pro").mean()
         # putting the reference computation in the assert to better debug the test
         assert np.isclose(
             computed_dd, reference_sin_dd(mean, spread, reference=ref), rtol=0.2
@@ -205,9 +201,7 @@ def test_computation_realistic_data_not_integral(spread=10, mean=15):
     ref_temperatures = np.linspace(5, 30, 20)
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(
-            temperature, reference=ref, method="min_max"
-        ).mean()
+        computed_dd = dd_compute(temperature, reference=ref, method="min_max").mean()
         # putting the reference computation in the assert to better debug the test
         assert np.isclose(
             computed_dd,
@@ -216,9 +210,7 @@ def test_computation_realistic_data_not_integral(spread=10, mean=15):
         )
     for ref in ref_temperatures:
         # using mean as there are multiple days in the data
-        computed_dd = dd_compute(
-            temperature, reference=ref, method="mean"
-        ).mean()
+        computed_dd = dd_compute(temperature, reference=ref, method="mean").mean()
         # putting the reference computation in the assert to better debug the test
         assert np.isclose(
             computed_dd,
