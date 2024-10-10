@@ -7,13 +7,11 @@ import numpy as np
 import pandas as pd
 from pytz import BaseTzInfo
 from scipy.stats import gaussian_kde, mode
-
-from energy_analysis_toolbox.errors import EATUndefinedTimestepError
-from energy_analysis_toolbox.timeseries.extract_features.basics import (
+from ...errors import EATUndefinedTimestepError
+from ..extract_features.basics import (
     index_to_timesteps,
     timestep_durations,
 )
-
 
 def tz_convert_or_localize(
     timeseries: pd.Series | pd.DataFrame,

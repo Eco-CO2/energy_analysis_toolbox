@@ -86,15 +86,13 @@ The optimization is done with the `scipy.optimize.minimize_scalar` function with
 
 """
 
-from functools import cached_property
-
 import pandas as pd
 from scipy.optimize import minimize_scalar
 from scipy.stats import spearmanr
-from statsmodels.api import OLS
-
-from energy_analysis_toolbox.energy.resample import to_freq as energy_to_freq
 from energy_analysis_toolbox.weather.degree_days import dd_compute
+from statsmodels.api import OLS
+from functools import cached_property
+from energy_analysis_toolbox.energy.resample import to_freq as energy_to_freq
 
 
 class ThermoSensitivity:

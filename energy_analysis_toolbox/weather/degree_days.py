@@ -52,6 +52,7 @@ import pandas as pd
 
 import energy_analysis_toolbox as eat
 
+
 literal_type = Literal["heating", "cooling"]
 literal_method = Literal["min_max", "mean", "integral", "pro"]
 

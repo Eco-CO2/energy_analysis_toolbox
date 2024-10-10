@@ -5,19 +5,14 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-from energy_analysis_toolbox.errors import (
+from .index_transformation import index_to_freq
+from .interpolate import piecewise_affine
+from ..extract_features.basics import timestep_durations, index_to_timesteps
+from ...errors import (
     EATEmptySourceError,
     EATEmptyTargetsError,
     EATInvalidTimestepDurationError,
 )
-from energy_analysis_toolbox.timeseries.extract_features import timestep_durations
-from energy_analysis_toolbox.timeseries.extract_features.basics import (
-    index_to_timesteps,
-)
-from energy_analysis_toolbox.timeseries.resample.index_transformation import (
-    index_to_freq,
-)
-from energy_analysis_toolbox.timeseries.resample.interpolate import piecewise_affine
 
 
 # =============================================================================
