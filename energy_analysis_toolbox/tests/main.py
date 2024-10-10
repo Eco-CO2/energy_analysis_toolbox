@@ -29,10 +29,14 @@ def run():
     code = pytest.main(
         [
             TEST_DIRECTORY,
-            "--junitxml", test_report_filename,
-            "--cov", "energy_analysis_toolbox",
-            "--cov-config", coverage_config_filename,
-            "--cov-report", "xml:coverage.xml",
+            "--junitxml",
+            test_report_filename,
+            "--cov",
+            "energy_analysis_toolbox",
+            "--cov-config",
+            coverage_config_filename,
+            "--cov-report",
+            "xml:coverage.xml",
         ]
     )
 

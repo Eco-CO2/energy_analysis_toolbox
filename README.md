@@ -33,7 +33,7 @@ pip install energy-analysis-toolbox
 Alternatively, you can clone this repository and install the dependencies directly:
 
 ```sh
-git clone https://github.com/username/energy_analysis_toolbox.git
+git clone https://github.com/Eco-CO2/energy_analysis_toolbox
 cd energy_analysis_toolbox
 pip install .
 ```

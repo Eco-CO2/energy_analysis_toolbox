@@ -61,7 +61,6 @@ class EATAccessorSeries:
     ):
         self._obj = pandas_obj
 
-
     def to_energy(
         self,
         *args,
@@ -76,7 +75,6 @@ class EATAccessorSeries:
             An energy series.
         """
         return power.to_energy(self._obj, *args, **kwargs)
-
 
     def to_power(
         self,
@@ -93,7 +91,6 @@ class EATAccessorSeries:
         """
         raise NotImplementedError("to_power is not implemented yet")
 
-
     def power_to_freq(
         self,
         *args,
@@ -108,7 +105,6 @@ class EATAccessorSeries:
             A power series resampled to a fixed frequency.
         """
         return power.to_freq(self._obj, *args, **kwargs)
-
 
     def energy_to_freq(
         self,
@@ -125,24 +121,23 @@ class EATAccessorSeries:
         """
         return energy.to_freq(self._obj, *args, **kwargs)
 
-
     def to_freq(
         self,
         freq,
         origin=None,
         last_step_duration=None,
-        method='piecewise_affine',
+        method="piecewise_affine",
         *args,
         **kwargs,
     ):
         """Resample a series to a fixed frequency with various strategies.
         See :func:`energy_analysis_toolbox.timeseries.resample.to_freq` for details.
 
-        
+
 
         Here the doc on Parameters
 
-        
+
         Returns
         -------
         pd.Series
@@ -153,11 +148,10 @@ class EATAccessorSeries:
             freq=freq,
             origin=origin,
             last_step_duration=last_step_duration,
-            method='piecewise_affine',
-            *args, 
+            method="piecewise_affine",
+            *args,
             **kwargs,
         )
-
 
     def intervals_over(
         self,
@@ -172,8 +166,9 @@ class EATAccessorSeries:
         pd.DataFrame
             The intervals over the threshold.
         """
-        return timeseries.extract_features.intervals_over(self._obj, *args, **kwargs)
-
+        return timeseries.extract_features.intervals_over(
+            self._obj, *args, **kwargs
+        )
 
     def timestep_durations(
         self,
@@ -188,8 +183,9 @@ class EATAccessorSeries:
         pd.Series
             The duration of each timestep.
         """
-        return timeseries.extract_features.timestep_durations(self._obj, *args, **kwargs)
-
+        return timeseries.extract_features.timestep_durations(
+            self._obj, *args, **kwargs
+        )
 
     def fill_data_holes(
         self,
@@ -212,4 +208,6 @@ class EATAccessorDataFrame:
     """Define a new namespace for the computation toolbox on pandas.Series."""
 
     def __init__(self, pandas_obj):
-        raise NotImplementedError("""EAT accessor for DataFrame is not implemented yet.""")
+        raise NotImplementedError(
+            """EAT accessor for DataFrame is not implemented yet."""
+        )
