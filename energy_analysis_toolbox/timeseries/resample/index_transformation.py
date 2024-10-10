@@ -1,11 +1,13 @@
 """Transforms indices of a time series to a new index according to a given function."""
 
+from typing import Union
 import numpy as np
 import pandas as pd
+import pytz
 from scipy.stats import gaussian_kde, mode
 
-from ...errors import EATUndefinedTimestepError
-from ..extract_features.basics import (
+from energy_analysis_toolbox.errors import EATUndefinedTimestepError
+from energy_analysis_toolbox.timeseries.extract_features.basics import (
     index_to_timesteps,
     timestep_durations,
 )
@@ -13,7 +15,7 @@ from ..extract_features.basics import (
 
 def tz_convert_or_localize(
     timeseries: pd.Series | pd.DataFrame,
-    tz,
+    tz: Union[str, pytz.timezone, None],
 ) -> pd.Series | pd.DataFrame:
     """Assign the requested timezone to the index of a timeseries.
 
@@ -51,17 +53,17 @@ def tz_convert_or_localize(
 
 def index_to_freq(
     index: pd.DatetimeIndex,
-    freq,
-    origin=None,
-    last_step_duration=None,
+    freq: Union[str, pd.Timedelta, None],
+    origin: Union[str, pd.Timestamp, None] = None,
+    last_step_duration: Union[float, None] = None,
 ) -> pd.DatetimeIndex:
-    """Returns the expected index resulting from resampling a time series to a given frequency.
+    """Return the expected index from resampling a time series to a given frequency.
 
     Parameters
     ----------
     index : pd.DatetimeIndex
         the index of the data to resample
-    freq :str, pd.Timedelta
+    freq : str, pd.Timedelta
         the freq to which the series is resampled. Must be a valid
         pandas frequency.
     origin : {None, 'floor', 'ceil', pd.Timestamp}
@@ -109,10 +111,10 @@ def index_to_freq(
             try:
                 start = start.tz_convert(index.tz)
             except TypeError:
-                print(
+                raise Warning(
                     "The passed origin could not be localized or converted to the"
                     " timezone of the original index. It is processed as if it were time-naive.",
-                )
+                ) from None
     if last_step_duration is None:
         try:
             last_step_duration = (index[-1] - index[-2]).seconds
@@ -120,7 +122,7 @@ def index_to_freq(
             raise EATUndefinedTimestepError(
                 "The last step duration could not be determined from the index."
                 " Please provide it explicitly.",
-            )
+            ) from None
     actual_end = index[-1] + pd.Timedelta(seconds=last_step_duration)
     target_instants = pd.date_range(
         start=start,

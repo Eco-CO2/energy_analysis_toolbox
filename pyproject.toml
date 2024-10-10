@@ -52,8 +52,11 @@ test = [
     "pytest",
     "pytest-cov",
 ]
+dev = [
+    "pre-commit",
+]
 all = [
-    "energy_analysis_toolbox[test,doc]",
+    "energy_analysis_toolbox[test,doc,dev]",
 ]
 
 [tool.setuptools]

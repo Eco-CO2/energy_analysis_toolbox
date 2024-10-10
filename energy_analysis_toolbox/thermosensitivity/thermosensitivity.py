@@ -848,7 +848,8 @@ class CategoricalThermoSensitivity(
                     alternative="less",
                 )
 
-                heating_sp = min(tmp_heating_sp.pvalue, heating_sp)
+                if tmp_heating_sp.pvalue < heating_sp:
+                    heating_sp = tmp_heating_sp.pvalue
                 cooling_mask = (
                     self.resampled_temperature > self.interseason_mean_temperature
                 )
@@ -861,7 +862,8 @@ class CategoricalThermoSensitivity(
                 )
                 if verbose:
                     print(f"{tmp_cooling_sp}")
-                cooling_sp = min(tmp_cooling_sp.pvalue, cooling_sp)
+                if tmp_cooling_sp.pvalue < cooling_sp:
+                    cooling_sp = tmp_cooling_sp.pvalue
             if heating_sp < significance_level and cooling_sp < significance_level:
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
