@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+
 from ... import keywords as EATK
 
 
@@ -112,7 +113,7 @@ def flatten_and_fill(
                 name=col,
             ).astype(fillers.dtypes[col])
     timeseries_table = pd.concat(
-        [data.set_index(start_f).drop(columns=[end_f]), fillers]
+        [data.set_index(start_f).drop(columns=[end_f]), fillers],
     ).sort_index()
     timeseries_table.index.name = time_f
     return timeseries_table

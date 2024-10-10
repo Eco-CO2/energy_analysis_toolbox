@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Generation of fake data to test the library.
+"""Generation of fake data to test the library.
 """
 
-import scipy.constants as SK
 import numpy as np
 import pandas as pd
+import scipy.constants as SK
 
 
 def sinusoid_history(

@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Check the conformity of the utility functions used in draw detection
+"""Check the conformity of the utility functions used in draw detection
 """
 
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
 
 from ..timeseries.math.derivatives import (
     time_derivative_fwd,
     time_derivative_second,
 )
+from ..timeseries.resample.index_transformation import tz_convert_or_localize
 from ..timeseries.resample.interpolate import (
     piecewise_affine,
     piecewise_constant,
 )
-from ..timeseries.resample.index_transformation import tz_convert_or_localize
 
 # =============================================================================
 # Derivatives
@@ -109,11 +107,11 @@ def test_piecewise_affine(targets, expected, source_tz, targets_tz):
     sample_dts = [0.0, 5.0, 7.0, 10.0]
     sample_values = [0.0, 1.0, 2.0, -1.0]
     instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts]
+        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts],
     )
     bc = pd.Series(sample_values, instants)
     target_instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in targets]
+        [start_time + pd.Timedelta(seconds=dt) for dt in targets],
     )
     tz_convert_or_localize(target_instants, targets_tz)
     affine_interp = piecewise_affine(bc, target_instants)
@@ -158,11 +156,11 @@ def test_piecewise_constant(targets, expected, source_tz, targets_tz):
     sample_dts = [0.0, 5.0, 7.0, 10.0]
     sample_values = [0.0, 1.0, 2.0, -1.0]
     instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts]
+        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts],
     )
     bc = pd.Series(sample_values, instants)
     target_instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in targets]
+        [start_time + pd.Timedelta(seconds=dt) for dt in targets],
     )
     tz_convert_or_localize(target_instants, targets_tz)
     stair_interp = piecewise_constant(bc, target_instants)
@@ -176,11 +174,11 @@ def test_piecewise_constant_padding():
     sample_dts = [0.0, 5.0, 7.0, 10.0]
     sample_values = [0.0, 1.0, 2.0, -1.0]
     instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts]
+        [start_time + pd.Timedelta(seconds=dt) for dt in sample_dts],
     )
     bc = pd.Series(sample_values, instants)
     target_instants = pd.DatetimeIndex(
-        [start_time + pd.Timedelta(seconds=dt) for dt in np.array([-2, -1, 12.0])]
+        [start_time + pd.Timedelta(seconds=dt) for dt in np.array([-2, -1, 12.0])],
     )
     stair_interp = piecewise_constant(bc, target_instants)
     assert np.allclose(stair_interp.to_numpy(), np.array([0.0, 0.0, -1.0]))

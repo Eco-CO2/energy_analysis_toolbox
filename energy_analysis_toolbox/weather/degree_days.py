@@ -45,9 +45,12 @@ Freq: D, Name: cooling_degree_days, dtype: float64
 
 """
 
-import energy_analysis_toolbox as eat
+from collections.abc import Callable
+from typing import Literal
+
 import pandas as pd
-from typing import Literal, Callable
+
+import energy_analysis_toolbox as eat
 
 literal_type = Literal["heating", "cooling"]
 literal_method = Literal["min_max", "mean", "integral", "pro"]
@@ -292,6 +295,7 @@ def dd_integral(
     2020-01-04    16.976660
     2020-01-05    16.337652
     Freq: D, Name: heating_degree_days, dtype: float64
+
     """
     _assert_dd_type(type)
     timesteps = eat.timeseries.extract_features.timestep_durations(temperature)
@@ -397,14 +401,13 @@ def dd_calc_method(
     """
     if func == dd_min_max:
         return "min_max"
-    elif func == dd_mean:
+    if func == dd_mean:
         return "mean"
-    elif func == dd_integral:
+    if func == dd_integral:
         return "integral"
-    elif func == dd_pro:
+    if func == dd_pro:
         return "pro"
-    else:
-        return "unknown"
+    return "unknown"
 
 
 def _assert_dd_type(

@@ -1,10 +1,12 @@
 """Provides classes to generate fake energy consumption data following
-a thermo-sensitive model."""
+a thermo-sensitive model.
+"""
 
+from collections.abc import Callable
 from typing import (
-    Callable,
     TypedDict,
 )
+
 import numpy as np
 import pandas as pd
 
@@ -25,7 +27,7 @@ class SynthDDConsumption:
         For multiple DDs, use the :py:class:`FakeTSConsumption` class.
 
 
-    Example
+    Example:
     -------
     >>> synth_consumption = SynthDDConsumption(base_energy=100, ts_slope=0.1, noise_std=5)
     >>> synth_consumption.random_consumption(size=5)
@@ -66,6 +68,7 @@ class SynthDDConsumption:
             fake DD samples. Default is 5°C.
         clip_negative : bool, default : True
             If True, the energy is clipped so that it cannot be below 0.
+
         """
         self.base_energy = base_energy
         self.ts_slope = ts_slope
@@ -232,13 +235,13 @@ class SynthDDConsumption:
             size=dd_samples.size,
         )
         assembled_energy = fake_data.loc[
-            :, ["base", "thermosensitive", "residual"]
+            :, ["base", "thermosensitive", "residual"],
         ].sum(axis=1)
         if self.clip_negative:
             assembled_energy = assembled_energy.clip(lower=0.0)
             fake_data["energy"] = assembled_energy
             fake_data["residual"] = fake_data["energy"] - fake_data.loc[
-                :, ["base", "thermosensitive"]
+                :, ["base", "thermosensitive"],
             ].sum(axis=1)
         else:
             fake_data["energy"] = assembled_energy
@@ -268,9 +271,8 @@ class SynthTSConsumption:
     The generation relies on the assumption of linear DD dependencies in the
     heating and cooling domains.
 
-    Example
+    Example:
     -------
-
     >>> synth_consumption = SynthTSConsumption(base_energy=100, ts_heat=2, ts_cool=3, noise_std=5)
     >>> synth_consumption.random_consumption(size=5, t_mean=20, t_std=20)
                 base  thermosensitive  residual      energy    heating    cooling          T  DD_heating  DD_cooling
@@ -292,9 +294,7 @@ class SynthTSConsumption:
         noise_std=0,
         noise_seed=42,
     ):
-        """
-
-        Parameters
+        """Parameters
         ----------
         base_energy : float
             The value of the averaged non-thermosensitive consumption. Its unit
@@ -401,6 +401,7 @@ class SynthTSConsumption:
         0   100            104.0       0.0   204.0      104      0.0  10           52            0
         1   100              2.4       0.0   102.4        2      0.4  15            1            2
         2   100              2.4       0.0   102.4        0      2.4  20            0           12
+
         """
         heating = self.heating.fake_energy(dd_heating)
         cooling = self.cooling.fake_energy(dd_cooling)
@@ -526,10 +527,10 @@ class SynthTSConsumption:
 
         """
         dd_samples = self.random_dds(
-            size=size, t_mean=t_mean, t_std=t_std, start=start, end=end
+            size=size, t_mean=t_mean, t_std=t_std, start=start, end=end,
         )
         return self.fake_energy(
-            dd_samples["DD_heating"], dd_samples["DD_cooling"], dd_samples["T"]
+            dd_samples["DD_heating"], dd_samples["DD_cooling"], dd_samples["T"],
         )
 
     def measures(
@@ -572,8 +573,7 @@ class DateSynthTSConsumption(SynthTSConsumption):
         temperature_period_year=2 * np.pi / 364.991,
         temperature_phase_year=13,
     ):
-        """
-        Parameters
+        """Parameters
         ----------
         temperature_amplitude_year : float, optional
             The temperature amplitude over the year, by default 9.36.
@@ -671,7 +671,7 @@ class DateSynthTSConsumption(SynthTSConsumption):
             + self.temperature_amplitude_year
             * np.sin(
                 self.temperature_period_year
-                * (julian_date - self.temperature_phase_year)
+                * (julian_date - self.temperature_phase_year),
             )
         )
         t_samples = pd.Series(
@@ -785,8 +785,7 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         list_categories: list = None,
         category_func: Callable = None,
     ):
-        """
-        Parameters
+        """Parameters
         ----------
         parameters : list[TSParameters]
             A list of dictionaries containing the parameters for each category.
@@ -795,7 +794,9 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         category_func : Callable
             A function that takes a pd.Series with DateTimeIndex as input and
             return a pd.Series with the categories labels.
+
         Other Parameters
+        ----------------
             See :py:class:`SynthTSConsumption` for the other parameters.
 
         Notes
@@ -828,7 +829,7 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         self.category_func = category_func
         if len(self.list_of_synths) != len(self.list_categories):
             raise ValueError(
-                "The number of categories must match the number of synthetizers"
+                "The number of categories must match the number of synthetizers",
             )
 
     def fake_energy(
@@ -897,7 +898,7 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         """
         categories_series = self.category_func(t_samples)
         list_of_fake_data = []
-        for category, synth in zip(self.list_categories, self.list_of_synths):
+        for category, synth in zip(self.list_categories, self.list_of_synths, strict=False):
             mask = categories_series == category
             fake_data = synth.fake_energy(
                 dd_heating[mask],
@@ -927,8 +928,7 @@ class WeekEndSynthTSConsumption(CategorySynthTSConsumption):
         temperature_period_year=2 * np.pi / 364.991,
         temperature_phase_year=13,
     ):
-        """
-        Parameters
+        """Parameters
         ----------
         parameters: list[TSParameters]
             A list of dictionaries containing the parameters for the two categories:
@@ -937,6 +937,7 @@ class WeekEndSynthTSConsumption(CategorySynthTSConsumption):
             2. The second dictionary is for the weekends.
 
         Other Parameters
+        ----------------
             See :py:class:`CategorySynthTSConsumption` for the other parameters.
 
         Example
@@ -946,6 +947,7 @@ class WeekEndSynthTSConsumption(CategorySynthTSConsumption):
         ...     {"base_energy": 100, "ts_heat": 1, "ts_cool": 0.1, "noise_std": 5},
         ... ]
         >>> synth_consumption = WeekEndSynthTSConsumption(parameters, t_ref_heat=17, t_ref_cool=20)
+
         """
         list_categories = ["weekend", "weekday"]
 

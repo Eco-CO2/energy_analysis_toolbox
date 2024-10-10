@@ -1,14 +1,15 @@
 """Testing module for time-localized profiles"""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from energy_analysis_toolbox.timeseries.profiles.localization import (
     LocalizedMeanProfile,
     LocalizedRollingProfile,
     LocalizedRollingQuantileProfile,
     MeanProfile,
-    RollingQuantileProfile,
     RollingProfile,
+    RollingQuantileProfile,
 )
 
 
@@ -27,7 +28,7 @@ def test_localized_mean_profile():
     start = pd.Timestamp("2022-09-23 00:00")
     end = start + pd.DateOffset(days=n_days, milliseconds=-1)
     index = pd.DatetimeIndex(
-        data=pd.date_range(start=start, end=end, freq=str(freq_minutes) + "min")
+        data=pd.date_range(start=start, end=end, freq=str(freq_minutes) + "min"),
     )
     data = np.random.randn(len(index))
     history = pd.DataFrame(
@@ -58,7 +59,7 @@ def test_localized_rolling_profile():
     window = "30min"
     end = start + pd.DateOffset(days=n_days, milliseconds=-1)
     index = pd.DatetimeIndex(
-        data=pd.date_range(start=start, end=end, freq=f"{freq_minutes}min")
+        data=pd.date_range(start=start, end=end, freq=f"{freq_minutes}min"),
     )
     data = np.random.randn(len(index))
     history = pd.DataFrame(
@@ -91,7 +92,7 @@ def test_localized_rolling_quantile_profile():
     q = 0.8
     end = start + pd.DateOffset(days=n_days, milliseconds=-1)
     index = pd.DatetimeIndex(
-        data=pd.date_range(start=start, end=end, freq=str(freq_minutes) + "min")
+        data=pd.date_range(start=start, end=end, freq=str(freq_minutes) + "min"),
     )
     data = np.random.randn(len(index))
     history = pd.DataFrame(
@@ -101,13 +102,13 @@ def test_localized_rolling_quantile_profile():
     time = pd.Timestamp("2022-10-23 00:00")
     expected = RollingQuantileProfile(window, q).compute(history=history, time=time)
     result = LocalizedRollingQuantileProfile(window, q).compute(
-        history=history, time=time
+        history=history, time=time,
     )
     # 1.
     pd.testing.assert_frame_equal(expected, result)
     history.index = index.tz_localize("Europe/Paris")
     result = LocalizedRollingQuantileProfile(window, q).compute(
-        history=history, time=time
+        history=history, time=time,
     )
     expected.index = expected.index.tz_localize("Europe/Paris")
     # 2.

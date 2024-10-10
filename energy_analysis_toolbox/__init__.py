@@ -1,11 +1,13 @@
-from . import errors
-from . import timeseries
-from . import power
-from . import tests
-from . import energy
-from . import constants
-from . import keywords
-from . import synthetic
-from . import thermosensitivity
+from . import (
+    constants,
+    energy,
+    errors,
+    keywords,
+    power,
+    synthetic,
+    tests,
+    thermosensitivity,
+    timeseries,
+)
 
 __version__ = "0.0.1"

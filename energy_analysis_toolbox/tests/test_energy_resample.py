@@ -1,12 +1,12 @@
-import pytest
 import pandas as pd
+import pytest
+
 from ..energy import to_freq
 from ..errors import EATUndefinedTimestepError
 
 
 def test_to_freq_no_data():
-    """
-    Test case for the to_freq function when the energy series is empty.
+    """Test case for the to_freq function when the energy series is empty.
     It verifies that the returned energy series is also empty.
     """
     energy_series = pd.Series()
@@ -27,7 +27,7 @@ def test_to_freq_one_to_many():
     with pytest.raises(EATUndefinedTimestepError):
         new_energy_series = to_freq(energy_series, new_freq)
     new_energy_series = to_freq(
-        energy_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds
+        energy_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds,
     )
     assert new_energy_series.index.freq == pd.Timedelta(new_freq)
     assert new_energy_series.index[0] == pd.Timestamp("2020-01-01")

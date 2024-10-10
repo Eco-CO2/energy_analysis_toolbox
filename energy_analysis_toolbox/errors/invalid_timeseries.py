@@ -10,7 +10,6 @@ class EATInvalidTimeseriesError(EATExcept):
     Derived classes may be inherited in order to deal with more specific problems.
     """
 
-    pass
 
 
 class EATUndefinedTimestepError(EATInvalidTimeseriesError):
@@ -21,7 +20,6 @@ class EATUndefinedTimestepError(EATInvalidTimeseriesError):
     instantaneous timestamps).
     """
 
-    pass
 
 
 class EATInvalidTimestepDurationError(EATInvalidTimeseriesError):
@@ -37,4 +35,3 @@ class EATInvalidTimestepDurationError(EATInvalidTimeseriesError):
 
     """
 
-    pass

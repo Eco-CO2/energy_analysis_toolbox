@@ -1,18 +1,18 @@
-"""
-This module contains functions to power timeseries of flows and volumes per
+"""This module contains functions to power timeseries of flows and volumes per
 timestep without breaking conservation laws.
 """
 
-import pandas as pd
 import numpy as np
-from .index_transformation import index_to_freq
-from .interpolate import piecewise_affine
-from ..extract_features.basics import timestep_durations, index_to_timesteps
+import pandas as pd
+
 from ...errors import (
     EATEmptySourceError,
     EATEmptyTargetsError,
     EATInvalidTimestepDurationError,
 )
+from ..extract_features.basics import index_to_timesteps, timestep_durations
+from .index_transformation import index_to_freq
+from .interpolate import piecewise_affine
 
 
 # =============================================================================
@@ -153,14 +153,12 @@ def flow_rate_conservative(
     if flow_rates.empty:
         raise EATEmptySourceError(
             "Resampling an empty flow-rates series to new instants is an invalid"
-            " (undefined) operation."
+            " (undefined) operation.",
         )
-    elif target_instants.empty:
+    if target_instants.empty:
         raise EATEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled."
+            "Target instants must be provided for the series to be resampled.",
         )
-    else:
-        pass
     durations = timestep_durations(flow_rates, last_step=last_step_duration)  # [1.]
     volumes = flow_rates * durations  # [2.]
     interp_volumes = volume_conservative(
@@ -359,18 +357,14 @@ def volume_conservative(
     """
     if volumes.empty:
         raise EATEmptySourceError(
-            "Resampling an empty volumes series to new instants is an invalid operation."
+            "Resampling an empty volumes series to new instants is an invalid operation.",
         )
-    elif target_instants.empty:
+    if target_instants.empty:
         raise EATEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled."
+            "Target instants must be provided for the series to be resampled.",
         )
-    elif last_step_duration is not None and last_step_duration <= 0:
+    if last_step_duration is not None and last_step_duration <= 0 or last_target_step_duration is not None and last_target_step_duration <= 0:
         raise EATInvalidTimestepDurationError("Last step duration cannot be zero.")
-    elif last_target_step_duration is not None and last_target_step_duration <= 0:
-        raise EATInvalidTimestepDurationError("Last step duration cannot be zero.")
-    else:
-        pass
     vol_index = volumes.cumsum()  # [1.]
     # the function deals with None last_step_duration values
     durations = timestep_durations(volumes.iloc[-2:], last_step=last_step_duration)
@@ -379,7 +373,7 @@ def volume_conservative(
     vol_index = vol_index.shift(1, fill_value=0.0)  # [3.]
     # the function deals with None last_target_step_duration
     target_durations = index_to_timesteps(
-        target_instants[-2:], last_target_step_duration
+        target_instants[-2:], last_target_step_duration,
     )
     target_instants = target_instants.insert(
         target_instants.size,  # at the end

@@ -1,20 +1,21 @@
-# -*- coding: utf-8 -*-
 """ """
 
-import scipy.constants as SK
 import pandas as pd
-from .fake_data import sinusoid_history_df
+import scipy.constants as SK
+
 from energy_analysis_toolbox.timeseries.profiles.preprocessing.history_filters.weekdays import (
+    same_day_only,
     weekdays_only,
     weekends_only,
-    same_day_only,
 )
+
+from .fake_data import sinusoid_history_df
 
 
 def test_same_day():
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=21, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=21, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = same_day_only(history, date=monday + pd.Timedelta("1D"))
@@ -27,7 +28,7 @@ def test_same_day():
 def test_weekends():
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=21, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=21, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = weekends_only(history)
@@ -40,7 +41,7 @@ def test_weekends():
 def test_weekdays():
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=7, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=7, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = weekdays_only(history)
@@ -54,7 +55,7 @@ def test_weekdays_weekends_orthogonal():
     """Test that filtering weekends then weekdays only returns an empty history."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=7, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=7, freq="1D", period_variation=7 * SK.day,
     )
     assert weekdays_only(weekends_only(history)).empty
 
@@ -63,7 +64,7 @@ def test_pipelining():
     """Check that the fileters can be applied through DatafRame.pipeline method."""
     monday = pd.Timestamp("2021-12-27")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     filtered = history.pipe(same_day_only).pipe(weekdays_only)
     pd.testing.assert_frame_equal(filtered, history.iloc[[0, 7], :], check_freq=False)

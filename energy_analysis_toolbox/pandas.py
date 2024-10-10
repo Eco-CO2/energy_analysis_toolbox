@@ -44,9 +44,10 @@ More examples in :doc:`/user_guide/using_the_accessor`.
 """
 
 import pandas as pd
+
 from . import (
-    power,
     energy,
+    power,
     timeseries,
 )
 
@@ -73,6 +74,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             An energy series.
+
         """
         return power.to_energy(self._obj, *args, **kwargs)
 
@@ -88,6 +90,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             A power series.
+
         """
         raise NotImplementedError("to_power is not implemented yet")
 
@@ -103,6 +106,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             A power series resampled to a fixed frequency.
+
         """
         return power.to_freq(self._obj, *args, **kwargs)
 
@@ -118,6 +122,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             An Energy series resampled to a fixed frequency.
+
         """
         return energy.to_freq(self._obj, *args, **kwargs)
 
@@ -142,6 +147,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             A series resampled to a fixed frequency.
+
         """
         return timeseries.resample.to_freq(
             timeseries=self._obj,
@@ -165,6 +171,7 @@ class EATAccessorSeries:
         -------
         pd.DataFrame
             The intervals over the threshold.
+
         """
         return timeseries.extract_features.intervals_over(self._obj, *args, **kwargs)
 
@@ -180,9 +187,10 @@ class EATAccessorSeries:
         -------
         pd.Series
             The duration of each timestep.
+
         """
         return timeseries.extract_features.timestep_durations(
-            self._obj, *args, **kwargs
+            self._obj, *args, **kwargs,
         )
 
     def fill_data_holes(
@@ -197,6 +205,7 @@ class EATAccessorSeries:
         -------
         pd.Series
             The timeseries with the holes filled.
+
         """
         return timeseries.resample.fill_data_holes(self._obj, *args, **kwargs)
 
@@ -207,5 +216,5 @@ class EATAccessorDataFrame:
 
     def __init__(self, pandas_obj):
         raise NotImplementedError(
-            """EAT accessor for DataFrame is not implemented yet."""
+            """EAT accessor for DataFrame is not implemented yet.""",
         )

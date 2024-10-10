@@ -1,9 +1,10 @@
-import pytest
 import pandas as pd
+import pytest
+
 from ..power.overconsumption.select import (
-    by_individual_proportion,
-    by_cumulated_proportion,
     by_combined_proportions,
+    by_cumulated_proportion,
+    by_individual_proportion,
 )
 
 
@@ -27,7 +28,7 @@ def example_intervals():
             "end": [e1, e2, e3, e4],
             "duration": [420.0, 4320.0, 150.0, 300.0],
             "energy": [1500.0, 3000.0, 500.0, 5000.0],  # total 10.000
-        }
+        },
     )
     return intervals
 
@@ -43,20 +44,20 @@ def test_by_individual_proportions():
     intervals = example_intervals()
     # all of them
     case_1 = by_individual_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0.05
+        intervals_overshoot=intervals, proportion_tshd=0.05,
     )
     case_1_expect = intervals.copy().sort_values(by="energy", ascending=False)
     case_1_expect["proportion"] = [0.5, 0.3, 0.15, 0.05]
     pd.testing.assert_frame_equal(case_1, case_1_expect)
     # only some
     case_2 = by_individual_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0.4
+        intervals_overshoot=intervals, proportion_tshd=0.4,
     )
     case_2_expect = case_1.copy().iloc[0:1]
     pd.testing.assert_frame_equal(case_2, case_2_expect)
     # None
     case_3 = by_individual_proportion(
-        intervals_overshoot=intervals, proportion_tshd=0.6
+        intervals_overshoot=intervals, proportion_tshd=0.6,
     )
     # custom reference
     case_4 = by_individual_proportion(

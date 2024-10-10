@@ -1,5 +1,4 @@
-"""
-The module defines a base class to compute average load profiles from history.
+"""The module defines a base class to compute average load profiles from history.
 """
 
 
@@ -13,9 +12,7 @@ class MeanProfile:
         window=1,
         **kwargs,
     ):
-        """
-
-        Parameters
+        """Parameters
         ----------
         period : str, optional
             A pandas period string which specifies the kind of period on which the

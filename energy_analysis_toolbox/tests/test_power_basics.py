@@ -1,6 +1,7 @@
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
+
 from ..errors import EATUndefinedTimestepError
 from ..power import integrate_over, to_energy
 
@@ -51,7 +52,7 @@ def _intervals():
                 pd.Timestamp("2023-10-29 01:00", tz="Europe/Paris"),
                 pd.Timestamp("2023-10-30 02:00", tz="UTC+01:00"),
             ],
-        }
+        },
     )
     intervals.index = ["A", "B"]
     return intervals

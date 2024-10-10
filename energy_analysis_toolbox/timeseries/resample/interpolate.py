@@ -1,5 +1,4 @@
-"""
-This module contains basic mathematical transformations to be
+"""This module contains basic mathematical transformations to be
 applied to timeseries of physical values.
 
 This module defines utilities used to create fine-sampled timeseries from
@@ -64,7 +63,7 @@ def piecewise_affine(
     sample_dts = (timeseries.index - ref_time).total_seconds()
     new_values = np.interp(target_offsets, sample_dts, timeseries.values)
     new_series = pd.Series(
-        new_values, index=target_instants.copy(), name=timeseries.name
+        new_values, index=target_instants.copy(), name=timeseries.name,
     )
     new_series.index.name = timeseries.index.name
     return new_series

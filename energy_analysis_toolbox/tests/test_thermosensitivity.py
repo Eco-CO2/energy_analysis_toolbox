@@ -1,18 +1,19 @@
 """Test the Thermosensibility module."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import pytest
+
+from energy_analysis_toolbox.synthetic.thermosensitive_consumption import (
+    CategorySynthTSConsumption,
+    DateSynthTSConsumption,
+)
 from energy_analysis_toolbox.thermosensitivity import (
-    ThermoSensitivity,
+    AutoCategoricalThermoSensitivity,
     CategoricalThermoSensitivity,
     DailyCategoricalThermoSensitivity,
     DayOfWeekCategoricalThermoSensitivity,
-    AutoCategoricalThermoSensitivity,
-)
-from energy_analysis_toolbox.synthetic.thermosensitive_consumption import (
-    DateSynthTSConsumption,
-    CategorySynthTSConsumption,
+    ThermoSensitivity,
 )
 
 
@@ -83,10 +84,10 @@ class TestThermoSensitivity:
 
         ts.fit()
         assert ts.model.params["heating_degree_days"] == pytest.approx(
-            self.ts_heating, rel=1e-1
+            self.ts_heating, rel=1e-1,
         )
         assert ts.model.params["Intercept"] == pytest.approx(
-            self.expected_intercept, rel=1e-1
+            self.expected_intercept, rel=1e-1,
         )
         with pytest.raises(KeyError):
             ts.model.params["cooling_degree_days"]
@@ -94,7 +95,7 @@ class TestThermoSensitivity:
     def test_fit_only_cooling_no_noise(self):
         """Test the ThermoSensitivity class."""
         data = self.synth_cooling_only.random_consumption(
-            size=self.data_generated_size, start="2022-07-01"
+            size=self.data_generated_size, start="2022-07-01",
         )
 
         ts = ThermoSensitivity(
@@ -109,10 +110,10 @@ class TestThermoSensitivity:
 
         ts.fit()
         assert ts.model.params["cooling_degree_days"] == pytest.approx(
-            self.ts_cooling, rel=1e-1
+            self.ts_cooling, rel=1e-1,
         )
         assert ts.model.params["Intercept"] == pytest.approx(
-            self.expected_intercept, rel=1e-1
+            self.expected_intercept, rel=1e-1,
         )
         with pytest.raises(KeyError):
             ts.model.params["heating_degree_days"]
@@ -136,10 +137,10 @@ class TestThermoSensitivity:
 
         ts.fit()
         assert ts.model.params["heating_degree_days"] == pytest.approx(
-            self.ts_heating, rel=1e-1
+            self.ts_heating, rel=1e-1,
         )
         assert ts.model.params["cooling_degree_days"] == pytest.approx(
-            self.ts_cooling, rel=1e-1
+            self.ts_cooling, rel=1e-1,
         )
 
     def test_only_heating_no_noise_tref_calibration(self):
@@ -158,7 +159,7 @@ class TestThermoSensitivity:
 
         ts.calibrate_base_temperatures()
         assert ts.degree_days_base_temperature["heating"] == pytest.approx(
-            self.tref_heating, rel=1e-1
+            self.tref_heating, rel=1e-1,
         )
         with pytest.raises(KeyError):
             ts.degree_days_base_temperature["cooling"]
@@ -166,7 +167,7 @@ class TestThermoSensitivity:
     def test_only_cooling_no_noise_tref_calibration(self):
         """Test the ThermoSensitivity class."""
         data = self.synth_cooling_only.random_consumption(
-            size=self.data_generated_size, start="2022-07-01"
+            size=self.data_generated_size, start="2022-07-01",
         )
 
         ts = ThermoSensitivity(
@@ -181,7 +182,7 @@ class TestThermoSensitivity:
 
         ts.calibrate_base_temperatures()
         assert ts.degree_days_base_temperature["cooling"] == pytest.approx(
-            self.tref_cooling, rel=1e-1
+            self.tref_cooling, rel=1e-1,
         )
         with pytest.raises(KeyError):
             ts.degree_days_base_temperature["heating"]
@@ -201,10 +202,10 @@ class TestThermoSensitivity:
 
         ts.calibrate_base_temperatures()
         assert ts.degree_days_base_temperature["heating"] == pytest.approx(
-            self.tref_heating, rel=1e-1
+            self.tref_heating, rel=1e-1,
         )
         assert ts.degree_days_base_temperature["cooling"] == pytest.approx(
-            self.tref_cooling, rel=1e-1
+            self.tref_cooling, rel=1e-1,
         )
 
     def test_aggregted_data(self):
@@ -317,7 +318,7 @@ class TestThermoSensitivity:
         assert ts.predictors == ["heating_degree_days"]
 
         data = self.synth_cooling_only.random_consumption(
-            size=self.data_generated_size, start="2022-07-01"
+            size=self.data_generated_size, start="2022-07-01",
         )
         ts = ThermoSensitivity(
             energy_data=data["energy"],
@@ -356,7 +357,7 @@ class TestThermoSensitivity:
             frequency=self.frequency,
         )
         degree_days = ts._calculate_degree_days(
-            {"heating": self.tref_heating, "cooling": self.tref_cooling}
+            {"heating": self.tref_heating, "cooling": self.tref_cooling},
         )
         assert isinstance(degree_days, pd.DataFrame)
         assert degree_days.index.equals(ts.resampled_temperature.index)
@@ -420,10 +421,10 @@ class TestThermoSensitivity:
             xatol=1e-3,
         )
         assert ts.degree_days_base_temperature["heating"] == pytest.approx(
-            self.tref_heating, rel=1e-1
+            self.tref_heating, rel=1e-1,
         )
         assert ts.degree_days_base_temperature["cooling"] == pytest.approx(
-            self.tref_cooling, rel=1e-1
+            self.tref_cooling, rel=1e-1,
         )
 
         ts.degree_days_base_temperature = {}
@@ -434,7 +435,7 @@ class TestThermoSensitivity:
             xatol=1e-3,
         )
         assert ts.degree_days_base_temperature["heating"] == pytest.approx(
-            self.tref_heating, rel=1e-1
+            self.tref_heating, rel=1e-1,
         )
         assert "cooling" not in ts.degree_days_base_temperature
 
@@ -446,7 +447,7 @@ class TestThermoSensitivity:
             xatol=1e-3,
         )
         assert ts.degree_days_base_temperature["cooling"] == pytest.approx(
-            self.tref_cooling, rel=1e-1
+            self.tref_cooling, rel=1e-1,
         )
         assert "heating" not in ts.degree_days_base_temperature
 
@@ -499,6 +500,7 @@ class TestCategoricalThermoSensitivity:
         -------
         np.array
             The categories
+
         """
         return np.where(t_samples.index.dayofweek < 5, "weekday", "weekend")
 
@@ -528,7 +530,8 @@ class TestCategoricalThermoSensitivity:
 
     def test_post_init(self):
         """Test the post init method.
-        In particular, the capability to detect the degree days type when set to auto."""
+        In particular, the capability to detect the degree days type when set to auto.
+        """
         data: pd.DataFrame = self.synth.random_consumption(size=200)
         data["category"] = self.category_func(data["T"])
 
@@ -616,6 +619,7 @@ class TestDailyCategoricalThermoSensitivity:
         -------
         np.array
             The categories
+
         """
         return np.where(t_samples.index.dayofweek < 5, "weekday", "weekend")
 
@@ -632,9 +636,10 @@ class TestDailyCategoricalThermoSensitivity:
         -------
         np.array
             The categories
+
         """
         return pd.Series(
-            np.where(index.dayofweek < 5, "weekday", "weekend"), index=index
+            np.where(index.dayofweek < 5, "weekday", "weekend"), index=index,
         )
 
     def setup_method(self):
@@ -662,7 +667,8 @@ class TestDailyCategoricalThermoSensitivity:
 
     def test_post_init(self):
         """Test the post init method.
-        In particular, the capability to detect the degree days type when set to auto."""
+        In particular, the capability to detect the degree days type when set to auto.
+        """
         data: pd.DataFrame = self.synth.random_consumption(size=200)
         ts = DailyCategoricalThermoSensitivity(
             energy_data=data["energy"],
@@ -751,6 +757,7 @@ class TestDayOfWeekCategoricalThermoSensitivity:
         -------
         np.array
             The categories
+
         """
         mapping = {
             0: "Monday",
@@ -795,7 +802,8 @@ class TestDayOfWeekCategoricalThermoSensitivity:
 
     def test_post_init(self):
         """Test the post init method.
-        In particular, the capability to detect the degree days type when set to auto."""
+        In particular, the capability to detect the degree days type when set to auto.
+        """
         data: pd.DataFrame = self.synth.random_consumption(size=200)
         ts = DayOfWeekCategoricalThermoSensitivity(
             energy_data=data["energy"],
@@ -832,7 +840,7 @@ class TestDayOfWeekCategoricalThermoSensitivity:
                 "Friday",
                 "Saturday",
                 "Sunday",
-            ]
+            ],
         ):
             np.testing.assert_allclose(
                 model.params[f"heating_degree_days:{dayname}"],
@@ -913,6 +921,7 @@ class TestAutoCategoricalThermoSensitivity:
         -------
         np.array
             The categories
+
         """
         mapping = {
             0: "Monday",
@@ -957,7 +966,8 @@ class TestAutoCategoricalThermoSensitivity:
 
     def test_post_init(self):
         """Test the post init method.
-        In particular, the capability to detect the degree days type when set to auto."""
+        In particular, the capability to detect the degree days type when set to auto.
+        """
         data: pd.DataFrame = self.synth.random_consumption(size=200)
         ts = AutoCategoricalThermoSensitivity(
             energy_data=data["energy"],
@@ -994,7 +1004,7 @@ class TestAutoCategoricalThermoSensitivity:
                 "Friday",
                 "Saturday",
                 "Sunday",
-            ]
+            ],
         ):
             np.testing.assert_allclose(
                 model.params[f"heating_degree_days:{dayname}"],
@@ -1038,7 +1048,7 @@ class TestAutoCategoricalThermoSensitivity:
         ]
         indexes = [0, 1, 3]
         print(model.params)
-        for idex, dayname in zip(indexes, daynames):
+        for idex, dayname in zip(indexes, daynames, strict=False):
             np.testing.assert_allclose(
                 model.params[f"heating_degree_days:{dayname}"],
                 self.parameters[idex]["ts_heat"],

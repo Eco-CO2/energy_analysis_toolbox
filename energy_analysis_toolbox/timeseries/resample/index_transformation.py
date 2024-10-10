@@ -1,8 +1,9 @@
 """Transforms indices of a time series to a new index according to a given function."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from scipy.stats import gaussian_kde, mode
+
 from ...errors import EATUndefinedTimestepError
 from ..extract_features.basics import (
     index_to_timesteps,
@@ -90,6 +91,7 @@ def index_to_freq(
     -------
     pd.DatetimeIndex
         The resulting index of the resampling. Empty if the passed index is empty.
+
     """
     if index.empty:
         return pd.DatetimeIndex([], name=index.name, tz=index.tz, freq=freq)
@@ -109,7 +111,7 @@ def index_to_freq(
             except TypeError:
                 print(
                     "The passed origin could not be localized or converted to the"
-                    " timezone of the original index. It is processed as if it were time-naive."
+                    " timezone of the original index. It is processed as if it were time-naive.",
                 )
     if last_step_duration is None:
         try:
@@ -117,7 +119,7 @@ def index_to_freq(
         except IndexError:
             raise EATUndefinedTimestepError(
                 "The last step duration could not be determined from the index."
-                " Please provide it explicitly."
+                " Please provide it explicitly.",
             )
     actual_end = index[-1] + pd.Timedelta(seconds=last_step_duration)
     target_instants = pd.date_range(
@@ -179,8 +181,7 @@ def estimate_timestep(
         return mode_time_step(data)
     if method == "kde":
         return max_kde_time_step(data)
-    else:
-        raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
+    raise ValueError("method must be one of {'mean', 'median', 'mode', 'kde'}")
 
 
 def median_time_step(
@@ -390,7 +391,7 @@ def fill_missing_entries(
         new_indexes += tmp_indexes
     missing_index = pd.DatetimeIndex(new_indexes)
     new_data = data.reindex(
-        data.index.append(missing_index).sort_values(), fill_value=fill_value
+        data.index.append(missing_index).sort_values(), fill_value=fill_value,
     )
     return new_data
 

@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
-from ..timeseries.create.from_intervals import flatten_and_fill
+
 from .. import keywords as EATK
+from ..timeseries.create.from_intervals import flatten_and_fill
 
 
 # =============================================================================
@@ -17,10 +18,10 @@ def test_flatten_one_interval():
     start = pd.Timestamp("2020-02-29")
     end = start + pd.Timedelta("1min")
     test_data = pd.DataFrame(
-        [[start, end, 42.0]], columns=[EATK.start_f, EATK.end_f, "test"]
+        [[start, end, 42.0]], columns=[EATK.start_f, EATK.end_f, "test"],
     )
     flat_consumption = flatten_and_fill(
-        test_data, start_f=EATK.start_f, end_f=EATK.end_f, time_f=EATK.time_f
+        test_data, start_f=EATK.start_f, end_f=EATK.end_f, time_f=EATK.time_f,
     )
     expect_index = pd.DatetimeIndex([start, end], name=EATK.time_f)
     expect_series = pd.DataFrame(
@@ -29,9 +30,8 @@ def test_flatten_one_interval():
         columns=["test"],
     )
     pd.testing.assert_frame_equal(
-        expect_series, flat_consumption, check_dtype=False, check_freq=False
+        expect_series, flat_consumption, check_dtype=False, check_freq=False,
     )
-    pass
 
 
 def test_flatten():
@@ -54,7 +54,7 @@ def test_flatten():
         {
             "col_str": ["toto"] * 6,
             "col_float": np.arange(0, 6),
-        }
+        },
     )
     flat_expect.index = targets
     flat_expect.iloc[[1, 3, 5], :] = np.nan
@@ -62,7 +62,7 @@ def test_flatten():
     pd.testing.assert_frame_equal(flat_expect, flat_table, check_freq=False)
     # explicit filling
     flat_filled_table = flatten_and_fill(
-        table, fill_values={"col_str": "tata"}, end_f=end_f, start_f=start_f
+        table, fill_values={"col_str": "tata"}, end_f=end_f, start_f=start_f,
     )
     flat_expect["col_str"] = ["toto", "tata"] * 3
     pd.testing.assert_frame_equal(

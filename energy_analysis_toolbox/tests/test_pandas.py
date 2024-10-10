@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+
 from .. import pandas  # noqa F401
 
 # Test EATAccessorSeries
@@ -10,7 +11,7 @@ def test_series_to_energy():
     from energy_analysis_toolbox.power import to_energy
 
     series = pd.Series(
-        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     ct_series = series.eat.to_energy()
     assert isinstance(ct_series, pd.Series)
@@ -20,7 +21,7 @@ def test_series_to_energy():
 def test_series_to_power():
     # Test the to_power method of EATAccessorSeries
     series = pd.Series(
-        [24, 48, 72], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [24, 48, 72], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     with pytest.raises(NotImplementedError):
         series.eat.to_power()
@@ -31,12 +32,12 @@ def test_series_power_to_freq():
     from energy_analysis_toolbox.power import to_freq
 
     series = pd.Series(
-        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     ct_series = series.eat.power_to_freq("2D", last_step_duration=3600)
     assert isinstance(ct_series, pd.Series)
     pd.testing.assert_series_equal(
-        ct_series, to_freq(series, "2D", last_step_duration=3600)
+        ct_series, to_freq(series, "2D", last_step_duration=3600),
     )
 
 
@@ -45,12 +46,12 @@ def test_series_energy_to_freq():
     from energy_analysis_toolbox.energy import to_freq
 
     series = pd.Series(
-        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     ct_series = series.eat.energy_to_freq("2D", last_step_duration=3600)
     assert isinstance(ct_series, pd.Series)
     pd.testing.assert_series_equal(
-        ct_series, to_freq(series, "2D", last_step_duration=3600)
+        ct_series, to_freq(series, "2D", last_step_duration=3600),
     )
 
 
@@ -61,7 +62,7 @@ def test_series_intervals_over():
     )
 
     series = pd.Series(
-        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     ct_series = series.eat.intervals_over(2)
     assert isinstance(ct_series, pd.DataFrame)
@@ -75,7 +76,7 @@ def test_series_timestep_durations():
     )
 
     series = pd.Series(
-        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D")
+        [1, 2, 3], index=pd.date_range("2022-01-01", periods=3, freq="D"),
     )
     ct_series = series.eat.timestep_durations()
     assert isinstance(ct_series, pd.Series)

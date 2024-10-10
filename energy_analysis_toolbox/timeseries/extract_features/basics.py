@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
+
 from ... import keywords as EATK
 from ...errors import (
     EATEmptyDataError,
-    EATUndefinedTimestepError,
     EATInvalidTimestepDurationError,
+    EATUndefinedTimestepError,
 )
 
 
@@ -105,7 +106,7 @@ def intervals_over(
     # [3] as [[start, end]]
     bound_indexes = [
         [actual_inds[2 * i], actual_inds[2 * i + 1]]
-        for i in range(0, len(actual_inds) // 2)
+        for i in range(len(actual_inds) // 2)
     ]
     bound_labels = [
         [over_status_shift.index[s], over_status_shift.index[e]]
@@ -116,8 +117,7 @@ def intervals_over(
     if return_positions:
         iloc_bounds = pd.DataFrame(bound_indexes, columns=[EATK.start_f, EATK.end_f])
         return intervals, iloc_bounds
-    else:
-        return intervals
+    return intervals
 
 
 def timestep_durations(
@@ -163,14 +163,14 @@ def timestep_durations(
     """
     if timeseries.empty:
         raise EATEmptyDataError(
-            "Interval durations cannot be inferred for empty series."
+            "Interval durations cannot be inferred for empty series.",
         )
-    elif timeseries.size < 2 and last_step is None:
+    if timeseries.size < 2 and last_step is None:
         raise EATUndefinedTimestepError(
-            "One element is not enough to infer a duration when last_step value is None."
+            "One element is not enough to infer a duration when last_step value is None.",
         )
     durations = pd.Series(
-        index_to_timesteps(timeseries.index, last_step), index=timeseries.index
+        index_to_timesteps(timeseries.index, last_step), index=timeseries.index,
     )
     return durations
 
@@ -220,20 +220,19 @@ def index_to_timesteps(
     """
     if time_indexes.empty:
         raise EATEmptyDataError(
-            "Interval durations cannot be inferred for empty time-sequences."
+            "Interval durations cannot be inferred for empty time-sequences.",
         )
-    elif time_indexes.size < 2 and last_step is None:
+    if time_indexes.size < 2 and last_step is None:
         raise EATUndefinedTimestepError(
-            "One element is not enough to infer a duration when last_step value is None."
+            "One element is not enough to infer a duration when last_step value is None.",
         )
-    elif last_step is not None and last_step < 0:
+    if last_step is not None and last_step < 0:
         raise EATInvalidTimestepDurationError(
-            f"Last step duration must be >=0. Received {last_step} s."
+            f"Last step duration must be >=0. Received {last_step} s.",
         )
-    else:
-        # better initialize and assign to avoid table extension in the next step
-        durations = np.empty(time_indexes.size)
-        durations[:-1] = (time_indexes[1:] - time_indexes[0:-1]).total_seconds()
+    # better initialize and assign to avoid table extension in the next step
+    durations = np.empty(time_indexes.size)
+    durations[:-1] = (time_indexes[1:] - time_indexes[0:-1]).total_seconds()
     if last_step is None:
         durations[-1] = durations[-2]
     else:

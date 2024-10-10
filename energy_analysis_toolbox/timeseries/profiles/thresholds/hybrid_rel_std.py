@@ -4,6 +4,7 @@ deviation of the history on each slot.
 """
 
 import pandas as pd
+
 from ..mean_profile import MeanProfile
 
 
@@ -18,9 +19,7 @@ class HybridThreshold(MeanProfile):
         offset_relative=0.5,
         **kwargs,
     ):
-        """
-
-        Parameters
+        """Parameters
         ----------
         period : str, optional
             A pandas period string which specifies the kind of period on which
@@ -102,7 +101,7 @@ class HybridThreshold(MeanProfile):
         std_profile = self.group(history).std() * self.offset_std
         std_profile.index = rel_profile.index
         profile_deviations = pd.DataFrame.from_dict(
-            {"std": std_profile, "tshd": rel_profile}
+            {"std": std_profile, "tshd": rel_profile},
         )
         if self.is_max:
             var_profile = profile_deviations.max(axis=1)

@@ -86,13 +86,15 @@ The optimization is done with the `scipy.optimize.minimize_scalar` function with
 
 """
 
+from functools import cached_property
+
 import pandas as pd
 from scipy.optimize import minimize_scalar
 from scipy.stats import spearmanr
-from energy_analysis_toolbox.weather.degree_days import dd_compute
 from statsmodels.api import OLS
-from functools import cached_property
+
 from energy_analysis_toolbox.energy.resample import to_freq as energy_to_freq
+from energy_analysis_toolbox.weather.degree_days import dd_compute
 
 
 class ThermoSensitivity:
@@ -299,6 +301,7 @@ class ThermoSensitivity:
         ------
         ValueError
             If the model is not fitted. Use the `fit` method to train the model.
+
         """
         if self._model is None:
             raise ValueError("Model not fitted. Please run the `fit` method.")
@@ -320,6 +323,7 @@ class ThermoSensitivity:
         ------
         ValueError
             If the data is not aggregated. Use the `fit` method to aggregate the data.
+
         """
         if self._aggregated_data is None:
             raise ValueError("Data not aggregated. Please run the `fit` method.")
@@ -346,10 +350,11 @@ class ThermoSensitivity:
         ValueError
             If the base temperature is not specified for the heating or cooling degree days.
             While not empty.
+
         """
         if self.degree_days_type not in ["heating", "cooling", "both", "auto"]:
             raise ValueError(
-                "Invalid degree days type. Must be one of 'heating', 'cooling', 'both' or 'auto'."
+                "Invalid degree days type. Must be one of 'heating', 'cooling', 'both' or 'auto'.",
             )
         if self.degree_days_base_temperature != {}:
             if self.degree_days_type in ["heating", "both"]:
@@ -357,14 +362,14 @@ class ThermoSensitivity:
                     self.degree_days_base_temperature["heating"]
                 except KeyError:
                     raise ValueError(
-                        "Base temperature for heating degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}"
+                        "Base temperature for heating degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}",
                     )
             elif self.degree_days_type in ["cooling", "both"]:
                 try:
                     self.degree_days_base_temperature["cooling"]
                 except KeyError:
                     raise ValueError(
-                        "Base temperature for cooling degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}"
+                        "Base temperature for cooling degree days must be specified.\n Example: degree_days_base_temperature={'heating': 18, 'cooling': 24}",
                     )
 
     def _post_init(
@@ -412,7 +417,7 @@ class ThermoSensitivity:
         - **Heating**: The energy consumption is negatively correlated with the temperature for the periods with the mean temperature below the intersaison mean temperature.
         - **Cooling**: The energy consumption is positively correlated with the temperature for the periods with the mean temperature above the intersaison mean temperature.
 
-        Note
+        Note:
         ----
         The Spearman correlation is a non-parametric test that measures the strength and direction of the monotonic relationship between two variables.
         The relation is not necessarily linear, and the test does not assume that the data is normally distributed.
@@ -423,6 +428,7 @@ class ThermoSensitivity:
             See the `CategoricalThermoSensitivity` class for a solution.
 
             References: `wikipedia <https://fr.wikipedia.org/wiki/Paradoxe_de_Simpson>`_
+
         """
         if self.degree_days_type == "auto":
             heating_mask = (
@@ -437,7 +443,7 @@ class ThermoSensitivity:
             else:
                 heating_sp = spearmanr(
                     self.resampled_energy_temperature.loc[
-                        heating_mask, [self.target_name, self.temperature_name]
+                        heating_mask, [self.target_name, self.temperature_name],
                     ],
                     alternative="less",
                 ).pvalue
@@ -452,7 +458,7 @@ class ThermoSensitivity:
                 cooling_sp = 1
             else:
                 data_to_test = self.resampled_energy_temperature.loc[
-                    cooling_mask, [self.target_name, self.temperature_name]
+                    cooling_mask, [self.target_name, self.temperature_name],
                 ]
                 cooling_sp = spearmanr(data_to_test, alternative="greater").pvalue
             if heating_sp < significance_level and cooling_sp < significance_level:
@@ -467,7 +473,7 @@ class ThermoSensitivity:
                 print(self.resampled_energy)
                 print(self.resampled_temperature)
                 raise ValueError(
-                    "Cannot detect the degree days type. Please specify it manually."
+                    "Cannot detect the degree days type. Please specify it manually.",
                 )
 
     def _calculate_degree_days(
@@ -488,9 +494,10 @@ class ThermoSensitivity:
         pd.DataFrame
             DataFrame with the heating and/or cooling degree days
             sampled at the given frequency.
+
         """
         degree_days = []
-        for dd_type in degree_days_base_temperature.keys():
+        for dd_type in degree_days_base_temperature:
             if self.degree_days_type in [dd_type, "both"]:
                 degree_days.append(
                     dd_compute(
@@ -500,7 +507,7 @@ class ThermoSensitivity:
                         method=self.degree_days_computation_method,
                     )
                     .resample(self.frequency)
-                    .sum()
+                    .sum(),
                 )
         return pd.concat(degree_days, axis=1)
 
@@ -514,7 +521,7 @@ class ThermoSensitivity:
         """Fit the base temperature to the data."""
         if dd_type not in ["heating", "cooling"]:
             raise ValueError(
-                "Invalid degree days type. Must be one of 'heating' or 'cooling'."
+                "Invalid degree days type. Must be one of 'heating' or 'cooling'.",
             )
         if t0 is None:
             t0 = 16 if dd_type == "heating" else 24
@@ -532,7 +539,7 @@ class ThermoSensitivity:
             bounds = (self.interseason_mean_temperature, 30)
         else:
             raise ValueError(
-                "Invalid degree days type. Must be one of 'heating' or 'cooling'."
+                "Invalid degree days type. Must be one of 'heating' or 'cooling'.",
             )
         res = minimize_scalar(
             loss_function,
@@ -656,7 +663,7 @@ def loss_function(
     )
     degree_days_resampled = degree_days.resample(frequency).sum().rename("degree_days")
     data = pd.concat([resampled_energy, degree_days_resampled], axis=1).dropna(
-        how="any", axis=0
+        how="any", axis=0,
     )
     data["Intercept"] = 1
     if mask is not None:
@@ -814,9 +821,10 @@ class CategoricalThermoSensitivity(
         Manage the Simpson's paradox by computing the Spearman correlation for each category.
         If any category has a significant correlation, the degree days type will be set to ``"heating"`` or ``"cooling"`` or ``"both"``.
 
-        See also
+        See Also
         --------
         :py:meth:`ThermoSensitivity._detect_degree_days_type`
+
         """
         if self.degree_days_type == "auto":
             heating_sp = 1
@@ -840,8 +848,7 @@ class CategoricalThermoSensitivity(
                     alternative="less",
                 )
 
-                if tmp_heating_sp.pvalue < heating_sp:
-                    heating_sp = tmp_heating_sp.pvalue
+                heating_sp = min(tmp_heating_sp.pvalue, heating_sp)
                 cooling_mask = (
                     self.resampled_temperature > self.interseason_mean_temperature
                 )
@@ -854,8 +861,7 @@ class CategoricalThermoSensitivity(
                 )
                 if verbose:
                     print(f"{tmp_cooling_sp}")
-                if tmp_cooling_sp.pvalue < cooling_sp:
-                    cooling_sp = tmp_cooling_sp.pvalue
+                cooling_sp = min(tmp_cooling_sp.pvalue, cooling_sp)
             if heating_sp < significance_level and cooling_sp < significance_level:
                 self.degree_days_type = "both"
             elif heating_sp < significance_level:
@@ -866,7 +872,7 @@ class CategoricalThermoSensitivity(
                 if verbose:
                     print(f"{cooling_sp=}, {heating_sp=}")
                 raise ValueError(
-                    "Cannot detect the degree days type. Please specify it manually."
+                    "Cannot detect the degree days type. Please specify it manually.",
                 )
 
     def _fit_thermosensitivity(

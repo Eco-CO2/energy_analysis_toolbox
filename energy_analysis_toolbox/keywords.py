@@ -1,5 +1,4 @@
-"""
-This module contains the definition of "keywords" - also called "magic values" -
+"""This module contains the definition of "keywords" - also called "magic values" -
 to be used in this library's public interface.
 
 All variables in this module are basic python objects such as int, str, list etc.

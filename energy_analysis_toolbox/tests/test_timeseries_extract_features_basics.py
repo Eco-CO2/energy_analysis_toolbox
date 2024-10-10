@@ -1,19 +1,18 @@
-# -*- coding: utf-8 -*-
 """ """
 
 import numpy as np
 import pandas as pd
 import pytest
 
+from .. import keywords as EATK
 from ..errors import (
+    EATEmptyDataError,
     EATInvalidTimestepDurationError,
     EATUndefinedTimestepError,
-    EATEmptyDataError,
 )
-from .. import keywords as EATK
 from ..timeseries.extract_features.basics import (
-    timestep_durations,
     intervals_over,
+    timestep_durations,
 )
 
 # =============================================================================
@@ -48,7 +47,7 @@ def test_randomly_spaced_durations():
                 start + 10 * s,
                 start + 14 * s,
                 start + 54 * s,
-            ]
+            ],
         ),
     )
     durs = timestep_durations(series)

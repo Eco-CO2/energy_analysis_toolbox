@@ -32,7 +32,7 @@ def same_category(
     """
     if history.empty or classificator is None:
         return history
-    elif date is None:
+    if date is None:
         date = (history.index[-1].floor("D")) + pd.Timedelta("1D")
     categories = history.index.to_series().apply(classificator)
     ref_category = classificator(date)
@@ -69,7 +69,7 @@ def keep_categories(
     """
     if history.empty or classificator is None:
         return history
-    elif keep is None:
+    if keep is None:
         keep = []
     categories = history.index.to_series().apply(classificator)
     mask = [(cat_image in keep) for cat_image in categories.values]
@@ -106,7 +106,7 @@ def remove_categories(
     """
     if history.empty or classificator is None:
         return history
-    elif remove is None:
+    if remove is None:
         remove = []
     categories = history.index.to_series().apply(classificator)
     mask = [(day_cat not in remove) for day_cat in categories.values]

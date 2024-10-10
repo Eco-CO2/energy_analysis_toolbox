@@ -1,13 +1,14 @@
 """Test the degree days module."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from energy_analysis_toolbox.weather.degree_days import (
+    dd_calc_method,
+    dd_compute,
+    dd_integral,
     dd_mean,
     dd_min_max,
-    dd_integral,
-    dd_compute,
-    dd_calc_method,
     dd_pro,
 )
 
@@ -15,7 +16,7 @@ from energy_analysis_toolbox.weather.degree_days import (
 def test_dd_mean_basic_features():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
     index = pd.date_range(
-        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris",
     )
     data = [0] * len(index)
     temperature = pd.Series(
@@ -31,7 +32,7 @@ def test_dd_mean_basic_features():
 def test_dd_mean_missing_data():
     """Verifies that, even a data is set to ``NaN``, the degree-days goes well."""
     index = pd.date_range(
-        start="2023-01-21", periods=12 * 60, freq="1min", tz="Europe/Paris"
+        start="2023-01-21", periods=12 * 60, freq="1min", tz="Europe/Paris",
     )
     data = [0] * len(index)
     temperature = pd.Series(
@@ -44,7 +45,7 @@ def test_dd_mean_missing_data():
         [15.0],
         name="heating_degree_days",
         index=pd.date_range(
-            start="2023-01-21", periods=1, freq="1D", tz="Europe/Paris"
+            start="2023-01-21", periods=1, freq="1D", tz="Europe/Paris",
         ),
     )
     pd.testing.assert_series_equal(dd, expected_dd)
@@ -53,7 +54,7 @@ def test_dd_mean_missing_data():
 def test_dd_min_max():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
     index = pd.date_range(
-        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris",
     )
     data = [0] * len(index)
     temperature = pd.Series(
@@ -69,7 +70,7 @@ def test_dd_min_max():
 def test_dd_integral():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
     index = pd.date_range(
-        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris",
     )
     data = [0] * len(index)
     temperature = pd.Series(
@@ -85,7 +86,7 @@ def test_dd_integral():
 def test_dd_compute():
     """Verifies that, when computing degree-days, the name property is set and that we have 7 days."""
     index = pd.date_range(
-        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris"
+        start="2023-01-21", periods=24 * 60 * 7, freq="1min", tz="Europe/Paris",
     )
     data = [0] * len(index)
     temperature = pd.Series(
@@ -175,7 +176,7 @@ def test_computation_realistic_data_pro(spread=10, mean=15):
         computed_dd = dd_compute(temperature, reference=ref, method="pro").mean()
         # putting the reference computation in the assert to better debug the test
         assert np.isclose(
-            computed_dd, reference_sin_dd(mean, spread, reference=ref), rtol=0.2
+            computed_dd, reference_sin_dd(mean, spread, reference=ref), rtol=0.2,
         )  # the pro method is less accurate
 
 
@@ -183,7 +184,8 @@ def reference_sin_dd_not_integral(mean, spread, reference):
     """Return the expected NOT INTEGRAL DD for a sin function temperature .
 
     This works for both min-max and mean methods, as both return the same value
-    when the temperature is symetric around the mean, as in the sin function."""
+    when the temperature is symetric around the mean, as in the sin function.
+    """
     if mean > reference:
         return 0
     if mean <= reference:

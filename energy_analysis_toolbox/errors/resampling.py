@@ -1,4 +1,4 @@
-from .base import EATExcept, EATEmptyDataError
+from .base import EATEmptyDataError, EATExcept
 
 
 class EATResamplingError(EATExcept):
@@ -8,7 +8,6 @@ class EATResamplingError(EATExcept):
     Derived classed may be used for more specific resampling errors.
     """
 
-    pass
 
 
 class EATEmptySourceError(EATResamplingError, EATEmptyDataError):
@@ -21,7 +20,6 @@ class EATEmptySourceError(EATResamplingError, EATEmptyDataError):
 
     """
 
-    pass
 
 
 class EATEmptyTargetsError(EATResamplingError, EATEmptyDataError):
@@ -35,4 +33,3 @@ class EATEmptyTargetsError(EATResamplingError, EATEmptyDataError):
 
     """
 
-    pass

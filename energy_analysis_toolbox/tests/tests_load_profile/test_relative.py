@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Tests for the ``RelativeThreshold``.
+"""Tests for the ``RelativeThreshold``.
 """
 
 import pandas as pd
@@ -8,8 +6,9 @@ import pandas as pd
 from energy_analysis_toolbox.timeseries.profiles.thresholds.relative import (
     RelativeThreshold,
 )
-from .fake_data import sinusoid_history
+
 from .check import compare_profiles
+from .fake_data import sinusoid_history
 
 
 def test_daily_1():

@@ -14,9 +14,7 @@ class RelativeSTDThreshold(MeanProfile):
         offset_std=3,
         **kwargs,
     ):
-        """
-
-        Parameters
+        """Parameters
         ----------
         offset_std : float, optional
             Number of standart deviations VS the computed reference to obtain

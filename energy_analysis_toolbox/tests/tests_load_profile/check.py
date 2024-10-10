@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Utility functions to compare profiles.
+"""Utility functions to compare profiles.
 """
 
 import pandas as pd

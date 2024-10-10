@@ -1,12 +1,13 @@
 import pandas as pd
+
+from .conservative import (
+    flow_rate_to_freq,
+    volume_to_freq,
+)
 from .index_transformation import index_to_freq
 from .interpolate import (
     piecewise_affine,
     piecewise_constant,
-)
-from .conservative import (
-    volume_to_freq,
-    flow_rate_to_freq,
 )
 
 

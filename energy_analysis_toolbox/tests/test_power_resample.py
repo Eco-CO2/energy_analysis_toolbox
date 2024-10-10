@@ -1,12 +1,12 @@
-import pytest
 import pandas as pd
-from ..power import to_freq, to_energy
+import pytest
+
 from ..errors import EATUndefinedTimestepError
+from ..power import to_energy, to_freq
 
 
 def test_to_freq_no_data():
-    """
-    Test case for the to_freq function when the power_series is empty.
+    """Test case for the to_freq function when the power_series is empty.
     It verifies that the new_power_series is also empty.
     """
     power_series = pd.Series()
@@ -27,7 +27,7 @@ def test_to_freq_one_to_many():
     with pytest.raises(EATUndefinedTimestepError):
         new_power_series = to_freq(power_series, new_freq)
     new_power_series = to_freq(
-        power_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds
+        power_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds,
     )
     assert new_power_series.index.freq == pd.Timedelta(new_freq)
     assert new_power_series.index[0] == pd.Timestamp("2020-01-01")
@@ -94,11 +94,11 @@ def test_to_freq_one_to_one():
     """Test case when the input series has length 1 and is resampled to one element."""
     freq = "1min"
     power_series = pd.Series(
-        [1.0], index=pd.date_range(start="2020-01-01", periods=1, freq=freq)
+        [1.0], index=pd.date_range(start="2020-01-01", periods=1, freq=freq),
     )
     new_freq = "1h"
     new_power_series = to_freq(
-        power_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds
+        power_series, new_freq, last_step_duration=pd.Timedelta(freq).seconds,
     )
     assert new_power_series.index.freq == pd.Timedelta(new_freq)
     assert new_power_series.index[0] == pd.Timestamp("2020-01-01")

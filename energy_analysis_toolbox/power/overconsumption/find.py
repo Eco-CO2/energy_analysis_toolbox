@@ -3,6 +3,7 @@ a power series and a threshold.
 """
 
 import pandas as pd
+
 from ...timeseries.extract_features import intervals_over
 from .. import basics as power
 
@@ -62,7 +63,7 @@ def from_power_threshold(
     # Find overshoots of power threshold
     if isinstance(overshoot_tshd, pd.Series):
         power_series_aligned, overshoot_tshd_aligned = power_series.align(
-            overshoot_tshd
+            overshoot_tshd,
         )
     else:
         power_series_aligned, overshoot_tshd_aligned = (
@@ -70,7 +71,7 @@ def from_power_threshold(
             overshoot_tshd,
         )
     intervals_overshoot = intervals_over(
-        power_series_aligned > overshoot_tshd_aligned, 0.5
+        power_series_aligned > overshoot_tshd_aligned, 0.5,
     )
     if intervals_overshoot.empty:
         intervals_overshoot["duration"] = []
@@ -82,7 +83,7 @@ def from_power_threshold(
         # Compute energy criterion associated to overshoots
         if isinstance(reference_energy_tshd, pd.Series):
             power_series_aligned, reference_energy_tshd_aligned = power_series.align(
-                reference_energy_tshd
+                reference_energy_tshd,
             )
         else:
             power_series_aligned, reference_energy_tshd_aligned = (
@@ -90,6 +91,6 @@ def from_power_threshold(
                 reference_energy_tshd,
             )
         intervals_overshoot["energy"] = power.integrate_over(
-            intervals_overshoot, power_series - reference_energy_tshd_aligned
+            intervals_overshoot, power_series - reference_energy_tshd_aligned,
         )
     return intervals_overshoot

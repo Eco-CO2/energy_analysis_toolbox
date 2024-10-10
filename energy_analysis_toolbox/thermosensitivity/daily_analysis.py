@@ -1,8 +1,10 @@
 """This module contains functions for analysis of daily-sampled thermosensitivity data."""
 
-from typing import Callable
-import pandas as pd
+from collections.abc import Callable
+
 import numpy as np
+import pandas as pd
+
 from .thermosensitivity import CategoricalThermoSensitivity
 
 
@@ -14,7 +16,7 @@ class DailyCategoricalThermoSensitivity(
     Based on CategoricalThermoSensitivity, it is made to
     categories the days with a function.
 
-    Example
+    Example:
     -------
     See :py:class:`DayOfWeekCategoricalThermoSensitivity`
 
@@ -34,7 +36,7 @@ class DailyCategoricalThermoSensitivity(
         start_ts = min(energy_data.index.min(), temperature_data.index.min())
         end_ts = max(energy_data.index.max(), temperature_data.index.max())
         days = pd.date_range(
-            start=start_ts, end=end_ts, freq=frequency, inclusive="both"
+            start=start_ts, end=end_ts, freq=frequency, inclusive="both",
         )
         categories = categories_func(days)
         super().__init__(
@@ -149,6 +151,7 @@ class AutoCategoricalThermoSensitivity(
          'Saturday': 'Monday-Wednesday-Sunday',
          'Sunday': 'Sunday'
         }
+
         """
         categories_sorted = [
             "Monday",
@@ -170,10 +173,10 @@ class AutoCategoricalThermoSensitivity(
                     interaction_term2 = pred + ":" + cat_term2
                     contrast_matrix = np.zeros((1, len(self.model.params)))
                     contrast_matrix[
-                        0, self.model.params.index.get_loc(interaction_term1)
+                        0, self.model.params.index.get_loc(interaction_term1),
                     ] = 1
                     contrast_matrix[
-                        0, self.model.params.index.get_loc(interaction_term2)
+                        0, self.model.params.index.get_loc(interaction_term2),
                     ] = -1
                     wald_test = self.model.wald_test(contrast_matrix, scalar=True)
                     if wald_test.pvalue < signicant_level:

@@ -1,16 +1,18 @@
-# -*- coding: utf-8 -*-
 """ """
 
 import functools
+
 import numpy as np
-import scipy.constants as SK
 import pandas as pd
-from .fake_data import sinusoid_history_df
+import scipy.constants as SK
+
 from energy_analysis_toolbox.timeseries.profiles.preprocessing.history_filters.categories import (
-    same_category,
     keep_categories,
     remove_categories,
+    same_category,
 )
+
+from .fake_data import sinusoid_history_df
 
 
 # =============================================================================
@@ -54,11 +56,11 @@ def test_same_category_identity():
     """Check that the function is identity with only one category."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = same_category(
-        history, date=monday + pd.Timedelta("1D"), classificator=single_category
+        history, date=monday + pd.Timedelta("1D"), classificator=single_category,
     )
     pd.testing.assert_frame_equal(filtered, history)
     # on series
@@ -74,11 +76,11 @@ def test_same_category_monday_tuesday():
     """Check the results with two categories : monday/tuesday and others."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = same_category(
-        history, date=monday + pd.Timedelta("1D"), classificator=casa_randazzo
+        history, date=monday + pd.Timedelta("1D"), classificator=casa_randazzo,
     )
     pd.testing.assert_frame_equal(filtered, history.iloc[[0, 1, 7, 8], :])
     # on series
@@ -94,7 +96,7 @@ def test_same_category_arbitrary():
     """Check the result using an external categorization with a proxy getter."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     categories = pd.Series(
         np.arange(0, 14) % 2,
@@ -107,7 +109,7 @@ def test_same_category_arbitrary():
 
     # on df
     filtered = same_category(
-        history, date=monday + pd.Timedelta("1D"), classificator=classificator
+        history, date=monday + pd.Timedelta("1D"), classificator=classificator,
     )
     pd.testing.assert_frame_equal(filtered, history.loc[categories.values[:-1]])
     # on series
@@ -117,7 +119,7 @@ def test_same_category_arbitrary():
         classificator=classificator,
     )
     pd.testing.assert_series_equal(
-        filtered_s, history.loc[categories.values[:-1]].iloc[:, 0]
+        filtered_s, history.loc[categories.values[:-1]].iloc[:, 0],
     )
 
 
@@ -130,7 +132,7 @@ def test_keep_categories_constant():
     """Check that the function works as expected with simple case of one category."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = keep_categories(history, keep=[1], classificator=single_category)
@@ -139,10 +141,10 @@ def test_keep_categories_constant():
     assert filtered_out.empty
     # on series
     filtered_s = keep_categories(
-        history.iloc[:, 0], keep=[1], classificator=single_category
+        history.iloc[:, 0], keep=[1], classificator=single_category,
     )
     filtered_out_s = keep_categories(
-        history.iloc[:, 0], keep=[0], classificator=single_category
+        history.iloc[:, 0], keep=[0], classificator=single_category,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[:, 0])
     assert filtered_out_s.empty
@@ -152,7 +154,7 @@ def test_remove_categories_constant():
     """Check that the function works as expected with simple case of one category."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df
     filtered = remove_categories(history, remove=[0], classificator=single_category)
@@ -161,10 +163,10 @@ def test_remove_categories_constant():
     assert filtered_out.empty
     # on series
     filtered_s = remove_categories(
-        history.iloc[:, 0], remove=[0], classificator=single_category
+        history.iloc[:, 0], remove=[0], classificator=single_category,
     )
     filtered_out_s = remove_categories(
-        history.iloc[:, 0], remove=[1], classificator=single_category
+        history.iloc[:, 0], remove=[1], classificator=single_category,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[:, 0])
     assert filtered_out_s.empty
@@ -179,7 +181,7 @@ def test_keep_categories_None_classificator():
     """Check that None classificator returns the whole histroy"""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=3, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=3, freq="1D", period_variation=7 * SK.day,
     )
     filtered = keep_categories(history, keep=[True], classificator=None)
     pd.testing.assert_frame_equal(filtered, history)
@@ -191,7 +193,7 @@ def test_keep_categories_working_days():
     """Check with a function wich returns True except on monday and tuesday."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df keep nothing
     assert keep_categories(history, classificator=casa_randazzo).empty
@@ -203,11 +205,11 @@ def test_keep_categories_working_days():
     # keep working days
     filtered = keep_categories(history, keep=[True], classificator=casa_randazzo)
     pd.testing.assert_frame_equal(
-        filtered, history.drop(labels=history.index[[0, 1, 7, 8]])
+        filtered, history.drop(labels=history.index[[0, 1, 7, 8]]),
     )
     # on series
     filtered_s = keep_categories(
-        history.iloc[:, 0], keep=[False], classificator=casa_randazzo
+        history.iloc[:, 0], keep=[False], classificator=casa_randazzo,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[[0, 1, 7, 8], 0])
 
@@ -216,7 +218,7 @@ def test_keep_categories_arbitrary():
     """Check when getting categories from a proxy table."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     categories = pd.Series(
         ["no", "yes"] * 7,  # no on even indices
@@ -231,7 +233,7 @@ def test_keep_categories_arbitrary():
     pd.testing.assert_frame_equal(filtered, history.iloc[1::2])
     # on series
     filtered_s = keep_categories(
-        history.iloc[:, 0], keep=["no"], classificator=classificator
+        history.iloc[:, 0], keep=["no"], classificator=classificator,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[0::2, 0])
 
@@ -245,7 +247,7 @@ def test_remove_categories_None_classificator():
     """Check that None classificator returns the whole histroy"""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=3, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=3, freq="1D", period_variation=7 * SK.day,
     )
     filtered = remove_categories(history, keep=[True], classificator=None)
     pd.testing.assert_frame_equal(filtered, history)
@@ -257,11 +259,11 @@ def test_remove_categories_working_days():
     """Check with a function wich returns True except on monday and tuesday."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     # on df remove everything
     assert remove_categories(
-        history, classificator=casa_randazzo, remove=[True, False]
+        history, classificator=casa_randazzo, remove=[True, False],
     ).empty
     # on df remove nothing
     pd.testing.assert_frame_equal(
@@ -271,11 +273,11 @@ def test_remove_categories_working_days():
     # remove working days
     filtered = remove_categories(history, remove=[False], classificator=casa_randazzo)
     pd.testing.assert_frame_equal(
-        filtered, history.drop(labels=history.index[[0, 1, 7, 8]])
+        filtered, history.drop(labels=history.index[[0, 1, 7, 8]]),
     )
     # on series
     filtered_s = remove_categories(
-        history.iloc[:, 0], remove=[True], classificator=casa_randazzo
+        history.iloc[:, 0], remove=[True], classificator=casa_randazzo,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[[0, 1, 7, 8], 0])
 
@@ -284,7 +286,7 @@ def test_remove_categories_arbitrary():
     """Check when getting categories from a proxy table."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
-        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day
+        start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
     )
     categories = pd.Series(
         ["no", "yes"] * 7,  # no on even indices
@@ -299,6 +301,6 @@ def test_remove_categories_arbitrary():
     pd.testing.assert_frame_equal(filtered, history.iloc[1::2])
     # on series
     filtered_s = remove_categories(
-        history.iloc[:, 0], remove=["yes"], classificator=classificator
+        history.iloc[:, 0], remove=["yes"], classificator=classificator,
     )
     pd.testing.assert_series_equal(filtered_s, history.iloc[0::2, 0])

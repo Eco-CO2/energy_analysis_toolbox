@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-"""
-Tests for the ``MeanProfile`` base class.
+"""Tests for the ``MeanProfile`` base class.
 """
 
 import pandas as pd
 
 from energy_analysis_toolbox.timeseries.profiles.mean_profile import MeanProfile
-from .fake_data import sinusoid_history
+
 from .check import compare_profiles
+from .fake_data import sinusoid_history
 
 
 def test_daily_1():

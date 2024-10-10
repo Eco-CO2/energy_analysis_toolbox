@@ -1,4 +1,5 @@
 import pandas as pd
+
 from ..power.overconsumption.transform import merge_by_proximity
 from .test_power_overconsumption_select import example_intervals
 
@@ -50,10 +51,10 @@ def test_merge_all():
             "start": [intervals["start"].iloc[0]],
             "end": [intervals["end"].iloc[-1]],
             "duration": [
-                (intervals["end"].iloc[-1] - intervals["start"].iloc[0]).total_seconds()
+                (intervals["end"].iloc[-1] - intervals["start"].iloc[0]).total_seconds(),
             ],
             "energy": [intervals["energy"].sum()],
-        }
+        },
     )
     pd.testing.assert_frame_equal(merged, expected, check_dtype=False)
 

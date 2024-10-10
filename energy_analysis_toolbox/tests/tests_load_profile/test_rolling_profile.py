@@ -1,9 +1,11 @@
 """Testing module for rolling_profile"""
 
 from itertools import product
-import pytest
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import pytest
+
 from energy_analysis_toolbox.timeseries.profiles.rolling_profile import (
     RollingProfile,
     RollingQuantileProfile,
@@ -31,7 +33,7 @@ def arange_multicolumn(n_days, step, r_rows=10):
 
     """
     return pd.DataFrame(
-        np.arange(0, n_days * r_rows * step, step).reshape(r_rows, n_days)
+        np.arange(0, n_days * r_rows * step, step).reshape(r_rows, n_days),
     )
 
 
@@ -79,6 +81,7 @@ def expected_constant_df(value, index, window_size):
     -------
     pd.DataFrame
         the expected Dataframe, with one column named ``"value"``
+
     """
     expected_df = pd.DataFrame(data=value, index=index, columns=["value"])
     return expected_df.rolling(
@@ -109,7 +112,7 @@ def test_windowed_rolling_agg_many_combinations(n_rows, step, window_size, ddof)
     expected_std = df.iloc[0:window_size, :].to_numpy().ravel().std(ddof=ddof)
     extected_df = expected_constant_df(expected_std, df.index, window_size)
     rolling_profiler = RollingProfile(
-        window=window_size, aggregation=lambda x: np.std(x, ddof=ddof)
+        window=window_size, aggregation=lambda x: np.std(x, ddof=ddof),
     )
     results = rolling_profiler.windowed_rolling_agg(df)
     pd.testing.assert_frame_equal(extected_df, results)
@@ -136,7 +139,7 @@ def test_mean_offset(n_days, step, window_size, freq_minutes):
     )
     expected_df = expected_constant_df(expected_value, expected_time, window_size)
     rolling_profiler = RollingProfile(
-        window=window_size, aggregation=np.std, as_mean_offset=True
+        window=window_size, aggregation=np.std, as_mean_offset=True,
     )
     results = rolling_profiler.compute(df, time=expected_time[0])
     pd.testing.assert_frame_equal(expected_df, results, check_freq=False)
@@ -176,7 +179,7 @@ def test_RollingQuantileProfile_many_combinations(n_days, step, window_size, q):
             periods=r_rows,
             freq=f"{freq_minutes}min",
             name=index_name,
-        )
+        ),
     )
     df = pd.DataFrame(data, index=index, columns=["value"])
     quantile_profile = RollingQuantileProfile(window_size, threshold_quantile=q)

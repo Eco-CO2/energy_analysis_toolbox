@@ -53,8 +53,10 @@ missing data via ``pandas``.
 """
 
 from functools import partial
+
 import numpy as np
 import pandas as pd
+
 from .mean_profile import MeanProfile
 
 
@@ -169,7 +171,7 @@ class RollingProfile:
             )
         # Deal with winter DST and time-localized data
         df_day_by_time = df_day_by_time.drop(
-            labels=df_day_by_time.index[df_day_by_time.index >= pd.Timedelta("1D")]
+            labels=df_day_by_time.index[df_day_by_time.index >= pd.Timedelta("1D")],
         )
         return df_day_by_time[self.column_name]
 

@@ -2,11 +2,11 @@
 they have beem located.
 """
 
-from ...timeseries.extract_features import (
-    timestep_durations,
-    intervals_over,
-)
 from ...timeseries.create.from_intervals import flatten_and_fill
+from ...timeseries.extract_features import (
+    intervals_over,
+    timestep_durations,
+)
 
 
 def merge_by_proximity(
@@ -74,7 +74,7 @@ def merge_by_proximity(
     flat_intervals = flat_intervals.loc[~flat_intervals.index.duplicated(keep="first")]
     # [3]
     dropped = flat_intervals.iloc[:-1, :].query(
-        f"energy == 0 and duration < {min_interval}"
+        f"energy == 0 and duration < {min_interval}",
     )
     flat_intervals.drop(index=dropped.index, inplace=True)
     flat_intervals["duration"] = timestep_durations(flat_intervals["duration"])

@@ -1,6 +1,7 @@
 """Define Mixins to use manage localized timeseries."""
 
 import pandas as pd
+
 from .mean_profile import MeanProfile
 from .rolling_profile import (
     RollingProfile,

@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Tests for the ``HybridThreshold``.
+"""Tests for the ``HybridThreshold``.
 """
 
 import pandas as pd
@@ -8,8 +6,9 @@ import pandas as pd
 from energy_analysis_toolbox.timeseries.profiles.thresholds.hybrid_rel_std import (
     HybridThreshold,
 )
-from .fake_data import sinusoid_history
+
 from .check import compare_profiles
+from .fake_data import sinusoid_history
 
 
 def test_daily_1():

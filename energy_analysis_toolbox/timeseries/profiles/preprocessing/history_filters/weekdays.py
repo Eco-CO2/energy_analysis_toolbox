@@ -71,7 +71,7 @@ def same_day_only(
     """
     if history.empty:
         return history
-    elif date is None:
+    if date is None:
         date = (history.index[-1].floor("D")) + pd.Timedelta("1D")
     else:
         pass

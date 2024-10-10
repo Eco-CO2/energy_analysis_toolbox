@@ -1,2 +1,1 @@
-#
-from . import weekdays, categories
+from . import categories, weekdays

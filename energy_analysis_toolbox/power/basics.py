@@ -1,5 +1,4 @@
-"""
-This module contains elementary yet useful operations on power timeseries.
+"""This module contains elementary yet useful operations on power timeseries.
 """
 
 from ..timeseries.extract_features import timestep_durations

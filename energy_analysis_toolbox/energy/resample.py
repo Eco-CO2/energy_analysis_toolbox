@@ -1,6 +1,7 @@
 """Function to resample a energy series."""
 
 import pandas as pd
+
 from ..timeseries.resample.conservative import volume_to_freq
 
 

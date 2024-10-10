@@ -8,8 +8,9 @@ that the tested code is the one from your ``PYTHONPATH`` i.e., the code which
 you use when you type ``import energy_analysis_toolbox`` in the calling interpreter.
 """
 
-import pytest
 import os
+
+import pytest
 
 
 def run():
@@ -37,7 +38,7 @@ def run():
             coverage_config_filename,
             "--cov-report",
             "xml:coverage.xml",
-        ]
+        ],
     )
 
     if code != pytest.ExitCode(0):

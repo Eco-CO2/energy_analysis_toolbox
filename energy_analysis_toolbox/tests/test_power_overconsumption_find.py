@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from ..power.overconsumption.find import from_power_threshold
 
 
@@ -34,7 +35,7 @@ def example_power():
             "end": [e1, e2],
             "duration": [3600, 5400],
             "energy": [3600 * 10, 5400 * 20],
-        }
+        },
     )
     intervals["end"] += pd.Timedelta("30min")  # doom pandas inclusive loc
     return pow, threshold, intervals
@@ -81,7 +82,7 @@ def test_from_power_threshold_under_power():
             "end": [power.index[-1]],
             "duration": 1800 * 45,
             "energy": 1800 * 45 + intervals["energy"].sum(),
-        }
+        },
     )
     pd.testing.assert_frame_equal(found_intervals, intervals_expect, check_dtype=False)
 
@@ -95,7 +96,7 @@ def test_from_power_threshold_series():
         overshoot_tshd=threshold,
     )
     pd.testing.assert_frame_equal(
-        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False
+        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False,
     )
 
 
@@ -110,5 +111,5 @@ def test_from_power_threshold_custom_ref():
         reference_energy_tshd=ref,
     )
     pd.testing.assert_frame_equal(
-        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False
+        found_intervals, intervals[1:].reset_index(drop=True), check_dtype=False,
     )
