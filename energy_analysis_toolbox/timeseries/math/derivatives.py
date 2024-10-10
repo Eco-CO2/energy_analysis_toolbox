@@ -1,4 +1,4 @@
-"""This moduel contains utilities to compute time-derivatives of physical values
+"""This module contains utilities to compute time-derivatives of physical values
 in a timeseries :
 
 - :py:func:`time_derivative_fwd`

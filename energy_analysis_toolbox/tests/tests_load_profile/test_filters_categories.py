@@ -19,7 +19,7 @@ from .fake_data import sinusoid_history_df
 # Utility functions for test purpose
 # =============================================================================
 def is_working(timestamp, off_days=None):
-    """Return True iif the day of week of timestamp is in ``off_days``.
+    """Return True if the day of week of timestamp is in ``off_days``.
 
     Parameters
     ----------
@@ -40,7 +40,7 @@ def is_working(timestamp, off_days=None):
     return timestamp.dayofweek not in off_days
 
 
-# Name after an italian restaurant in Cagnes-sur-Mer which cooks delicious panzerotti
+# Name after an italian restaurant which cooks delicious panzerotti
 casa_randazzo = functools.partial(is_working, off_days=[0, 1])
 
 
@@ -178,7 +178,7 @@ def test_remove_categories_constant():
 
 
 def test_keep_categories_None_classificator():
-    """Check that None classificator returns the whole histroy"""
+    """Check that None classificator returns the whole history"""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
         start=monday, n_days=3, freq="1D", period_variation=7 * SK.day,
@@ -190,7 +190,7 @@ def test_keep_categories_None_classificator():
 
 
 def test_keep_categories_working_days():
-    """Check with a function wich returns True except on monday and tuesday."""
+    """Check with a function which returns True except on monday and tuesday."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
         start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,
@@ -244,7 +244,7 @@ def test_keep_categories_arbitrary():
 
 
 def test_remove_categories_None_classificator():
-    """Check that None classificator returns the whole histroy"""
+    """Check that None classificator returns the whole history"""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
         start=monday, n_days=3, freq="1D", period_variation=7 * SK.day,
@@ -256,7 +256,7 @@ def test_remove_categories_None_classificator():
 
 
 def test_remove_categories_working_days():
-    """Check with a function wich returns True except on monday and tuesday."""
+    """Check with a function which returns True except on monday and tuesday."""
     monday = pd.Timestamp("2022-01-03")
     history = sinusoid_history_df(
         start=monday, n_days=14, freq="1D", period_variation=7 * SK.day,

@@ -194,7 +194,7 @@ def test_intervals_over_last_step_front():
 
 
 def test_intervals_over_left_overlap():
-    """Check on a very simple case with period overlaping left bound"""
+    """Check on a very simple case with period overlapping left bound"""
     time_begin = pd.Timestamp("2018-07-06 05:00:00")
     time_range = pd.date_range(
         start=time_begin,
@@ -210,7 +210,7 @@ def test_intervals_over_left_overlap():
 
 
 def test_intervals_over_right_overlap():
-    """Check on a very simple case with period overlaping right bound"""
+    """Check on a very simple case with period overlapping right bound"""
     time_begin = pd.Timestamp("2018-07-06 05:00:00")
     time_range = pd.date_range(
         start=time_begin,

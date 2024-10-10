@@ -1038,7 +1038,7 @@ class TestAutoCategoricalThermoSensitivity:
         )
 
         ts.fit()
-        ts.merge_and_fit(signicant_level=0.01)
+        ts.merge_and_fit(significant_level=0.01)
 
         model = ts.model
         daynames = [

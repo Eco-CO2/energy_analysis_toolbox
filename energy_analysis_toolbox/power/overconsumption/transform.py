@@ -46,7 +46,7 @@ def merge_by_proximity(
     - [2] Recompute the durations so that the "duration" variable has the right
       value between the overshoot overconsumption.
     - [3] Drop all the rows for which the duration is under the defined threshold
-      and the energy is 0. By construction, overshoot overconsumption hae a non-zero
+      and the energy is 0. By construction, overshoot overconsumption have a non-zero
       energy (they are overshoots!) while other rows were filled with 0. Overshoots
       which were closed than the threshold are now contiguous in the timeseries.
     - [4] Re-extract the periods during which the energy is > 0 : the contiguous

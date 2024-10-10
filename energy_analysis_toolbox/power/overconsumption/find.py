@@ -29,7 +29,7 @@ def from_power_threshold(
         over-consumption. In case a series is given, it should have the
         same index as ``power_series``.
     reference_energy_tshd : pd.Series or float or None
-        A power in (W) to be substracted from the power series in order
+        A power in (W) to be subtracted from the power series in order
         to compute an "overshoot energy" for each interval. The
         default is |None| in which case ``overshoot_tshd`` is used.
         In case a series is given, it should have the same index as

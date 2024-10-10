@@ -1,27 +1,32 @@
-"""This module contains functions to power timeseries of flows and volumes per
-timestep without breaking conservation laws.
-"""
+"""Convert power timeseries of flows and volumes without breaking conservation laws."""
+
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 
-from ...errors import (
+from energy_analysis_toolbox.errors import (
     EATEmptySourceError,
     EATEmptyTargetsError,
     EATInvalidTimestepDurationError,
 )
-from ..extract_features.basics import index_to_timesteps, timestep_durations
-from .index_transformation import index_to_freq
-from .interpolate import piecewise_affine
+from energy_analysis_toolbox.timeseries.extract_features import timestep_durations
+from energy_analysis_toolbox.timeseries.extract_features.basics import (
+    index_to_timesteps,
+)
+from energy_analysis_toolbox.timeseries.resample.index_transformation import (
+    index_to_freq,
+)
+from energy_analysis_toolbox.timeseries.resample.interpolate import piecewise_affine
 
 
 # =============================================================================
 # Resampling with volume conservation
 # =============================================================================
 def deduce_flows(
-    volumes,
-    last_step_duration=None,
-):
+    volumes: pd.Series,
+    last_step_duration: float | None = None,
+) -> pd.Series:
     """Return a timeseries of "flow-rates" from one of an extensive variable.
 
     Parameters
@@ -52,16 +57,15 @@ def deduce_flows(
 
     """
     durations = timestep_durations(volumes, last_step_duration)
-    frs = volumes / durations
-    return frs
+    return volumes / durations
 
 
 def flow_rate_conservative(
-    flow_rates,
-    target_instants,
-    last_step_duration=None,
-    last_target_step_duration=None,
-):
+    flow_rates: pd.Series,
+    target_instants: pd.DatetimeIndex,
+    last_step_duration: float | None = None,
+    last_target_step_duration: float | None = None,
+) -> pd.Series:
     """Return the series of flow-rate on target instants.
 
     In what follows, flow-rates and volumes are considered in a broad meaning
@@ -144,21 +148,22 @@ def flow_rate_conservative(
       series assuming the ``flow_rates`` series defines a piecewise constant
       function. [2.]
     - The volumes are resampled in a conservative way using
-      :py:func:`energy_analysis_toolbox.timeseries.power.volume_conservative` function. [3.]
+      :py:func:`energy_analysis_toolbox.timeseries.power.volume_conservative`
+      function. [3.]
     - The resulting flow-rates are deduced as the ratio between these volumes
       and the interval durations of the target series. The duration of the
       last interval is defined by ``last_target_step_duration``. [4.]
 
     """
     if flow_rates.empty:
-        raise EATEmptySourceError(
-            "Resampling an empty flow-rates series to new instants is an invalid"
-            " (undefined) operation.",
+        err = (
+            "Resampling an empty flow-rates series to new instants is an invalid "
+            "(undefined) operation."
         )
+        raise EATEmptySourceError(err)
     if target_instants.empty:
-        raise EATEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled.",
-        )
+        err = "Target instants must be provided for the series to be resampled."
+        raise EATEmptyTargetsError(err)
     durations = timestep_durations(flow_rates, last_step=last_step_duration)  # [1.]
     volumes = flow_rates * durations  # [2.]
     interp_volumes = volume_conservative(
@@ -175,11 +180,11 @@ def flow_rate_conservative(
 
 
 def volume_conservative(
-    volumes,
-    target_instants,
-    last_step_duration=None,
-    last_target_step_duration=None,
-):
+    volumes: pd.Series,
+    target_instants: pd.DatetimeIndex,
+    last_step_duration: float | None = None,
+    last_target_step_duration: float | None = None,
+) -> pd.Series:
     """Resample the volume on target instants assuming it is a conservative variable.
 
     In what follows, flow-rates and volumes are considered in a broad meaning
@@ -225,7 +230,8 @@ def volume_conservative(
     Returns
     -------
     pd.Series
-        The volumes series sampled on the overconsumption defined in ``target_instants``.
+        The volumes series sampled on the overconsumption defined in
+        ``target_instants``.
 
     Raises
     ------
@@ -283,7 +289,7 @@ def volume_conservative(
     2021-12-15 18:00:00    0.025
     Freq: 6H, dtype: float64
 
-    This is also true and applyable for the last target step duration.
+    This is also true and applicable for the last target step duration.
 
     >>> target_index = pd.date_range("2021-12-15", periods=1, freq='12h')
     >>> volumes_obtained = volume_conservative(
@@ -342,7 +348,7 @@ def volume_conservative(
 
         The sampling convention of the ``volumes`` series is just an indirect way
         of defining a piecewise constant flow-rate function.
-        The current method works by resampling exaclty the integral of the
+        The current method works by resampling exactly the integral of the
         flow-rate function, to, then, recover a new volume series (piecewise
         constant flow-rate function). By construction, the integral of the resulting
         piecewise constant flow-rate function on the overconsumption of its support of
@@ -356,15 +362,19 @@ def volume_conservative(
 
     """
     if volumes.empty:
-        raise EATEmptySourceError(
-            "Resampling an empty volumes series to new instants is an invalid operation.",
+        err = (
+            "Resampling an empty volumes series to new instants is an "
+            "invalid operation."
         )
+        raise EATEmptySourceError(err)
     if target_instants.empty:
-        raise EATEmptyTargetsError(
-            "Target instants must be provided for the series to be resampled.",
-        )
-    if last_step_duration is not None and last_step_duration <= 0 or last_target_step_duration is not None and last_target_step_duration <= 0:
-        raise EATInvalidTimestepDurationError("Last step duration cannot be zero.")
+        err = "Target instants must be provided for the series to be resampled."
+        raise EATEmptyTargetsError(err)
+    if (last_step_duration is not None and last_step_duration <= 0
+        or last_target_step_duration is not None and last_target_step_duration <= 0
+    ):
+        err = "Last step duration cannot be zero."
+        raise EATInvalidTimestepDurationError(err)
     vol_index = volumes.cumsum()  # [1.]
     # the function deals with None last_step_duration values
     durations = timestep_durations(volumes.iloc[-2:], last_step=last_step_duration)
@@ -388,11 +398,11 @@ def volume_conservative(
 
 def volume_to_freq(
     series: "pd.Series[float]",
-    freq,
-    origin=None,
-    last_step_duration=None,
+    freq: str | pd.Timedelta,
+    origin: None | Literal["floor", "ceil"] | pd.Timestamp = None,
+    last_step_duration: float | None = None,
 ) -> "pd.Series[float]":
-    """Return a series resampled to freq such that the volume is conserved in all timesteps.
+    """Return a series resampled to freq such that the volume is conserved.
 
     The last step duration of the resampled series is set to the frequency ``freq``.
 
@@ -402,7 +412,7 @@ def volume_to_freq(
         A series of values of a volume-alike quantity with a DatetimeIndex.
         The sampling period can be constant or not (in this case, use
         ``last_step_duration`` argument).
-    freq : str, pd.Timedelta
+    freq : str | pd.Timedelta
         the freq to which the series is resampled. Must be a valid
         pandas frequency.
     origin : {None, 'floor, 'ceil', pd.Timestamp}, optional
@@ -422,27 +432,28 @@ def volume_to_freq(
 
     .. seealso::
 
-        * :py:func:`volume_conservative` which resamples the flow-rate on the target instants.
-        * :py:func:`flow_rate_to_freq` which resamples the volume on the giver frequency.
+        * :py:func:`volume_conservative` which resamples the flow-rate on the
+          target instants.
+        * :py:func:`flow_rate_to_freq` which resamples the volume on the giver
+          frequency.
 
     """
     target_instants = index_to_freq(series.index, freq, origin, last_step_duration)
-    resampled_series = volume_conservative(
+    return volume_conservative(
         series,
         target_instants,
         last_step_duration=last_step_duration,
         last_target_step_duration=pd.Timedelta(freq).total_seconds(),
     )
-    return resampled_series
 
 
 def flow_rate_to_freq(
     series: "pd.Series[float]",
-    freq,
-    origin=None,
-    last_step_duration=None,
+    freq: str | pd.Timedelta,
+    origin: None | Literal["floor", "ceil"] | pd.Timestamp = None,
+    last_step_duration: float | None = None,
 ) -> "pd.Series[float]":
-    """Return a series resampled to freq such that the flow rate is conserved in all timesteps.
+    """Return a series resampled to freq such that the flow rate is conserved.
 
     The last step duration of the resampled series is set to the frequency ``freq``.
 
@@ -450,7 +461,8 @@ def flow_rate_to_freq(
     ----------
     series : pd.Series
         A series of values of a flow_rate-alike quantity with a DatetimeIndex.
-        The sampling period can be constant or not (in this case, use ``last_step_duration`` argument).
+        The sampling period can be constant or not (in this case, use
+        ``last_step_duration`` argument).
     freq : str, pd.Timedelta
         the freq to which the series is resampled. Must be a valid
         pandas frequency.
@@ -472,15 +484,15 @@ def flow_rate_to_freq(
 
     .. seealso::
 
-        * :py:func:`flow_rate_conservative` which resamples the flow-rate on the target instants.
+        * :py:func:`flow_rate_conservative` which resamples the flow-rate on
+          the target instants.
         * :py:func:`volume_to_freq` which resamples the volume on the giver frequency.
 
     """
     target_instants = index_to_freq(series.index, freq, origin, last_step_duration)
-    resampled_series = flow_rate_conservative(
+    return flow_rate_conservative(
         series,
         target_instants,
         last_step_duration=last_step_duration,
         last_target_step_duration=pd.Timedelta(freq).total_seconds(),
     )
-    return resampled_series

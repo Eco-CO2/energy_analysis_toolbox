@@ -12,7 +12,7 @@ from energy_analysis_toolbox.timeseries.profiles.rolling_profile import (
 )
 
 
-def arange_multicolumn(n_days, step, r_rows=10):
+def arrange_multicolumn(n_days, step, r_rows=10):
     """Generate a dataframe similar to what the pivot phase would produce.
 
     The values increases linearly from ``0`` to ``n_days*r_rows*step`` along the rows.
@@ -24,7 +24,7 @@ def arange_multicolumn(n_days, step, r_rows=10):
     .. code-block::
         python
 
-        >>> arange_multicolumn(3, 2, 4)
+        >>> arrange_multicolumn(3, 2, 4)
                 0	1	2
         0	0	2	4
         1	6	8	10
@@ -37,7 +37,7 @@ def arange_multicolumn(n_days, step, r_rows=10):
     )
 
 
-def arange_days_multicolumn(n_days, step, r_rows=10):
+def arrange_days_multicolumn(n_days, step, r_rows=10):
     """Generate a dataframe similar to what the pivot phase would produce.
 
     The values increases linearly from ``0`` to ``n_days*step`` along the rows.
@@ -49,7 +49,7 @@ def arange_days_multicolumn(n_days, step, r_rows=10):
     .. code-block::
         python
 
-        >>> arange_days_multicolumn(3, 2, 4)
+        >>> arrange_days_multicolumn(3, 2, 4)
                 0	1	2
         0	0	2	4
         1	0	2	4
@@ -108,7 +108,7 @@ def test_windowed_rolling_agg_many_combinations(n_rows, step, window_size, ddof)
     The expected value is always the same, as the std isn't affected
     by the rising mean value.
     """
-    df = arange_multicolumn(n_rows, step=step)
+    df = arrange_multicolumn(n_rows, step=step)
     expected_std = df.iloc[0:window_size, :].to_numpy().ravel().std(ddof=ddof)
     extected_df = expected_constant_df(expected_std, df.index, window_size)
     rolling_profiler = RollingProfile(
@@ -122,7 +122,7 @@ def test_windowed_rolling_agg_many_combinations(n_rows, step, window_size, ddof)
 def test_mean_offset(n_days, step, window_size, freq_minutes):
     """Check that the option to add the mean profile to the results is effective when toggled"""
     n_rows = int(24 * 60 / freq_minutes)
-    data = arange_days_multicolumn(n_days, step, n_rows)
+    data = arrange_days_multicolumn(n_days, step, n_rows)
     df = pd.DataFrame(
         data={"value": data.to_numpy().T.ravel()},
         index=pd.date_range(

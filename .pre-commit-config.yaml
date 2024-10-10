@@ -23,6 +23,7 @@ repos:
     rev: v1.26.0
     hooks:
       - id: typos
+        exclude: ^LICENSES/
 
   # - repo: https://github.com/astral-sh/ruff-pre-commit
   #   rev: v0.6.9

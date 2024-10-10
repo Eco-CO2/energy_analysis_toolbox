@@ -37,7 +37,7 @@ def to_freq(
         Method used to interpolate the values of the resampled series. The accepted
         values are:
 
-        * 'piecewise_affine': uses :py:func:`.piecewise_affine`, assume the values a straite line between two points. The default methode.
+        * 'piecewise_affine': uses :py:func:`.piecewise_affine`, assume the values a straite line between two points. The default method.
         * 'piecewise_constant': uses :py:func:`.piecewise_constant`, assume the values constante until the next point.
         * 'volume_conservative': uses :py:func:`.volume_to_freq`, conserve the quantity of the values. Best to use it for energy timeseries.
         * 'flow_rate_conservative': uses :py:func:`.flow_rate_to_freq`, conserve the values time the duration between two points. Best to use it for power timeseries.

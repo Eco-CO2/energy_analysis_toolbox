@@ -54,7 +54,7 @@ class DailyCategoricalThermoSensitivity(
 class DayOfWeekCategoricalThermoSensitivity(
     DailyCategoricalThermoSensitivity,
 ):
-    """Models independantly the 7 days of the week.
+    """Models independently the 7 days of the week.
 
     Based on :py:class:`DailyCategoricalThermoSensitivity`.
     """
@@ -119,7 +119,7 @@ class AutoCategoricalThermoSensitivity(
 
     def new_categories(
         self,
-        signicant_level=0.1,
+        significant_level=0.1,
     ):
         """Return a new categories mapping based on the significance of the interaction terms.
 
@@ -127,7 +127,7 @@ class AutoCategoricalThermoSensitivity(
 
         Parameters
         ----------
-        signicant_level : float
+        significant_level : float
             The significance level for the Wald test (a p-value below this level is considered significant).
             Must be between 0 and 1.
             The higher the value, the more categories will be kept separate.
@@ -142,7 +142,7 @@ class AutoCategoricalThermoSensitivity(
         -------
         >>> auto = AutoCategoricalThermoSensitivity(...)
         >>> auto.fit()
-        >>> auto.new_categories(signicant_level=0.1)
+        >>> auto.new_categories(significant_level=0.1)
         {'Monday': 'Monday-Wednesday-Sunday',
          'Tuesday': 'Tuesday',
          'Wednesday': 'Monday-Wednesday-Sunday',
@@ -179,7 +179,7 @@ class AutoCategoricalThermoSensitivity(
                         0, self.model.params.index.get_loc(interaction_term2),
                     ] = -1
                     wald_test = self.model.wald_test(contrast_matrix, scalar=True)
-                    if wald_test.pvalue < signicant_level:
+                    if wald_test.pvalue < significant_level:
                         is_same_group &= False
                 if is_same_group:
                     new_categories_mapping[cat_term1].append(cat_term2)
@@ -194,8 +194,8 @@ class AutoCategoricalThermoSensitivity(
 
     def merge_and_fit(
         self,
-        signicant_level=0.1,
+        significant_level=0.1,
     ):
-        new_cats_maps = self.new_categories(signicant_level=signicant_level)
+        new_cats_maps = self.new_categories(significant_level=significant_level)
         self.categories = self.categories.map(new_cats_maps)
         self.fit()

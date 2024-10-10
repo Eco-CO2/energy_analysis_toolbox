@@ -28,7 +28,7 @@ It is structured as follows:
   compute profiles of variations of timeseries data from an history of variations.
   Typically, this can be used to compute typical daily patterns of variations.
 
-See the detailled package structure below.
+See the detailed package structure below.
 
 .. toctree::
    :maxdepth: 4

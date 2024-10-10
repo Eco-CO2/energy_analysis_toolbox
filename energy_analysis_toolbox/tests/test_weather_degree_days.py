@@ -184,7 +184,7 @@ def reference_sin_dd_not_integral(mean, spread, reference):
     """Return the expected NOT INTEGRAL DD for a sin function temperature .
 
     This works for both min-max and mean methods, as both return the same value
-    when the temperature is symetric around the mean, as in the sin function.
+    when the temperature is symmetric around the mean, as in the sin function.
     """
     if mean > reference:
         return 0

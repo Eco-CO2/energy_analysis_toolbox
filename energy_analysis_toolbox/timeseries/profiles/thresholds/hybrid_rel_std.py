@@ -25,7 +25,7 @@ class HybridThreshold(MeanProfile):
             A pandas period string which specifies the kind of period on which
             the profile is realized.
         offset_std : float, optional
-            Number of standart deviations VS the computed reference to obtain
+            Number of standard deviations VS the computed reference to obtain
             the threshold profile. Default is 3 (profile is 3 standard deviations
             from reference)
         offset_relative : float, optional

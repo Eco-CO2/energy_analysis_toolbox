@@ -67,7 +67,7 @@ def test_merge_nominal():
 
 
 def test_merge_touching_interval_zero_tshd():
-    """Check robustness in limit case when overconsumption are adjecent."""
+    """Check robustness in limit case when overconsumption are adjacent."""
     intervals = example_intervals()
     intervals.loc[1, "end"] = intervals.loc[2, "start"]
     merged = merge_by_proximity(intervals, min_interval=0)

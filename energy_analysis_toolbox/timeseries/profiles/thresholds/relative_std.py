@@ -17,7 +17,7 @@ class RelativeSTDThreshold(MeanProfile):
         """Parameters
         ----------
         offset_std : float, optional
-            Number of standart deviations VS the computed reference to obtain
+            Number of standard deviations VS the computed reference to obtain
             the threshold profile. Default is 3 (profile is 3 standard deviations
             from reference)
 

@@ -802,7 +802,7 @@ class CategorySynthTSConsumption(DateSynthTSConsumption):
         Notes
         -----
         The number of categories in ``list_categories`` must match the number of ``parameters``.
-        In assition, the order of the categories must match the order of the parameters.
+        In assertion, the order of the categories must match the order of the parameters.
 
         """
         self.list_of_synths = [

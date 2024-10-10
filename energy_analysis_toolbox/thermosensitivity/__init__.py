@@ -1,4 +1,4 @@
-"""Analyzes the relation betweeen energy consumption and themperature."""
+"""Analyzes the relation between energy consumption and themperature."""
 
 from .daily_analysis import (
     AutoCategoricalThermoSensitivity,

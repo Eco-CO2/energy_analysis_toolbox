@@ -1,4 +1,4 @@
-"""Test the synthtic data generators"""
+"""Test the synthetic data generators"""
 
 import numpy as np
 import pandas as pd
@@ -83,7 +83,7 @@ class TestSynthDDConsumption:
 
 
 class TestSynthTSConsumption(TestSynthDDConsumption):
-    """Test the synthtic data generators"""
+    """Test the synthetic data generators"""
 
     base_energry = 1000
     ts_heat = 10
