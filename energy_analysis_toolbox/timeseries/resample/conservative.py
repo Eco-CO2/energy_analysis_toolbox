@@ -391,6 +391,7 @@ def volume_conservative(
     "Set Nan the intervals where the initial volume is Nan"
     initial_index_nan = volumes.index[volumes.isna()]
     "find the indexes of the new interpolated series where the initial series is Nan"
+    "TODO : Fix the Upsampling issue as well: multiple indexes could be impacted by NaN"
     new_indexes_expected_nan = interp_volumes.index.get_indexer(
         [initial_index_nan],
         method="ffill",
