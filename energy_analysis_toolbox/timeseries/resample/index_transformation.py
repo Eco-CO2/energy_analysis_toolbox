@@ -119,7 +119,7 @@ def index_to_freq(
                 raise Warning(warn) from None
     if last_step_duration is None:
         try:
-            last_step_duration = (index[-1] - index[-2]).seconds
+            last_step_duration = (index[-1] - index[-2]).total_seconds()
         except IndexError:
             err = (
                 "The last step duration could not be determined from the index."
