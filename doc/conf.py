@@ -59,13 +59,13 @@ language = "en"
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "github_url": "https://github.com/Eco-CO2/energy_analysis_toolbox",
-    "logo": {"image_dark": "./_static/logo.png"},
+    "logo": {"logo": "./_static/energy_analysis_toolbox_logo.svg"},
 }
 html_static_path = ["_static"]
 html_sidebars = {
     "using/windows": ["windows-sidebar.html"],
 }
-html_logo = "./_static/logo.png"
+html_logo = "./_static/energy_analysis_toolbox_logo.svg"
 html_favicon = "./_static/favicon.ico"
 add_function_parentheses = False
 

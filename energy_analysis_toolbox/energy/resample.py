@@ -38,8 +38,10 @@ def to_freq(
 
     .. seealso::
 
-        * :py:func:`energy_analysis_toolbox.timeseries.resample.conservative.volume_to_freq`
-        * :py:func:`energy_analysis_toolbox.timeseries.resample.conservative.volume_conservative`
+        * :py:func:`energy_analysis_toolbox.timeseries.resample.
+          conservative.volume_to_freq`
+        * :py:func:`energy_analysis_toolbox.timeseries.resample.
+          conservative.volume_conservative`
 
     """
     if series.empty:

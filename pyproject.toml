@@ -57,6 +57,7 @@ test = [
 ]
 dev = [
     "pre-commit",
+    "ruff",
 ]
 all = [
     "energy_analysis_toolbox[test,doc,dev]",
