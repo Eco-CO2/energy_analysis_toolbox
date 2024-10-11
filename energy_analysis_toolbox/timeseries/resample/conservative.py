@@ -370,7 +370,7 @@ def volume_conservative(
     ):
         err = "Last step duration cannot be zero."
         raise EATInvalidTimestepDurationError(err)
-    vol_index = volumes.cumsum()  # [1.]
+    vol_index = volumes.fillna(0).cumsum()  # [1.]
     # the function deals with None last_step_duration values
     durations = timestep_durations(volumes.iloc[-2:], last_step=last_step_duration)
     ghost_right = vol_index.index[-1] + pd.Timedelta(seconds=durations.iloc[-1])  # [2.]
@@ -385,7 +385,18 @@ def volume_conservative(
         target_instants[-1] + pd.Timedelta(seconds=target_durations[-1]),
     )  # [4.1]
     interp_vol_index = piecewise_affine(vol_index, target_instants)  # [4.2]
-    interp_volumes = interp_vol_index.diff().shift(-1).dropna()  # [5.] [6.] [7.]
+    interp_volumes = interp_vol_index.diff().shift(-1)  # .dropna()  # [5.] [6.] [7.]
+    "remove the last fictive timestep"
+    interp_volumes = interp_volumes.iloc[:-1]
+    "Set Nan the intervals where the initial volume is Nan"
+    initial_index_nan = volumes.index[volumes.isna()]
+    "find the indexes of the new interpolated series where the initial series is Nan"
+    new_indexes_expected_nan = interp_volumes.index.get_indexer(
+        [initial_index_nan],
+        method="ffill",
+    )
+    new_indexes_expected_nan = new_indexes_expected_nan[new_indexes_expected_nan >= 0]
+    interp_volumes.iloc[new_indexes_expected_nan] = np.nan
     interp_volumes.name = volumes.name
     interp_volumes.index.name = volumes.index.name
     return interp_volumes
