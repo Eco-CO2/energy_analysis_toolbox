@@ -47,6 +47,9 @@ doc = [
     "sphinx-gallery",
     "sphinx_design",
     "nbsphinx",
+    "pyarrow",
+    "fastparquet",
+    "seaborn",
 ]
 test = [
     "pytest",
@@ -63,8 +66,8 @@ all = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["energy_analysis_toolbox"]
-namespaces = false
+include = ["energy_analysis_toolbox*"]
+namespaces = true
 
 [tool.setuptools.dynamic]
 version = {attr = "energy_analysis_toolbox.__version__"}
