@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0.0"]
 
 [project]
 name = "energy_analysis_toolbox"
-description = "A set of tools to manipulate and transform power, and energ timeseries data."
+description = "A set of tools to manipulate and transform power, and energy timeseries data."
 authors = [
     { name = "energy_analysis_toolbox contributors", email = "research@ecoco2.com" },
 ]
@@ -28,8 +28,8 @@ dependencies = ["pandas>=2.1.2,<3", "numpy", "scipy", "statsmodels"]
 dynamic = ["version"]
 
 [project.urls]
-homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox/issues'
-documentation = 'https://readthedocs.org/projects/energy-analysis-toolbox'
+homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox'
+documentation = 'https://energy-analysis-toolbox.readthedocs.io/latest/'
 repository = 'https://github.com/Eco-CO2/energy_analysis_toolbox'
 
 [project.optional-dependencies]

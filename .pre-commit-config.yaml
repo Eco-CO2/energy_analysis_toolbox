@@ -25,14 +25,14 @@ repos:
       - id: typos
         exclude: ^LICENSES/
 
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.6.9
-  #   hooks:
-  #     - id: ruff-format
-  #     - id: ruff
-  #       args: [--exit-non-zero-on-fix]
-  #       types_or: [python, pyi]
-  #       require_serial: true
+ - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--exit-non-zero-on-fix]
+        types_or: [python, pyi]
+        require_serial: true
 
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.3.3
