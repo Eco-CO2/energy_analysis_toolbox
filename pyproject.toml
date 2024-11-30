@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+
+[project]
+name = "energy_analysis_toolbox"
+description = "A set of tools to manipulate and transform power, and energ timeseries data."
+authors = [
+    { name = "energy_analysis_toolbox contributors", email = "research@ecoco2.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Environment :: Console',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Scientific/Engineering',
+]
+dependencies = ["pandas>=2.1.2,<3", "numpy", "scipy", "statsmodels"]
+dynamic = ["version"]
+
+[project.urls]
+homepage = 'https://github.com/Eco-CO2/energy_analysis_toolbox/issues'
+documentation = 'https://readthedocs.org/projects/energy-analysis-toolbox'
+repository = 'https://github.com/Eco-CO2/energy_analysis_toolbox'
+
+[project.optional-dependencies]
+doc = [
+    "energy_analysis_toolbox[examples]",
+    "sphinx",
+    "pydata-sphinx-theme",
+    "sphinx-gallery",
+    "sphinx_design",
+    "nbsphinx",
+    "pyarrow",
+    "fastparquet",
+    "seaborn",
+]
+test = ["pytest", "pytest-cov"]
+dev = ["pre-commit", "ruff"]
+all = ["energy_analysis_toolbox[test,doc,dev]"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["energy_analysis_toolbox*"]
+namespaces = true
+
+[tool.setuptools.dynamic]
+version = { attr = "energy_analysis_toolbox.__version__" }
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # unused-import	{name}: imported but unused; consider using importlib.util.find_spec to test for availability
+    "F401",
+    # missing-type-args: Missing type annotation for *{name}
+    "ANN002",
+    # missing-type-kwargs: Missing type annotation for **{name}
+    "ANN003",
+    # too-many-arguments: Too many arguments in function definition ({c_args} > {max_args})
+    "PLR0913",
+]
+exclude = ["energy_analysis_toolbox/tests/*"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["ALL"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=energy_analysis_toolbox --cov-report term --cov-report xml:cov.xml -p no:logging"
+testpaths = ["energy_analysis_toolbox/tests"]

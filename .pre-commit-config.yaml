@@ -1,0 +1,41 @@
+fail_fast: true
+
+repos:
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.20.2
+    hooks:
+      - id: validate-pyproject
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-mkdocs
+          - mdformat-admon
+        exclude: |
+          (?x)^(
+            docs/formatter/black\.md
+            | docs/\w+\.md
+          )$
+
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.26.0
+    hooks:
+      - id: typos
+        exclude: ^LICENSES/
+
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.6.9
+  #   hooks:
+  #     - id: ruff-format
+  #     - id: ruff
+  #       args: [--exit-non-zero-on-fix]
+  #       types_or: [python, pyi]
+  #       require_serial: true
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.3.3
+    hooks:
+      - id: prettier
+        types: [yaml]

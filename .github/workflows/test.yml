@@ -1,0 +1,40 @@
+name: Unit tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+        pandas-version: ["2.1.2", "2.2"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas==${{ matrix.pandas-version }}
+          pip install ".[test]"
+      - name: Run unit tests
+        run: python energy_analysis_toolbox/tests/main.py
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # Use the token from GitHub secrets
+          files: ./coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
